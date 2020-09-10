@@ -49,7 +49,7 @@ ocms_palette <- function(n = NULL, palette = NULL, preview = FALSE) {
                              ordered_pal$palID))
 
   if(n < length(col_vector)) {
-    stop("Number of colours requested exceeds the specified palette(s). Specify more palettes in the palette argument.")
+    stop("Number of colours requested exceeds the specified palette(s). Specify more palettes using the palette argument.")
   }
   col_samp <- col_vector[1:n]
 
