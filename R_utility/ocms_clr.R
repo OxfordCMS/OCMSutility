@@ -28,7 +28,7 @@ ocms_clr <- function(count_dataframe, condition = NULL, return_as_dataframe = TR
   if(!is.logical(return_as_dataframe)) {
     stop("return_as_dataframe must be logical value")
   }
-  if(!class(count_dataframe) %in% c('dataframe', 'matrix')) {
+  if(!class(count_dataframe) %in% c('data.frame', 'matrix')) {
     stop("count_dataframe must be of class dataframe or matrix")
   }
 
@@ -37,7 +37,7 @@ ocms_clr <- function(count_dataframe, condition = NULL, return_as_dataframe = TR
     condition <- as.character(1:ncol(count_dataframe))
   }
 
-  asv_clr <- ALDEx2::aldex.clr(asv_df, conds = condition, useMC = TRUE)
+  asv_clr <- ALDEx2::aldex.clr(count_dataframe, conds = condition, useMC = TRUE)
 
   if(return_as_dataframe) {
     clr_instance <- lapply(ALDEx2::getMonteCarloInstances(asv_clr),
