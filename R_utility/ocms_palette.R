@@ -48,7 +48,7 @@ ocms_palette <- function(n = NULL, palette = NULL, preview = FALSE) {
   col_vector = unlist(mapply(RColorBrewer::brewer.pal, ordered_pal$maxcolors,
                              ordered_pal$palID))
 
-  if(n < length(col_vector)) {
+  if(n > length(col_vector)) {
     stop("Number of colours requested exceeds the number of colours in the specified palette(s). Specify more palettes using the palette argument.")
   }
   col_samp <- col_vector[1:n]
