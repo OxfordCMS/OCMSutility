@@ -3,3 +3,4 @@
 .RData
 .Ruserdata
 *.Rproj
+Py_utility/scripts/*.py~
