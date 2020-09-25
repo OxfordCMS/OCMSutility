@@ -56,7 +56,7 @@ def combineLanes(directory, mapping_dict, read=1):
     if read == 1:
         suffix = "_1.fastq.gz"
         out_suffix = ".fastq.1.gz"
-    else:
+    elif read == 2:
         suffix = "_2.fastq.gz"
         out_suffix = ".fastq.2.gz"
 
@@ -67,7 +67,7 @@ def combineLanes(directory, mapping_dict, read=1):
     out_map = open("read"+str(read)+".map", "w")
     for readfile in readfiles:
         prefix = os.path.basename(readfile).replace(suffix, "")
-
+        
         # make sure that the file has a mapping id
         assert prefix in mapping_dict, f"ERROR: File {readfile} exists but There is no sample ID for {prefix} in --id-map file" 
         
@@ -82,14 +82,10 @@ def combineLanes(directory, mapping_dict, read=1):
             newname = mapping_dict[prefix] + out_suffix
             out_map.write(tocombine + " " + newname + "\n")
             if len(reads) == 1:
-                if os.path.exists(newname):
-                    E.warn(f"File {newname} already exists: Not overwriting")
-                    continue
+                assert not os.path.exists(newname), "Remove previously created files from directory. Will not force overwriting"
                 statement = f"""ln -s {tocombine}  {newname}"""
             else:
-                if os.path.exists(newname):
-                    E.warn(f"File {newname} already exists: Overwriting")
-                    continue
+                assert not os.path.exists(newname), "Remove previously created files from directory. Will not force overwriting"
                 statement = f"""cat {tocombine} > {newname}"""
             os.system(statement)
 
