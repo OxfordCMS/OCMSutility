@@ -33,6 +33,7 @@ ocms_featurebox <- function(abundance_matrix, metadata=NULL, feature=NULL, group
 
     # check if the group_by variable is NULL
     if (is.null(group_by)){
+        warning("no group_by variable specified...will plot each sample separately")
         metadata$Sample <- rownames(metadata)
 	group_by <- "Sample"
     }else{
