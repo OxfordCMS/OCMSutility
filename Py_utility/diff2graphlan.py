@@ -1,5 +1,5 @@
 '''
-ocms_diff2graphlan.py
+diff2graphlan.py
 =============================
 
 :Author: Nick Ilott
@@ -43,9 +43,9 @@ You can use the test data in this repository to test this out.
 
 Example::
 
-   /gfs/devel/nilott/OCMS_Sandbox/Py_utility/scripts/ocms_diff2graphlan.py --diff-table=diff_table.tsv --tax-tree=tree.txt --highest-level=phylum -u padj > annot.txt
+   ocms diff2graphlan --diff-table=<DIFF_TABLE> --tax-tree=<TREE_FILE> --highest-level=phylum -u padj > annot.txt
 
-This is taking the differential abundance table and taxonomic tree inputs and will output annotations for all clades up to phylum level. Colours and bars in teh annotated tree will be based on the adjusted p-value in the diff-table i.e. red for significantly increased and blue for significantly decreased. These annotations are written to annot.txt that will be the input into graphlan_annotate.py.
+This is taking the differential abundance table and taxonomic tree inputs and will output annotations for all clades up to phylum level. Colours and bars in the annotated tree will be based on the adjusted p-value in the diff-table i.e. red for significantly increased and blue for significantly decreased. These annotations are written to annot.txt that will be the input into graphlan_annotate.py.
 
 
 In order to run graphlan you will need to set up a python-2.7 virtual environment. After deactivating any conda environments that you have loaded do::
@@ -76,12 +76,9 @@ This will produce the .xml file that graphlan will use to draw the tree with ann
 This will give you hopefully the desired output of a pretty annotated tree.
 
 
-
-
-
 Type::
 
-   python diff2graphlan_annotations.py --help
+   ocms diff2graphlan --help
 
 for command line help.
 
