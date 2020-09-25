@@ -1,5 +1,5 @@
 '''
-ocms_combine_lanes.py
+combine_lanes.py
 =======================
 
 :Author: Nick Ilott
@@ -10,18 +10,25 @@ Purpose
 
 The purpose of this script is to take a file that contains a mapping between IDs that are given to us from the OGC that relate to fastq filenames and our OCMS IDs and to combine fastq files across multiple lanes such that the resulting fastq files have OCMS identifiers. If the samples have not been run across multiple lanes i.e. there is only a single lane identifier then the script will link files from the original directory to the working directory but with the new identifiers.
 
+
 Usage
 -----
 
-.. Example use case
+Inputs to the script are a directory containing fastq files that have the WT OGC naming convention and a mapping file (tab delimited) that composes of two columns
+
++---------+---------+
+| WT ID   | OCMS ID |
++---------+---------+
+
+If multiple lanes of sequencing were performed per sample then a new file will be created after concatenating fastq files across lanes. If only one sequencing lane is present per sample then links to the data will be created in the working directory with a new file name as per the mapping file.
 
 Example::
 
-   python cgat_script_template.py
+   ocms combine_lanes --fastq-directory=<FASTQ-DIRECTORY> --id-map=<ID_MAPPING_FILE>
 
 Type::
 
-   python cgat_script_template.py --help
+   ocms combine_lanes --help
 
 for command line help.
 
