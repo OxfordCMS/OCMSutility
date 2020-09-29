@@ -33,5 +33,6 @@ devtools::install_github("https://github.com/OxfordCMS/OCMS_Sandbox/tree/master/
 Package documentation
 
 ```
+library(OCMSutility)
 ?OCMSutlity
 ```
