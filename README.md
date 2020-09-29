@@ -22,3 +22,16 @@ Example script
 ocms combine_lanes -h
 ```
 
+To use scripts that are in the R_utilty directory, you should be able to install the R package OCMSutility.
+
+Install in R
+
+```
+devtools::install_github("https://github.com/OxfordCMS/OCMS_Sandbox/tree/master/R_utility/OCMSutility")
+```
+
+Package documentation
+
+```
+?OCMSutlity
+```
