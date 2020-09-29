@@ -15,6 +15,7 @@
 #' @return dataframe of clr-tranfsormed counts or aldex.clr object with
 #'      clr-transformed Monte-Carlo Dirichlet instances of counts
 #' @import ALDEx2
+#' @export
 #' @examples
 #' library(ALDEx2)
 #' data(selex)
