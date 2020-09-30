@@ -3,16 +3,23 @@ title: "OCMSutility: An R package of general functions for data manipulation, an
 output:
   html_document:
     toc: true
+    toc_float: true
+    toc_collapsed: true
+  toc_depth: 2
 editor_options: 
   chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, message=FALSE)
+knitr::opts_chunk$set(echo = TRUE, message=FALSE)
 ```
 
-```{load libraries}
-library(phyloseq)
+```{r load libraries, echo=FALSE, message=FALSE}
+source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_clr.R")
+source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_featurebox.R")
+source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_palette.R")
+library(ggplot2)
+
 ```
 
 # Overview
@@ -52,11 +59,40 @@ ocms_palette(n=10, palette="Set3", preview=TRUE)
 
 ## ocms_featurebox
 
-This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. 
+This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
 
 ```{r ocms_featurebox}
 
 # get example data
-data(asv_example)
+#data(asv_example)
+
+# haerdcoded during testing
+load("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/data/asv_example.RData")
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+# for plotting purposes we would transform the data e.g. clr
+asv_clr <- ocms_clr(asv_counts)
+
+# generate some random metadata for the 295 samples - 5 groups for example
+metadata <- data.frame(Group = c(rep("Group 1", 59),
+                                 rep("Group 2", 59),
+                                 rep("Group 3", 59),
+                                 rep("Group 4", 59),
+                                 rep("Group 5", 59)),
+                                 row.names=colnames(asv_clr))
+
+# produce boxplot of random 4 features as an example grouping by Group variable
+features <- sample(rownames(asv_clr), size=4)
+ocms_featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group")
+```
+
+The default palettes used are "Set2", "Set3" and "Set4", and the result will depend on the number of colours you need. You can change the colours if you like by adding manual scale:
+
+```{r ocms_featurebox_colour}
+ocms_featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
+  scale_colour_manual(values=ocms_palette(n=5, palette="Set1"))
 
 ```
+
