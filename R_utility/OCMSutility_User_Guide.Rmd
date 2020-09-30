@@ -15,6 +15,7 @@ knitr::opts_chunk$set(echo = TRUE, message=FALSE)
 ```
 
 ```{r load libraries, echo=FALSE, message=FALSE}
+source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_relab.R")
 source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_clr.R")
 source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_featurebox.R")
 source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_palette.R")
@@ -45,6 +46,16 @@ This will return a data frame with transformed abundance estimates (most common 
 clr_transformed <- ocms_clr(count_dataframe = count_dataframe, return_as_dataframe = FALSE)
 ```
 
+## ocms_relab
+
+This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
+
+Usage:
+
+```{r ocms_relab}
+rel_abundance <- ocms_relab(count_dataframe)
+```
+
 ## ocms_palette
 
 This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
@@ -61,12 +72,14 @@ ocms_palette(n=10, palette="Set3", preview=TRUE)
 
 This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
 
+Usage:
+
 ```{r ocms_featurebox}
 
 # get example data
 #data(asv_example)
 
-# haerdcoded during testing
+# hardcoded during testing
 load("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/data/asv_example.RData")
 
 # rownames have to be features

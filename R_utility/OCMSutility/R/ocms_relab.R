@@ -8,7 +8,7 @@
 #' counts <- data.frame(matrix(rnorm(1000), ncol=20, nrow=50))
 #' rel_abundance <- ocms_relab(counts)
 
-relab <- function(counts){
+ocms_relab <- function(counts){
 
     relab <- (sweep(counts, 2, colSums(counts), "/"))*100
     return(relab)
