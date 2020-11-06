@@ -154,7 +154,7 @@ def buildSdrf(read1map):
         for f in orig_files:
             md5 = hashlib.md5(open(f,'rb').read()).hexdigest()
             hashes.append([os.path.basename(f), md5])
-        outf.write("\t".join([sample] + ["NA"]*14 + list(itertools.chain(*hashes))) + "\n")
+        outf.write("\t".join([sample_name] + ["NA"]*14 + list(itertools.chain(*hashes))) + "\n")
     outf.close()
             
 def main(argv=None):
