@@ -32,6 +32,12 @@ Type::
 
 for command line help.
 
+SDRF output
+------------
+
+It is desirable to have metadata information for a sequencing project - this is important as at the end of a project the data are uploaded to a public repository. While all of the metadata cannot be included using this script, it does provide a template if --srdf-output is set to true. This will include minimal information that is required by the EBI ENA for fastq file uploads as well as the files that are available for each sample and the checksums for each file.
+
+
 Command line options
 --------------------
 
@@ -42,7 +48,8 @@ import os
 import glob
 import itertools
 import cgatcore.experiment as E
-
+import hashlib
+import itertools
 
 def readWt2id(wt2id):
     '''
@@ -96,6 +103,60 @@ def combineLanes(directory, mapping_dict, read=1):
                 statement = f"""cat {tocombine} > {newname}"""
             os.system(statement)
 
+
+def buildSdrf(read1map):
+    '''build sdrf template with md5sums for the original
+    input files and how they map to sample names
+    '''
+    infiles = open(read1map)
+    
+    # peek the number of original files
+    noriginal = len(infiles.readline()[:-1].split(" ")) - 1
+    noriginal = noriginal*2
+
+    infiles.close()
+
+    # re-open
+    infiles = open(read1map)
+    
+    outf = open("sdrf_template.tsv", "w")
+    # write header
+    filenumbers = ["File" + str(x) + "\tmd5sums_File" + str(x) for x in range(1, noriginal+1)]
+    
+    outf.write("\t".join(["Sample",
+                         "Organism",
+                         "Tissue",
+                         "Cell type",
+                         "Sex",
+                         "Age",
+                         "Disease",
+                         "Material type",
+                         "Library source",
+                         "Library selection",
+                         "Library layout",
+                         "Library orientation",
+                         "Library nominal fragment length",
+                         "Library nominal fragment Stdev"] + filenumbers) + "\n")
+
+    for line in infiles.readlines():
+        data = line[:-1].split(" ")
+
+        # number of original files = no. lanes/runs
+        noriginal = len(data)-1
+        sample_name = data[-1].replace(".fastq.1.gz", "")
+
+        # files
+        orig_files = data[:-1]
+
+        # add second read in pair
+        orig_files = orig_files + [x.replace("_1.fastq.gz", "_2.fastq.gz") for x in orig_files]
+        hashes = []
+        for f in orig_files:
+            md5 = hashlib.md5(open(f,'rb').read()).hexdigest()
+            hashes.append([os.path.basename(f), md5])
+        outf.write("\t".join([sample] + ["NA"]*14 + list(itertools.chain(*hashes))) + "\n")
+    outf.close()
+            
 def main(argv=None):
     """script main.
     parses command line options in sys.argv, unless *argv* is given.
@@ -111,6 +172,8 @@ def main(argv=None):
                         help="supply directory containing fastq files to combine")
     parser.add_argument("-i", "--id-map", dest="id_map", type=str,
                         help="supply file containing WT ID to Sample ID (OCMS) mapping")
+    parser.add_argument("--srdf-output", dest="sdrf_output", action="store_true",
+                        help="flag to specify whether to output a template sdrf file")
     parser.add_argument("--debug", dest="debug", action="store_true",
                         help="turns on full traceback for errors")
 
@@ -125,6 +188,10 @@ def main(argv=None):
     combineLanes(args.fastq_directory, wt2id, read=1)
     combineLanes(args.fastq_directory, wt2id, read=2)
 
+    if args.sdrf_output:
+        E.warn("Building sdrf_template.tsv: This may take some time :)")
+        buildSdrf("read1.map")
+    
     # write footer and output benchmark information.
     E.stop()
 
