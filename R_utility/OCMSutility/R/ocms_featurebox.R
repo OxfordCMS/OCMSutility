@@ -48,7 +48,7 @@ ocms_featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, grou
     }
 
     # check metadata and abundance matrix have matching samples
-    if (!(all.equal(colnames(abundance_matrix), rownames(metadata)))){
+    if (!(isTRUE(all.equal(colnames(abundance_matrix), rownames(metadata))))){
         stop("samples between abundance_matrix and metadata do not match - do they need sorting?")
     }
 
