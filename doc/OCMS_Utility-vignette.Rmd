@@ -208,3 +208,26 @@ p <- plot_data$p +
   geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
 p
 ```
+
+## ocms_rarefy
+
+Useful for calculating and plotting rarefaction curve to check if read depth captures as much diversity as possible.
+
+```{r ocms_rarefy}
+
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+rarefaction <- ocms_rarefy(asv_counts)
+
+# default plot
+p <- rarefaction$rare_p
+p
+
+# modify default plot -- remove geom_label_repel layer
+p$layers[[2]] <- NULL
+p
+```
