@@ -1,4 +1,5 @@
 #' ocms_dissimilarity
+#'
 #' Calculate either within-individual or between-individual Bray-Curtis dissimilarity.
 #'
 #' @param abundance_matrix dataframe; samples are columns and features are rows
@@ -18,15 +19,13 @@
 #' rownames(metadata) <- LETTERS[1:8]
 #' ocms_dissimilarity(abundance_matrix, metadata=metadata, individual_variable="individual", method="within")
 
-library(phyloseq)
-library(dplyr)
 
 ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_variable=NULL, method="within"){
 
     if (!(method %in% c("within", "between"))){
         stop("method must be one of 'within' or 'between'")
     }
-    
+
     if (is.null(abundance_matrix)){
         stop("Must provide relative abundance data frame")
     }
@@ -44,7 +43,7 @@ ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_
     features <- abundance_matrix[,sample.ids]
 
     if (method == "within"){
-        
+
         # make sure individual variable is specified
         if (is.null(individual_variable)){
             stop("Must provide the variable that specifies the individual column in the metadata")
@@ -53,7 +52,7 @@ ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_
         if (length(metadata[,individual_variable]) == length(unique(metadata[,individual_variable]))){
             stop("could not find multiple samples for each individual - cannot compute within dissimilarity")
         }
-    
+
         # get the patient ids to iterate over
         individual.ids <- unique(metadata[,individual_variable])
 
@@ -74,7 +73,7 @@ ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_
             features.p <- phyloseq::otu_table(features.p, taxa_are_rows=TRUE)
             metadata.p <- phyloseq::sample_data(metadata.p)
             phyob.p <- phyloseq::merge_phyloseq(features.p, metadata.p)
-	        
+
             diss <- phyloseq::distance(phyob.p, method="bray")
             diss <- as.data.frame(as.matrix(diss))
             res <- data.frame(dissimilarity = diss[2:nrow(diss),1])
@@ -84,7 +83,7 @@ ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_
         res.all <- bind_rows(result.p)
         res <- res.all
     }
-    
+
     else if (method=="between"){
         cat("using method=between, make sure there is only one sample per individual")
         features <- phyloseq::otu_table(abundance_matrix, taxa_are_rows=TRUE)
@@ -92,8 +91,8 @@ ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_
         phyob <- phyloseq::merge_phyloseq(features, metadata)
         diss <- phyloseq::distance(phyob, method="bray")
         res <- data.frame(dissimilarity = as.vector(diss))
-        res$method <- "Between-individual"    
+        res$method <- "Between-individual"
     }
-    
+
     return(res)
 }

@@ -6,3 +6,6 @@
 .Rbuildignore
 NAMESPACE
 *.Rd
+inst/doc
+doc
+Meta
