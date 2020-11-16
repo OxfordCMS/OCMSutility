@@ -1,4 +1,5 @@
 #' ocms_relab
+#'
 #' convert counts table to relative abundance (%)
 #'
 #' @param counts dataframe; samples are columns and features are rows
