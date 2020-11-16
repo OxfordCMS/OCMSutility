@@ -231,3 +231,52 @@ p
 p$layers[[2]] <- NULL
 p
 ```
+
+## ocms_reannotateTax
+
+Reannotates taxonomy table so that "unclassfied" assignments include higher level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level). The implications of this reannotation is illustrated using the following example:
+
+```{r reannotateTax-example1}
+
+ex1 <- data.frame(ASV = paste0("ASV", 1:5),
+                  Order = "order1",
+                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
+                  Genus = c("unclassified", 'genus1','unclassified','genus2',
+                            "unclassified"),
+                  read_count = 10)
+
+knitr::kable(ex1)
+```
+Analysing the example above at the genus level would result in 3 groups: Genus1 (count 10), Genus2 (10), Unclassified (30)
+
+If you modify your classification at the genus level to include information from higher taxonomic orders, you would get:
+
+```{r reannotateTax-example2}
+
+ex2 <- ex1[,c('ASV','Order')]
+ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
+ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
+               'order1_unclassified')
+ex2$read_count <- 10
+
+knitr::kable(ex2)
+```
+
+Analysing at the genus level now would result in 5 groups: Genus1 (10), Genus2 (10), Family1_Unclassified (10), Family2_Unclassified (10), Order1_Unclassified (10).
+
+Usage:
+
+```{r ocms_reannotateTax}
+old_tax <- ex1[,2:4]
+old_tax$Kingdom <- 'kingdom1'
+old_tax$Phylum <- 'phylum1'
+old_tax$Class <- 'class1'
+old_tax$Species <- 'unclassified'
+
+old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
+old_tax[old_tax == 'unclassified'] <- NA
+knitr::kable(old_tax)
+
+new_tax <- ocms_reannotateTax(old_tax)
+knitr::kable(new_tax)
+```
