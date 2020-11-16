@@ -1,81 +1,33 @@
----
-title: "OCMSutility: An R package of general functions for data manipulation, analysis and visualisation"
-output:
-  html_document:
-    toc: true
-    toc_float: true
-    toc_collapsed: true
-  toc_depth: 2
-editor_options: 
-  chunk_output_type: console
----
+## ---- include = FALSE---------------------------------------------------------
+knitr::opts_chunk$set(
+  fig.width = 6, fig.height = 4,
+  collapse = TRUE,
+  comment = "#>"
+)
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message=FALSE)
-```
-
-```{r load libraries, echo=FALSE, message=FALSE}
-source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_relab.R")
-source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_clr.R")
-source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_featurebox.R")
-source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_palette.R")
-source("/gfs/devel/nilott/OCMS_Sandbox/R_utility/OCMSutility/R/ocms_dissimilarity.R")
+## ----setup--------------------------------------------------------------------
+library(OCMSutility)
 library(ggplot2)
+library(dplyr)
 
-```
-
-# Overview
-
-This package was created by member of the Oxford Centre for Microbiome Studies (OCMS). It is a collection of functions that we have found useful and hope that they are useful to others. The functions span data manipulation, statistical analysis and data visualisation, predominantly for microbiome data. Functions in this package and use cases are documented below.
-
-## ocms_clr
-
-ocms_clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
-
-Usage:
-
-```{r ocms_clr}
+## ----ocms_clr-----------------------------------------------------------------
 
 # example counts
 count_dataframe <- as.data.frame(matrix(sample(0:1000, size = 10000, replace=TRUE), ncol=50, nrow=200))
 clr_transformed <- ocms_clr(count_dataframe = count_dataframe, return_as_dataframe = TRUE)
-```
 
-This will return a data frame with transformed abundance estimates (most common use case). It is also possible to return the ALDEx2 object instead.
-
-```{r ocms_clr_object}
+## ----ocms_clr_object----------------------------------------------------------
 clr_transformed <- ocms_clr(count_dataframe = count_dataframe, return_as_dataframe = FALSE)
-```
 
-## ocms_relab
-
-This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
-
-Usage:
-
-```{r ocms_relab}
+## ----ocms_relab---------------------------------------------------------------
 rel_abundance <- ocms_relab(count_dataframe)
-```
 
-## ocms_palette
-
-This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
-
-Usage:
-
-```{r ocms_palette}
+## ----ocms_palette-------------------------------------------------------------
 
 ocms_palette(n=10, palette="Set3", preview=TRUE)
 
-```
 
-## ocms_featurebox
-
-This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
-
-Usage:
-
-```{r ocms_featurebox}
+## ----ocms_featurebox----------------------------------------------------------
 
 # get example data
 #data(asv_example)
@@ -100,23 +52,13 @@ metadata <- data.frame(Group = c(rep("Group 1", 59),
 # produce boxplot of random 4 features as an example grouping by Group variable
 features <- sample(rownames(asv_clr), size=4)
 ocms_featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group")
-```
 
-The default palettes used are "Set2", "Set3" and "Set4", and the result will depend on the number of colours you need. You can change the colours if you like by adding manual scale:
-
-```{r ocms_featurebox_colour}
+## ----ocms_featurebox_colour---------------------------------------------------
 ocms_featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
   scale_colour_manual(values=ocms_palette(n=5, palette="Set1"))
 
-```
 
-## ocms_dissimilarity
-
-The purpose of this function is to determine dissimilarity between samples using Bray-Curtis dissimilarity. This is typically done if you want to compare dissimilarity between groups or compare within-individual dissimilarity with between-individual similarity where you have multiple samples per individual. The function takes a relative abundance matrix and relevant metadata as input and outputs a data frame with Bray-Curtis dissimilarity measure that can be plotted. Below is an example where this may be of use.
-
-Usage:
-
-```{r ocms_dissimilarity}
+## ----ocms_dissimilarity-------------------------------------------------------
 
 # get example data
 #data(asv_example)
@@ -168,4 +110,4 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
   ylab("Bray-Curtis dissimilarity") +
   theme_bw()
 
-```
+
