@@ -17,8 +17,10 @@ VignetteBuilder: knitr
 Imports:
   ALDEx2,
   dplyr,
+  foreach,
   ggplot2,
   gtools,
   phyloseq,
-  reshape
+  reshape,
+  vegan
 RoxygenNote: 7.1.1
