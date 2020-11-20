@@ -80,28 +80,29 @@ ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
       tax_df$sequence <- NA
     }
 
-    # update Taxon column
-    if('Taxon' %in% tax_column) {
-      ind <- which(tax_level == aggregate_by)
-      Taxon <- stringr::str_split(tax_df$Taxon, ";", simplify = TRUE)
-      Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
-
-      tax_df$Taxon <- Taxon
-    }
-
     # set aggregated level and all lower levels to NA
     ind <- which(tax_level == aggregate_by) + 1
     to_na <- tax_level[ind:length(tax_level)]
 
     tax_df[, to_na] <- NA
 
-    # record how many ASVs aggregated
-    tax_df <- tax_df %>%
-      group_by(.data[[aggregate_by]]) %>%
-      mutate(n_collapse = n())
+    # update Taxon column
+    if('Taxon' %in% tax_column) {
+      ind <- which(tax_level == aggregate_by)
+      Taxon <- stringr::str_split(tax_df$Taxon, ";", simplify = TRUE)
+      if(ind == 1) {
+        Taxon <- Taxon[,ind]
+      } else {
+        Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
+      }
+      tax_df$Taxon <- Taxon
+    }
 
-    # set new featureID
-    tax_df$featureID <- tax_df[, aggregate_by]
+    # record how many ASVs aggregated
+    n_collapse <- tax_df %>%
+      group_by(.data[[aggregate_by]]) %>%
+      mutate(n_collapse = n(),
+             featureID = .data[[aggregate_by]])
 
     # remove redundant entries
     tax_df <- unique(tax_df)
