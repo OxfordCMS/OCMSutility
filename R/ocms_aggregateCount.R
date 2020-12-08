@@ -6,7 +6,8 @@
 #'     ASV in rows. First column is 'featureID'
 #' @param tax_df dataframe. featureID must match \code{count_df}.
 #'     has columns \code{'featureID','Kingdom','Phylum',
-#'     'Class','Order','Family','Genus','Species'}
+#'     'Class','Order','Family','Genus','Species'}.
+#'     Can also have \code{Taxon} column (see details).
 #' @param aggregate_by Aggregate counts by taxonomic level.
 #'     Set to \code{NULL} to keep reads at ASV level. default \code{NULL} .
 #'     Must be one of \code{c('Kingdom','Phylum','Class','Order','Family',
@@ -14,8 +15,9 @@
 #'
 #' @export
 #' @import stringr
-#' @return list: aggregated count table (\code{count_df}) and
-#'     updated taxonomy table (\code{tax_df})
+#' @returns
+#' returns a list of aggregated count table
+#'     (\code{count_df}) and updated taxonomy table (\code{tax_df})
 #'
 #' @details
 #' If \code{tax_df} has sequences column and features are aggregated,
@@ -28,16 +30,38 @@
 #' The aggregated taxonomy table has an additional column, \code{n_collapse},
 #' which is the number of ASVs that were aggregated.
 #'
+#' If \code{aggregate_by} is set to \code{'featureID'}, no aggregation is done, and the returning table will be unchanged.
+#'
+#' @examples
+#' data(asv_example)
+#' # first column of asv table must be featureID
+#' feature_count <- asv_example
+#' colnames(feature_count)[1] <- 'featureID'
 
-ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
+#' # taxonomy table must have columns 'featureID','Kingdom','Phylum',
+#' # 'Class','Order','Family','Genus','Species'
+#' feature_tax <- tax_example
+#' feature_tax <- cbind(feature_tax$sequence,
+#'                      rep("Bacteria", nrow(tax_example)),
+#'                      feature_tax[,2:ncol(feature_tax)])
+#' colnames(feature_tax)[1:2] <- c('featureID','Kingdom')
+#'
+#' aggregated_list <- ocms_aggregateCount(feature_count, feature_tax,
+#'                                        aggregate_by = "Family")
+
+ocms_aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
 
   tax_level <- c('Kingdom','Phylum','Class','Order', 'Family','Genus',
                  'Species','featureID')
 
   # check inputs----------------------------------------------------------------
   # count_df must be dataframe
-  if(class(count_df) != 'dataframe') {
-    stop("count_df must be dataframe")
+  if(class(count_df) != 'data.frame') {
+    stop("count_df must be data.frame")
+  }
+
+  if(class(tax_df) != 'data.frame') {
+    stop("tax_df must be a data.frame")
   }
 
   # check order of count_df is same as order of tax_df
@@ -71,12 +95,11 @@ ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
   aggregated <- aggregate(formula = formula(f), data = count_df, FUN = sum)
 
   # update taxonomy table-------------------------------------------------------
-
   if(aggregate_by != 'featureID') {
     tax_column <- colnames(tax_df)
 
     # set sequence column to NA
-    if('sequences' %in% tax_column) {
+    if('sequence' %in% tax_column) {
       tax_df$sequence <- NA
     }
 
@@ -105,7 +128,7 @@ ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
              featureID = .data[[aggregate_by]])
 
     # remove redundant entries
-    tax_df <- unique(tax_df)
+    tax_df <- unique(n_collapse)
   }
 
   return(list('count_df'=aggregated, 'tax_df' = tax_df))

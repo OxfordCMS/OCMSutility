@@ -9,7 +9,16 @@
 #'
 #' @import dplyr
 #' @export
-#' @example
+#' @examples
+#' data(asv_example)
+#' # adding Kingdom column; removing sequence column because don't need asv IDs in this example
+#' old_tax <- tax_example
+#' colnames(old_tax)[1] <- 'Kingdom'
+#' old_tax$Kingdom <- 'Bacteria'
+#' knitr::kable(head(old_tax))
+#'
+#' new_tax <- ocms_reannotateTax(old_tax)
+#' knitr::kable(head(new_tax))
 #' @return updated taxonomy table with "unclassified" prepended with higher level classifications
 #'
 
