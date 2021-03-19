@@ -280,3 +280,34 @@ knitr::kable(old_tax)
 new_tax <- ocms_reannotateTax(old_tax)
 knitr::kable(new_tax)
 ```
+
+## ocms_aggregateCounts
+
+Aggregates read counts based on a taxonomic level. If the taxonomy table supplied has a `sequences` column and features are aggregated on a taxonomic level, the sequence column is set to NA. If tax_table has a `Taxon column` with notation of p__phylum;c__class;o__order...etc. then those are truncated at the aggregation level. 
+
+All taxa downstream of aggregation level are set to NA
+
+The aggregated taxonomy table has an additional column, `n_collapse`, which is the number of ASVs that were aggregated.
+
+Usage:
+
+```{r ocms_aggregateCounts}
+
+```
+## ocms_filterseq
+
+This function filters counts based on read count cut off and sample prevalence of features.
+
+Filtering is performed based on read count and sample prevalence. ASVs are kept if they pass the ASV count cut-off OR if they pass the sample prevalence cut-off.
+
+When `asv_cutoff` set to `'abs_count'`, uses a read count as a threshold cutoff. recommended default of `1`
+
+When `asv_cutoff` is set to `'percent_sample'`, uses percent of sample total read count as the threshold cutoff. Therefore, ASVs must reach a certain percentage of a given sample. Recommended default of `0.01` for 0.01% of each sample
+
+When `asv_cutoff` is set to `'percent_dataset'`, uses percent of dataset total read count as the threshold cutoff. Recommended default of `0.01` for 0.01% of entire dataset
+
+`prev_cutoff` has minimum value of 1 (sequence must reach cutof in at least 1 sample, which would not filter out any sequences). Default value is set to 2, which is the most relaxed cutoff. A recommended default is the number of samples to make up 5% of total number of samples.
+
+```{r ocms_filterseq}
+
+```

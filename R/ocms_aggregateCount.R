@@ -36,7 +36,7 @@ ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
 
   # check inputs----------------------------------------------------------------
   # count_df must be dataframe
-  if(class(count_df) != 'dataframe') {
+  if(class(count_df) != 'data.frame') {
     stop("count_df must be dataframe")
   }
 
@@ -68,7 +68,7 @@ ocms_aggregateCount <-  function(count_df, tax_df, aggregate_by = NULL) {
   f <- sprintf("cbind(%s) ~ featureID", yvar)
 
   # perform aggregation
-  aggregated <- aggregate(formula = formula(f), data = count_df, FUN = sum)
+  aggregated <- stats::aggregate(formula = formula(f), data = count_df, FUN = sum)
 
   # update taxonomy table-------------------------------------------------------
 
