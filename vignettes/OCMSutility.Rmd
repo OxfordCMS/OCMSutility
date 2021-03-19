@@ -4,7 +4,7 @@ output:
   rmarkdown::html_vignette:
     toc: true
     toc_collapsed: true
-  toc_depth: 2
+    toc_depth: 2
 editor_options: 
   chunk_output_type: console
 vignette: >
@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
   echo = TRUE,
   message = TRUE,
   collapse = TRUE,
+  result = 'asis',
   comment = "#>"
 )
 ```
