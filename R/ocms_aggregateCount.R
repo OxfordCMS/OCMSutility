@@ -92,7 +92,7 @@ ocms_aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   f <- sprintf("cbind(%s) ~ featureID", yvar)
 
   # perform aggregation
-  aggregated <- aggregate(formula = formula(f), data = count_df, FUN = sum)
+  aggregated <- stats::aggregate(formula = formula(f), data = count_df, FUN = sum)
 
   # update taxonomy table-------------------------------------------------------
   if(aggregate_by != 'featureID') {
