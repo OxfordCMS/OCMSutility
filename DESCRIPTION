@@ -22,5 +22,8 @@ Imports:
   gtools,
   phyloseq,
   reshape,
+  tibble,
   vegan
 RoxygenNote: 7.1.1
+Depends: 
+    R (>= 2.10)
