@@ -75,7 +75,7 @@ ocms_aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     aggregate_by <- 'featureID'
   } else {
     if(!aggregate_by %in% tax_level) {
-      stop("Reads can only be aggregated by 'Kingdom','Phylum','Class','Family','Genus','Species'.")
+      stop("Reads can only be aggregated by 'Kingdom','Phylum','Order','Class','Family','Genus','Species','featureID'.")
     }
   }
 
