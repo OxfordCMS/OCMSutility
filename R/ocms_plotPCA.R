@@ -44,7 +44,7 @@ ocms_plotPCA <- function(
     stop("pc must be of class prcomp")
   }
   # metadata must have same IDs as pc
-  if(!all.equal(sort(rownames(pc$x)), sort(rownames(metadata)))) {
+  if(!identical(sort(rownames(pc$x)), sort(rownames(metadata)))) {
     stop("rownames between pc$x and metadata do not match")
   }
   # colourby must be "none" or in metadata
