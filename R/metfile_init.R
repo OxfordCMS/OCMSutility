@@ -2,8 +2,8 @@
 #'
 #' metfile_init
 
-#' @param db_file
-#' @param out_dir
+#' @param db_file rsqlite database file
+#' @param out_dir output directory
 #' @param ref_table = name of table in database from which sampleID are generated.
 #'           default NULL. when NULL assumes table is merged_abundance_id
 #'           which is the count table produced from the ocms_16s dada2 pipeline
