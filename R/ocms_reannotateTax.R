@@ -1,4 +1,4 @@
-#' ocms_reannotateTax
+#' reannotateTax
 #'
 #' Reannotate taxonomy
 #'
@@ -17,12 +17,12 @@
 #' old_tax$Kingdom <- 'Bacteria'
 #' knitr::kable(head(old_tax))
 #'
-#' new_tax <- ocms_reannotateTax(old_tax)
+#' new_tax <- reannotateTax(old_tax)
 #' knitr::kable(head(new_tax))
 #' @return updated taxonomy table with "unclassified" prepended with higher level classifications
 #'
 
-ocms_reannotateTax <- function(taxonomy) {
+reannotateTax <- function(taxonomy) {
 
   tax_level <- c('Kingdom','Phylum','Class','Order','Family','Genus','Species')
 

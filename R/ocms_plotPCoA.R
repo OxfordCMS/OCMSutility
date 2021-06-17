@@ -1,4 +1,4 @@
-#' ocms_plotPCoA
+#' plotPCoA
 #'
 #' This is a simple PCoA function that colours all points by one
 #' metadata variable. It can be helpful to visualise metadata variables
@@ -17,11 +17,11 @@
 #' met_df <- dss_example$metadata
 #' iter_var <- c('Genotype','Phenotype')
 #' for(i in iter_var) {
-#'   ocms_plotPCoA(relab, met_df, colour = i)
+#'   plotPCoA(relab, met_df, colour = i)
 #' }
 
 
-ocms_plotPCoA <- function(relab, met, colour=NULL, shape=NULL, CI=0.95) {
+plotPCoA <- function(relab, met, colour=NULL, shape=NULL, CI=0.95) {
 
   require(vegan)
   require(dplyr)

@@ -1,4 +1,4 @@
-#' ocms_truePosRate
+#' truePosRate
 #'
 #' Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
 #'
@@ -32,7 +32,7 @@
 #' # examine subset of samples
 #' genus_relab <- genus_relab[,1:10]
 #'
-#' true_pos_result <- ocms_truePosRate(relab=genus_relab,
+#' true_pos_result <- truePosRate(relab=genus_relab,
 #'                                     annotations=zymobiomics$anno_ncbi_16s,
 #'                                     level='genus', cutoff=0.01)
 #'
@@ -45,7 +45,7 @@
 #'   scale_colour_manual(values=c("grey", "purple")) +
 #'   facet_wrap(~sample, scale="free")
 
-ocms_truePosRate <- function(relab, annotations, level="species", cutoff=0.01){
+truePosRate <- function(relab, annotations, level="species", cutoff=0.01){
 
 
   # check inputs----------------------------------------------------------------

@@ -1,4 +1,4 @@
-#' ocms_sunburst
+#' plotSunburst
 #'
 #' Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level.
 #'
@@ -62,10 +62,10 @@
 #' tax_genus <- ocms_reannotateTax(agg_gen$tax_df)
 #'
 #' relab <- ocms_relab(count_genus)
-#' ocms_sunburst(tax_genus, relab, c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
-#' ocms_sunburst(tax_genus, relab, c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), highlight = list("Genus" = c("Bacteroides",'Faecalibacterium')))
+#' plotSunburst(tax_genus, relab, c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+#' plotSunburst(tax_genus, relab, c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), highlight = list("Genus" = c("Bacteroides",'Faecalibacterium')))
 
-ocms_sunburst <- function(tax, relab=NULL, palettes=NULL, highlight=NULL, ...) {
+plotSunburst <- function(tax, relab=NULL, palettes=NULL, highlight=NULL, ...) {
 
   # check inputs----------------------------------------------------------------
   # check data is in relative abundance format

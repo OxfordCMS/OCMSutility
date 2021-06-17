@@ -1,4 +1,4 @@
-#' ocms_dissimilarity
+#' dissimilarity
 #'
 #' Calculate either within-individual or between-individual Bray-Curtis dissimilarity.
 #'
@@ -17,10 +17,10 @@
 #' metadata <- data.frame(individual = c(rep("1", 2), rep("2", 2), rep("3", 2), rep("4", 2)))
 #' metadata$other_variable <- rnorm(8)
 #' rownames(metadata) <- LETTERS[1:8]
-#' ocms_dissimilarity(abundance_matrix, metadata=metadata, individual_variable="individual", method="within")
+#' dissimilarity(abundance_matrix, metadata=metadata, individual_variable="individual", method="within")
 
 
-ocms_dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_variable=NULL, method="within"){
+dissimilarity <- function(abundance_matrix=NULL, metadata=NULL, individual_variable=NULL, method="within"){
 
     if (!(method %in% c("within", "between"))){
         stop("method must be one of 'within' or 'between'")

@@ -1,4 +1,4 @@
-#' ocms_palette
+#' getPalette
 #' generates colour palette from RColorBrewer
 #'
 #' @param n  numeric; default NULL. number of colours; cannot exceed 335. when NULL, gives all colours (in palette, if specified).
@@ -20,7 +20,7 @@
 #' cms_palette(palette = c('Set1','Dark2'), preview = TRUE)
 
 
-ocms_palette <- function(n = NULL, palette = NULL, preview = FALSE) {
+getPalette <- function(n = NULL, palette = NULL, preview = FALSE) {
 
   # pulling colours from RColorBrewer-------------------------------------------
 

@@ -1,4 +1,4 @@
-#' ocms_aggregateCount
+#' aggregateCount
 #'
 #' Aggregate read counts based on taxonomic level
 #'
@@ -49,10 +49,10 @@
 #' # set row order of count and tax tables to be the same
 #' feature_count <- feature_count[feature_tax$featureID,]
 #'
-#' aggregated_list <- ocms_aggregateCount(feature_count, feature_tax,
+#' aggregated_list <- aggregateCount(feature_count, feature_tax,
 #'                                        aggregate_by = "Family")
 
-ocms_aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
+aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
 
   tax_level <- c('featureID','Kingdom','Phylum','Class',
                  'Order','Family','Genus','Species')

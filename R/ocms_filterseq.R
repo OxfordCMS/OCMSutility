@@ -1,4 +1,4 @@
-#' ocms_filterseq.R
+#' filterFeature.R
 #'
 #' filter out reads based on cutoff threshold and asv prevalence across samples
 #'
@@ -55,11 +55,11 @@
 #'   column_to_rownames('featureID')
 #' # set features in count tax to be in same order
 #' count_df <- count_df[tax_df$featureID,]
-#' filtered_ls <- ocms_filterseq(count_df, tax_df, 'abs_count', 1, 2)
+#' filtered_ls <- filterFeature(count_df, tax_df, 'abs_count', 1, 2)
 #' summary(filtered_ls)
 #' filtered_count <- filtered_ls$filtered
 
-ocms_filterseq <- function(count_df, tax_df,
+filterFeature <- function(count_df, tax_df,
                            filter_method = 'abs_count',
                            asv_cutoff = 1, prev_cutoff = 2) {
 

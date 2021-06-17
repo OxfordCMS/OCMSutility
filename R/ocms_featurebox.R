@@ -1,4 +1,4 @@
-#' ocms_featurebox
+#' featurebox
 #' boxplot expression/abundance values of a feature(s) of interest from a matrix
 #'
 #' @param abundance_matrix dataframe; samples are columns and features are rows
@@ -16,12 +16,12 @@
 #' colnames(abundance_matrix) <- LETTERS[1:20]
 #' metadata <- data.frame(group = c(rep("group1", 5), rep("group2", 5), rep("group3", 5), rep("group4", 5)))
 #' rownames(metadata) <- LETTERS[1:20]
-#' ocms_featurebox(abundance_matrix, metadata=metadata, features="10", group_by="group")
+#' featurebox(abundance_matrix, metadata=metadata, features="10", group_by="group")
 #'
 #' # multiple features
-#' ocms_featurebox(abundance_matrix, metadata=metadata, features=c("10", "20", "30", "40"))
+#' featurebox(abundance_matrix, metadata=metadata, features=c("10", "20", "30", "40"))
 
-ocms_featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, group_by=NULL){
+featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, group_by=NULL){
 
     # must have a feature specified
     if (is.null(features)){
@@ -34,7 +34,7 @@ ocms_featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, grou
             }
 	}
     }
-    
+
     # check if the group_by variable is NULL
     if (is.null(group_by)){
         warning("no group_by variable specified...will plot each sample separately")
