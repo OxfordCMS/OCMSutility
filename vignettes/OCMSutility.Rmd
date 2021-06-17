@@ -497,5 +497,24 @@ filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
 summary(filtered_ls)
 filtered_count <- filtered_ls$filtered
 dim(filtered_count)
-kable(filtered_count)
+kable(head(filtered_count[,1:4]))
+```
+
+## metfile_init
+
+This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
+
+Usage:
+This function takes the database file returned from [`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+
+`db_file` is the rsqlite database file
+`out_dir` output directory. default `NULL` so no output file written.
+`ref_table` name of table in the database from which `sampleID` is generated. defaults NULL which uses `merged_abundance_id` (the count table) to get sampleID
+`id_orient` indicates orientation of sampleID in `ref_table` in rows or in columns. options are `row` or `col`
+`dummy` allows you to make a dummy column of NAs
+
+```{r metfile_init, eval=FALSE}
+db_file <- "/path/to/db/file"
+met <- metfile_init(db_file, dummy = "Group")
+
 ```
