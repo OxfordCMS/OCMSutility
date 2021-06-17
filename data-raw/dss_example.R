@@ -23,11 +23,18 @@ for(i in 1:length(table_ls)) {
 # close connection
 dbDisconnect(con)
 
-dss_met <- read.csv(file.path(save_dir, "dss_metadata.tsv"), sep="\t")
-# keep relevant columns
-keep <- apply(dss_met, 2, function(x) !all(is.na(x)))
+dss_met <- read.csv(file.path(save_dir, "dss_metadata.tsv"), sep="\t",
+                    stringsAsFactors = FALSE)
 
-dss_met <- dss_met[colnames(dss_example$merged_abundance_id),which(keep)]
+# clip off "stool" prefix in dss_met$sampleiD
+dss_met$sampleID <- gsub("^stool-", "", dss_met$sampleID)
+
+keep_col <- apply(dss_met, 2, function(x) !all(is.na(x)))
+keep_samp <- colnames(dss_example$merged_abundance_id)[2:ncol(dss_example$merged_abundance_id)]
+rownames(dss_met) <- dss_met$sampleID
+
+# keep relevant rows and columns
+dss_met <- dss_met[keep_samp,which(keep_col)]
 
 # add metadata to list
 dss_example$metadata <- dss_met
