@@ -1,5 +1,9 @@
 #' ocms_plotPCoA
 #'
+#' This is a simple PCoA function that colours all points by one
+#' metadata variable. It can be helpful to visualise metadata variables
+#' independently when assessing potential confounding metadtaa factors
+#'
 #' @param relab dataframe. relative abundance data with features in rows
 #'              and samples in columns. feature IDs in rowname.
 #' @param met dataframe. metadata with samples in rows. sample IDs in rowname
@@ -7,7 +11,7 @@
 #' @param shape string. default NULL. metadata variable to set shape of points by
 #' @param CI numeric. Default 0.95. Confidence interval used to draw ellipse
 #'           around colour variable. set to NULL to omit drawing ellipse
-#' @example
+#' @examples
 #' data(dss_example)
 #' relab <- ocms_relab(dss_example$merged_abundance_id)
 #' met_df <- dss_example$metadata

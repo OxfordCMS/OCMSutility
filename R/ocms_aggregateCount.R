@@ -67,11 +67,6 @@ ocms_aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     stop("tax_df must be a data.frame")
   }
 
-  # check order of count_df is same as order of tax_df
-  if(!identical(rownames(count_df), rownames(tax_df))) {
-    stop("Order of features in count_df and tax_df must be identical")
-  }
-
   # aggregate_by must be one of "Kingdom","Phylum","Class","Order",
   # "Family","Genus","Species"
   if(!aggregate_by %in% tax_level) {

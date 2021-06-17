@@ -2,7 +2,7 @@
 #'
 #' Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
 #'
-#' @param relab relative abundance data frame with samples in columns, features in rows. see Details for requirements featureIDs
+#' @param relab relative abundance data frame with samples in columns, features in rows
 #' @param annotations reference annotations for true positives
 #' @param level taxonomy level at which analysis is done. can be one of
 #'    \code{'species','genus','family'}. default \code{'species'}
@@ -10,43 +10,40 @@
 #'    \code{0.01} (0.01 %)
 #'
 #' @export
-#' @details
-#' relab data frame should have feature IDs. When calculating true positive rates at other taxonomic levels, counts should be aggregated before inputting into function.
 #'
-#'  @examples
-#'  this would be better exemplified with actual std data rather than the example smaples
+#' @examples
+#'  # this would be better exemplified with actual std data rather than the example smaples
+#' # this would be better exemplified with actual std data rather than the example samples
 #' data(asv_example)
 #' data(zymobiomics)
 #'
 #' # set feature IDs in rownames
 #' count_df <- asv_example %>%
 #'   tibble::column_to_rownames('sequence')
-#' tax_df <- tax_example %>%
-#'   tibble::column_to_rownames('sequence')
-#' tax_df <- tax_df[rownames(count_df), ]
+#' count_df <- count_df[tax_df$sequence, ]
 #'
 #' # convert count to relative abundance
 #' relab <- ocms_relab(count_df)
 #'
 #' # aggregate on genus level
-#' agg_ls <- ocms_aggregateCount(count_df, tax_df, 'Genus')
-#' genus_relab <- agg_ls$count_df %>%
-#'   tibble::column_to_rownames('featureID')
+#' agg_ls <- ocms_aggregateCount(relab, tax_df, 'Genus')
+#' genus_relab <- agg_ls$count_df
 #'
 #' # examine subset of samples
 #' genus_relab <- genus_relab[,1:10]
 #'
-#' true_pos_result <- ocms_truePosRate(relab=genus_relab, annotations=zymobiomics$anno_ncbi_16s,
-#'                                    level='genus', cutoff=0.01)
+#' true_pos_result <- ocms_truePosRate(relab=genus_relab,
+#'                                     annotations=zymobiomics$anno_ncbi_16s,
+#'                                     level='genus', cutoff=0.01)
 #'
 #' # plot true pos rate
 #' p <- ggplot(true_pos_result,
-#'            aes(x=rank, y=true.pos.rate, colour=label, group=sample)) +
-#'  geom_point() +
-#'  theme_bw() +
-#'  ylab("TP / (TP + FP)") +
-#'  scale_colour_manual(values=c("grey", "purple")) +
-#'  facet_wrap(~sample, scale="free")
+#'             aes(x=rank, y=true.pos.rate, colour=label, group=sample)) +
+#'   geom_point() +
+#'   theme_bw() +
+#'   ylab("TP / (TP + FP)") +
+#'   scale_colour_manual(values=c("grey", "purple")) +
+#'   facet_wrap(~sample, scale="free")
 
 ocms_truePosRate <- function(relab, annotations, level="species", cutoff=0.01){
 

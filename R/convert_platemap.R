@@ -27,7 +27,8 @@ convert_platemap <- function(map_file, sheet=NULL, map_range, drop_empty = TRUE,
   }
 
   # read in file----------------------------------------------------------------
-  raw <- read_excel(map_file, sheet = sheet, range=map_range, col_names = FALSE, ...)
+  raw <- read_excel(map_file, sheet = sheet, range=map_range,
+                    col_names = FALSE, ...)
 
   # report plate size
   msg <- sprintf("Reading in plate map for %s well plate", ncol(raw)*nrow(raw))

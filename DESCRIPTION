@@ -21,8 +21,10 @@ Imports:
   ggplot2,
   gtools,
   phyloseq,
+  readxl,
   reshape,
   tibble,
+  stringr,
   vegan
 RoxygenNote: 7.1.1
 Depends: 
