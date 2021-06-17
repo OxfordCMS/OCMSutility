@@ -11,10 +11,16 @@
 #' @param shape string. default NULL. metadata variable to set shape of points by
 #' @param CI numeric. Default 0.95. Confidence interval used to draw ellipse
 #'           around colour variable. set to NULL to omit drawing ellipse
+#' @export
 #' @examples
 #' data(dss_example)
-#' relab <- ocms_relab(dss_example$merged_abundance_id)
 #' met_df <- dss_example$metadata
+#'
+#' count_df <- dss_example$merged_abundance_id %>%
+#'   column_to_rownames('featureID')
+#' count_df <- count_df[,met_df$sampleID]
+#' relab <- relab(count_df)
+#'
 #' iter_var <- c('Genotype','Phenotype')
 #' for(i in iter_var) {
 #'   plotPCoA(relab, met_df, colour = i)
@@ -90,6 +96,6 @@ plotPCoA <- function(relab, met, colour=NULL, shape=NULL, CI=0.95) {
     xlab(sprintf('PC1 (%s%%)', var_explained[1])) +
     ylab(sprintf('PC2 (%s%%)', var_explained[2])) +
     theme_classic(10)
-
+  p
   return(p)
 }

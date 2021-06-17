@@ -41,29 +41,43 @@
 #' automatically removed from taxonomy names.
 #'
 #' @return interactive sunburst plot that can be included in rmarkdown or shiny.
-#' @import sunburstR
 #' @import tibble
 #' @import dplyr
-#' @import tidyr
 #' @import RColorBrewer
+#' @import sunburstR
+
+#' @export
 #' @examples
 #' data("dss_example")
-#' count_df <- dss_example$merged_abundance_id
-#' rownames(count_df) <- count_df$featureID
-#' new_col <- paste('X', colnames(count_df)[2:ncol(count_df)], sep=".")
-#' colnames(count_df)[2:ncol(count_df)] <- new_col
-#'
-#' tax_df <- dss_example$merged_taxonomy
-#' rownames(tax_df) <- tax_df$featureID
-#'
-#' agg_gen <- ocms_aggregateCount(count_df[rownames(tax_df),], tax_df, "Genus")
-#' count_genus <- agg_gen$count_df %>%
+#' #' set count feature ids as rownames
+#' count_df <- dss_example$merged_abundance_id %>%
 #'   column_to_rownames('featureID')
-#' tax_genus <- ocms_reannotateTax(agg_gen$tax_df)
 #'
-#' relab <- ocms_relab(count_genus)
-#' plotSunburst(tax_genus, relab, c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
-#' plotSunburst(tax_genus, relab, c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), highlight = list("Genus" = c("Bacteroides",'Faecalibacterium')))
+#' #' clean up some sample names
+#' colnames(count_df) <- paste0('id', colnames(count_df))
+#' tax_df <- dss_example$merged_taxonomy
+#'
+#' #' aggregate counts
+#' agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+#' count_genus <- agg_gen$count_df
+#'
+#' #' reannotate taxonomy
+#' tax_genus <- reannotateTax(agg_gen$tax_df)
+#'
+#' relab <- relab(count_genus)
+#' #' color specific phyla
+#' plotSunburst(relab = NULL, tax = tax_genus,
+#'              palettes = c("Proteobacteria" = "Oranges",
+#'                           "Bacteroidetes" = "Greens"))
+#' #' color specific phyla taking into account of relative abundance
+#' plotSunburst(relab = relab, tax = tax_genus,
+#'              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+#'
+#' #' highlight specific genera
+#' plotSunburst(relab = relab, tax = tax_genus,
+#'              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'),
+#'              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+
 
 plotSunburst <- function(tax, relab=NULL, palettes=NULL, highlight=NULL, ...) {
 
@@ -136,6 +150,8 @@ plotSunburst <- function(tax, relab=NULL, palettes=NULL, highlight=NULL, ...) {
       # format so tax levels are separated by "-"
       mutate(path = paste(Phylum, Class, Order, Family, Genus, sep='-')) %>%
       select(path, avg_relab)
+
+    print(head(pdata))
   }
 
   # specify colours-------------------------------------------------------------

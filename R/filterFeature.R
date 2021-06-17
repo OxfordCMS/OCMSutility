@@ -44,20 +44,23 @@
 #'     A recommended default is the number of samples to make up 5% of total number of samples.
 #'
 #' @import tibble
-#' @import tidyr
 #' @import dplyr
-#'
+#' @export
 #' @examples
 #' data(dss_example)
+#'
 #' # put featureID as rownames
 #' tax_df <- dss_example$merged_taxonomy
 #' count_df <- dss_example$merged_abundance_id %>%
 #'   column_to_rownames('featureID')
 #' # set features in count tax to be in same order
 #' count_df <- count_df[tax_df$featureID,]
-#' filtered_ls <- filterFeature(count_df, tax_df, 'abs_count', 1, 2)
+#'
+#' filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
 #' summary(filtered_ls)
 #' filtered_count <- filtered_ls$filtered
+#' dim(filtered_count)
+#' head(filtered_count)
 
 filterFeature <- function(count_df, tax_df,
                            filter_method = 'abs_count',

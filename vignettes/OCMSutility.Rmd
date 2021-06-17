@@ -25,9 +25,11 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+library(knitr)
 library(OCMSutility)
 library(ggplot2)
 library(dplyr)
+library(tibble)
 ```
 
 # Overview
@@ -75,20 +77,20 @@ clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE
 class(clr_transformed)
 ```
 
-## ocms_relab
+## relab
 
 This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
 
 Usage:
 
-```{r ocms_relab}
+```{r relab}
 # get example data
 data(asv_example)
 
 # rownames have to be features
 asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
 
-rel_abundance <- ocms_relab(asv_counts)
+rel_abundance <- relab(asv_counts)
 ```
 
 ## getPalette
@@ -151,7 +153,7 @@ data(asv_example)
 # rownames have to be features
 asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
 
-asv_relab <- ocms_relab(asv_counts)
+asv_relab <- relab(asv_counts)
 
 # generate some random metadata for the 295 samples - 5 time points with each individual
 # having a data point at each time point
@@ -326,19 +328,17 @@ Notice that after aggregation, featureID is set to the taxonomy by which aggrega
 Usage:
 
 ```{r aggregateCount}
-data(asv_example)
-data(asv_example)
+data(dss_example)
 # featureID should be row names
-feature_count <- asv_example %>%
-   tibble::column_to_rownames('sequence')
+feature_count <- dss_example$merged_abundance_id %>%
+   tibble::column_to_rownames('featureID')
 
+# cleanup sample names
+colnames(feature_count) <- paste0('id', colnames(feature_count))
 # taxonomy table must have columns 'Kingdom','Phylum',
 # 'Class','Order','Family','Genus','Species'
 # and feature IDs in rownames
-feature_tax <- cbind(tax_example$sequence,
-                    rep("Bacteria", nrow(tax_example)),
-                    tax_example[,2:ncol(tax_example)])
-colnames(feature_tax)[1:2] <- c('featureID','Kingdom')
+feature_tax <- dss_example$merged_taxonomy
 
 # set row order of count and tax tables to be the same
 feature_count <- feature_count[feature_tax$featureID,]
@@ -356,10 +356,15 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 
 Usage:
 
-```{r}
+```{r plotPCoA}
 data(dss_example)
-relab <- ocms_relab(dss_example$merged_abundance_id)
 met_df <- dss_example$metadata
+
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+count_df <- count_df[,met_df$sampleID]
+relab <- relab(count_df)
+
 iter_var <- c('Genotype','Phenotype')
 for(i in iter_var) {
   plotPCoA(relab, met_df, colour = i)
@@ -375,35 +380,36 @@ Additionally the `highlight` parameter can be used to highlight a specific taxon
 
 Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotateTax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
 
-```{r}
+```{r plotSunburst}
 data("dss_example")
 # set count feature ids as rownames
-count_df <- dss_example$merged_abundance_id
-rownames(count_df) <- count_df$featureID
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
 
 # clean up some sample names
-new_col <- paste('X', colnames(count_df)[2:ncol(count_df)], sep=".")
-colnames(count_df)[2:ncol(count_df)] <- new_col
-
+colnames(count_df) <- paste0('id', colnames(count_df))
 tax_df <- dss_example$merged_taxonomy
 
 # aggregate counts
 agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
-count_genus <- agg_gen$count_df %>%
-  column_to_rownames('featureID')
+count_genus <- agg_gen$count_df
 
 # reannotate taxonomy
 tax_genus <- reannotateTax(agg_gen$tax_df)
 
-relab <- ocms_relab(count_genus)
+relab <- relab(count_genus)
 # color specific phyla
-plotSunburst(tax_genus, relab, 
-              c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+plotSunburst(relab = NULL, tax = tax_genus,  
+             palettes = c("Proteobacteria" = "Oranges",
+                          "Bacteroidetes" = "Greens"))
+# color specific phyla taking into account of relative abundance
+plotSunburst(relab = relab, tax = tax_genus,  
+             palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
 
 # highlight specific genera
-plotSunburst(tax_genus, relab, 
-              c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
-              highlight = list("Genus" = c("Bacteroides",'Faecalibacterium')))
+plotSunburst(relab = relab, tax = tax_genus, 
+             palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+             highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
 ```
 
 ## convert_platemap
@@ -413,12 +419,12 @@ This function converts excel plate map to long data frame with map locations. It
 Usage:
 You supply the function with the excel file and specify the sheet name (if applicable) and the cell range that contains your plate map. `convert_platemap` then converts the platemap into a long data frame. The `drop_empty` function allows your to drop unlabeled wells.
 
-```{r, eval=FALSE}
+```{r convert-platemap, eval=FALSE}
 plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
                               map_range = 'A1:H12') 
 ```
 
-```{r, echo = FALSE}
+```{r convert-platemap-demo, echo = FALSE}
 # example output of convert_platemap
 data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
            col = rep(1:12, 8),
@@ -431,25 +437,22 @@ Calculate rate of true positives in positive control standards. Used in OCMS_zym
 
 Usage:
 
-```{r}
+```{r truPosRate}
 # this would be better exemplified with actual std data rather than the example samples
-data(asv_example)
+data("dss_example")
 data(zymobiomics)
 
-# set feature IDs in rownames
-count_df <- asv_example %>%
-  tibble::column_to_rownames('sequence')
-count_df <- count_df[tax_example$sequence, ]
+# set count feature ids as rownames
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
 
-# convert count to relative abundance
-relab <- ocms_relab(count_df)
+# clean up some sample names
+colnames(count_df) <- paste0('id', colnames(count_df))
+tax_df <- dss_example$merged_taxonomy
 
-# aggregate on genus level
-agg_ls <- aggregateCount(relab, tax_example, 'Genus')
-genus_relab <- agg_ls$count_df
-
-# examine subset of samples
-genus_relab <- genus_relab[,1:10]
+# aggregate counts
+agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+genus_relab <- relab(agg_gen$count_df)
 
 true_pos_result <- truePosRate(relab=genus_relab,
                                     annotations=zymobiomics$anno_ncbi_16s,
@@ -463,6 +466,8 @@ p <- ggplot(true_pos_result,
   ylab("TP / (TP + FP)") +
   scale_colour_manual(values=c("grey", "purple")) +
   facet_wrap(~sample, scale="free")
+
+p
 ```
 
 ## filterFeature
@@ -478,7 +483,7 @@ There are three methods by which sequences can be filtered. For all three method
 
 Usage:
 
-```{r}
+```{r filterFeature}
 data(dss_example)
 
 # put featureID as rownames
@@ -491,4 +496,6 @@ count_df <- count_df[tax_df$featureID,]
 filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
 summary(filtered_ls)
 filtered_count <- filtered_ls$filtered
+dim(filtered_count)
+kable(filtered_count)
 ```

@@ -19,7 +19,7 @@
 #' @examples
 #' library(ALDEx2)
 #' data(selex)
-#' subset for efficiency
+#' # subset for efficiency
 #' selex <- selex[1201:1600,]
 #' df <- clr(count_dataframe = selex, condition = NULL, return_as_dataframe = TRUE)
 

@@ -30,7 +30,9 @@ getVE <- function(pc, component="PC1"){
 #' @export
 #' @examples
 #' pca_result <- prcomp(USArrests, scale = TRUE)
-#' state_data <- data.frame(abb = state.abb, area = state.area, center = state.center, region = state.region, division = state.division)
+#' state_data <- data.frame(abb = state.abb, area = state.area,
+#'                          center = state.center, region = state.region,
+#'                          division = state.division)
 #' rownames(state_data) <- state.name
 #' plotPCA(pca_result, state_data, colourby='division', shapeby='region')
 

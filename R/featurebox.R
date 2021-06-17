@@ -9,12 +9,14 @@
 #' @import ggplot2
 #' @import reshape
 #' @import gtools
+#' @import RColorBrewer
 #' @export
 #' @return grob
 #' @examples
 #' abundance_matrix <- data.frame(matrix(rnorm(1000), ncol=20, nrow=50))
 #' colnames(abundance_matrix) <- LETTERS[1:20]
-#' metadata <- data.frame(group = c(rep("group1", 5), rep("group2", 5), rep("group3", 5), rep("group4", 5)))
+#' metadata <- data.frame(group = c(rep("group1", 5), rep("group2", 5),
+#'                                  rep("group3", 5), rep("group4", 5)))
 #' rownames(metadata) <- LETTERS[1:20]
 #' featurebox(abundance_matrix, metadata=metadata, features="10", group_by="group")
 #'
@@ -62,9 +64,9 @@ featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, group_by=
     # add metadata
     mat.m$covariate <- metadata[mat.m$variable, group_by]
 
-    # add enough colours - not expecting each sample to be plotted separately so shouldn't
-    # expect more than this
-    colours <- ocms_palette(n=length(unique(metadata[,group_by])), palette=c("Set2", "Set3", "Set4"))
+    # add enough colours
+    getcolours <- colorRampPalette(brewer.pal(8,"Set2"))
+    colours <- getcolours(length(unique(metadata[,group_by])))
 
     # plotting
     featureplot <- ggplot2::ggplot(mat.m, aes(x=factor(covariate, levels=gtools::mixedsort(unique(mat.m$covariate))), y=value, colour=covariate)) +

@@ -16,6 +16,10 @@
 #'
 #' @export
 #' @import stringr
+#' @import tidyr
+#' @import tibble
+#' @import dplyr
+#'
 #' @returns
 #' returns a list of aggregated count table
 #'     (\code{count_df}) and updated taxonomy table (\code{tax_df})
@@ -33,24 +37,21 @@
 #'
 #'
 #' @examples
-#' data(asv_example)
+#' data(dss_example)
 #' # featureID should be row names
-#' feature_count <- asv_example %>%
-#'     tibble::column_to_rownames('sequence')
-
-#' # taxonomy table must have columns 'Kingdom','Phylum',
-#' # 'Class','Order','Family','Genus','Species'
-#' # and feature IDs in rownames
-#' feature_tax <- cbind(tax_example$sequence,
-#'                      rep("Bacteria", nrow(tax_example)),
-#'                      tax_example[,2:ncol(tax_example)])
-#' colnames(feature_tax)[1:2] <- c('featureID','Kingdom')
+#' feature_count <- dss_example$merged_abundance_id %>%
+#'   tibble::column_to_rownames('featureID')
+#'
+#' # cleanup sample names
+#' colnames(feature_count) <- paste0('id', colnames(feature_count))
+#' feature_tax <- dss_example$merged_taxonomy
 #'
 #' # set row order of count and tax tables to be the same
 #' feature_count <- feature_count[feature_tax$featureID,]
-#'
 #' aggregated_list <- aggregateCount(feature_count, feature_tax,
-#'                                        aggregate_by = "Family")
+#'                                   aggregate_by = "Family")
+#'
+#' summary(aggregated_list)
 
 aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
 
@@ -73,6 +74,15 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     stop("Reads can only be aggregated by 'Kingdom','Phylum','Order','Class','Family','Genus','Species'.")
   }
 
+  # check order of count_df is same as order of tax_df
+  if(!identical(rownames(count_df), tax_df$featureID)) {
+    stop("Order of features in count_df and tax_df must be identical")
+  }
+
+  # samples can't start with number
+  if(any(grepl("^[0-9]", colnames(count_df)))) {
+    stop('Samples cannot start with a number')
+  }
   # aggregate counts -----------------------------------------------------------
 
   sampleID <- colnames(count_df)
@@ -83,11 +93,12 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   # build formula
   yvar <- paste(sampleID, collapse=',')
   f <- sprintf("cbind(%s) ~ featureID", yvar)
-
   # perform aggregation
   aggregated <- stats::aggregate(formula = formula(f),
                                  data = count_df, FUN = sum)
-  rownames(aggregated) <- aggregated[,aggregate_by]
+
+  aggregated <- aggregated %>%
+    column_to_rownames('featureID')
 
   # update taxonomy table-------------------------------------------------------
   tax_column <- colnames(tax_df)
@@ -114,9 +125,10 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   # record how many ASVs aggregated
   tax_agg <- tax_df %>%
     group_by(.data[[aggregate_by]]) %>%
-    summarise(n_collapse = n(),
-              featureID = .data[[aggregate_by]])
+    mutate(n_collapse = n(),
+              featureID = .data[[aggregate_by]]) %>%
+    ungroup()
 
-  return(list('count_df' = aggregated, 'tax_df' = tax_agg))
+  return(list('count_df' = aggregated, 'tax_df' = as.data.frame(tax_agg)))
 
 }
