@@ -1,5 +1,6 @@
 ---
 title: "OCMSutility: An R package of general functions for data manipulation, analysis and visualisation"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
