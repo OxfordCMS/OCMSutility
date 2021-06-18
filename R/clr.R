@@ -1,4 +1,4 @@
-#' ocms_clr
+#' clr
 #'
 #' use aldex2 to perform clr transform.  \code{aldex.clr} performs Monte Carlo sampling from a Dirichlet distribution for each sample. Then clr transformation each value generated. This function uses the median of these Monte-Carlo Dirichlet instances as the clr-transformed value, and returns as a dataframe be default.
 #'
@@ -19,11 +19,11 @@
 #' @examples
 #' library(ALDEx2)
 #' data(selex)
-#' subset for efficiency
+#' # subset for efficiency
 #' selex <- selex[1201:1600,]
-#' df <- ocms_clr(count_dataframe = selex, condition = NULL, return_as_dataframe = TRUE)
+#' df <- clr(count_dataframe = selex, condition = NULL, return_as_dataframe = TRUE)
 
-ocms_clr <- function(count_dataframe, condition = NULL, return_as_dataframe = TRUE) {
+clr <- function(count_dataframe, condition = NULL, return_as_dataframe = TRUE) {
 
   # check input classes
   if(!is.logical(return_as_dataframe)) {

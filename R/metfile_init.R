@@ -3,7 +3,7 @@
 #' metfile_init
 
 #' @param db_file rsqlite database file
-#' @param out_dir output directory
+#' @param out_dir output directory. default NULL (no output written to file)
 #' @param ref_table = name of table in database from which sampleID are generated.
 #'           default NULL. when NULL assumes table is merged_abundance_id
 #'           which is the count table produced from the ocms_16s dada2 pipeline
@@ -11,12 +11,12 @@
 #'           samples are in columns. 'row' indicates samples are in rows and
 #'           sample IDs are the rownames
 #' @param dummy = default NULL. when string supplied, adds a dummy column of NAs with the string as the column name.
-#' @param export = boolean. default TRUE. writes metadata file as tsv file.
+#' @export
 #' @returns dataframe of metadata
 
 
-metfile_init <- function(db_file, out_dir, ref_table=NULL, id_orient = 'col',
-                         dummy = NULL, export=TRUE) {
+metfile_init <- function(db_file, out_dir=NULL, ref_table=NULL, id_orient = 'col',
+                         dummy = NULL) {
 
   # load libraries--------------------------------------------------------------
   require(RSQLite)
@@ -26,9 +26,12 @@ metfile_init <- function(db_file, out_dir, ref_table=NULL, id_orient = 'col',
     stop("db_file not found")
   }
 
-  if(!file.exists(out_dir)) {
-    stop("out_dir not found")
+  if(!is.null(out_dir)) {
+    if(!file.exists(out_dir)) {
+      stop("out_dir not found")
+    }
   }
+
 
   if(!id_orient %in% c('col','row')) {
     stop("id_orient should be either 'col' or 'row'")
@@ -72,7 +75,7 @@ metfile_init <- function(db_file, out_dir, ref_table=NULL, id_orient = 'col',
     met[[dummy]] <- NA
   }
 
-  if(export) {
+  if(!is.null(out_dir)) {
     write.table(met, file.path(out_dir, "metadata.tsv"),
                 sep = "\t", row.names=FALSE, quote=FALSE)
   }

@@ -1,4 +1,4 @@
-#' ocms_rarefy
+#' rarefaction
 #'
 #' produce rarefaction plot.
 #' adapted from MetaSequencingSnake enumeration_report.Rmd
@@ -12,9 +12,9 @@
 #' count_data <-  cbind(matrix(rnorm(100*5,mean=50000,sd=10000), 100, 5),
 #'                      matrix(rnorm(100*5,mean=20000,sd=5000), 100, 5),
 #'                      matrix(rnorm(100*5,mean=5000,sd=1000), 100, 5))
-#' ocms_rarefy(as.data.frame(count_data))
+#' rarefaction(as.data.frame(count_data))
 
-ocms_rarefy <- function(df) {
+rarefaction <- function(df) {
 
   if(!class(df) %in% c('data.frame', 'matrix')) {
     stop('input data must be a dataframe or matrix with samples in columns, ASVs in rows, with respective column and row names')

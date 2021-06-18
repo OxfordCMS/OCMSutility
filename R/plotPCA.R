@@ -14,7 +14,7 @@ getVE <- function(pc, component="PC1"){
 }
 
 
-#' ocms_plotPCA
+#' plotPCA
 #'
 #' plot PCA
 #'
@@ -30,11 +30,13 @@ getVE <- function(pc, component="PC1"){
 #' @export
 #' @examples
 #' pca_result <- prcomp(USArrests, scale = TRUE)
-#' state_data <- data.frame(abb = state.abb, area = state.area, center = state.center, region = state.region, division = state.division)
+#' state_data <- data.frame(abb = state.abb, area = state.area,
+#'                          center = state.center, region = state.region,
+#'                          division = state.division)
 #' rownames(state_data) <- state.name
-#' ocms_plotPCA(pca_result, state_data, colourby='division', shapeby='region')
+#' plotPCA(pca_result, state_data, colourby='division', shapeby='region')
 
-ocms_plotPCA <- function(
+plotPCA <- function(
   pc, metadata, colourby="none", shapeby="none", group="none",
   continuous=FALSE,  pcs=c("PC1", "PC2")) {
 
