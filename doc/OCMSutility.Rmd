@@ -1,0 +1,520 @@
+---
+title: "OCMSutility: An R package of general functions for data manipulation, analysis and visualisation"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    toc_collapsed: true
+    toc_depth: 2
+editor_options: 
+  chunk_output_type: console
+vignette: >
+  %\VignetteEncoding{UTF-8}
+  %\VignetteIndexEntry{OCMSutility: An R package of general functions for data manipulation, analysis and visualisation}
+  %\VignetteEngine{knitr::rmarkdown}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  fig.width = 6, fig.height = 4,
+  echo = TRUE,
+  message = TRUE,
+  collapse = TRUE,
+  result = 'asis',
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(knitr)
+library(OCMSutility)
+library(ggplot2)
+library(dplyr)
+library(tibble)
+```
+
+# Overview
+
+This package was created by members of the Oxford Centre for Microbiome Studies (OCMS). It is a collection of functions that we have found useful and hope that they are useful to others. The functions span data manipulation, statistical analysis and data visualisation, predominantly for microbiome data. Functions in this package and use cases are documented below.
+
+## example data
+
+An example 16S dataset is included in the package. You can load this with `data(asv_example)`
+
+```{r}
+data(asv_example)
+
+# 49 ASVs and 296 samples
+dim(asv_example)
+
+# 49 ASVs, with taxonomic levels in columns 
+dim(tax_example)
+colnames(tax_example)
+```
+
+## clr
+
+clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
+
+Usage:
+
+```{r clr}
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+
+# returns data frame with transformed abundance estamtes with imputed zeroes
+class(clr_transformed)
+dim(clr_transformed)
+```
+
+This will return a data frame with transformed abundance estimates (most common use case). It is also possible to return the ALDEx2 object instead.
+
+```{r clr_object}
+clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE)
+
+# returns ALDEx2 object
+class(clr_transformed)
+```
+
+## relab
+
+This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
+
+Usage:
+
+```{r relab}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+rel_abundance <- relab(asv_counts)
+```
+
+## getPalette
+
+This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
+
+Usage:
+
+```{r getPalette}
+getPalette(n=10, palette="Set3", preview=TRUE)
+```
+
+## featurebox
+
+This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
+
+Usage:
+
+```{r featurebox}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+# for plotting purposes we would transform the data e.g. clr
+asv_clr <- clr(asv_counts)
+
+# generate some random metadata for the 295 samples - 5 groups for example
+metadata <- data.frame(Group = c(rep("Group 1", 59),
+                                 rep("Group 2", 59),
+                                 rep("Group 3", 59),
+                                 rep("Group 4", 59),
+                                 rep("Group 5", 59)),
+                                 row.names=colnames(asv_clr))
+
+# produce boxplot of random 4 features as an example grouping by Group variable
+features <- sample(rownames(asv_clr), size=4)
+featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group")
+```
+
+The default palettes used are "Set2", "Set3" and "Set4", and the result will depend on the number of colours you need. You can change the colours if you like by adding manual scale:
+
+```{r featurebox_colour}
+featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
+  scale_colour_manual(values=getPalette(n=5, palette="Set1"))
+
+```
+
+## dissimilarity
+
+The purpose of this function is to determine dissimilarity between samples using Bray-Curtis dissimilarity. This is typically done if you want to compare dissimilarity between groups or compare within-individual dissimilarity with between-individual similarity where you have multiple samples per individual. The function takes a relative abundance matrix and relevant metadata as input and outputs a data frame with Bray-Curtis dissimilarity measure that can be plotted. Below is an example where this may be of use.
+
+Usage:
+
+```{r dissimilarity}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+asv_relab <- relab(asv_counts)
+
+# generate some random metadata for the 295 samples - 5 time points with each individual
+# having a data point at each time point
+metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
+                                     rep("Time 2", 59),
+                                     rep("Time 3", 59),
+                                     rep("Time 4", 59),
+                                     rep("Time 5", 59)),
+                       Individual = as.character(c(rep(c(1:59), 5))),
+                       row.names=colnames(asv_relab),
+                       stringsAsFactors = FALSE)
+
+# remove samples with NA
+asv_relab <- asv_relab[,!(is.na(colSums(asv_relab)))]
+
+# make sure they are the same
+metadata <- metadata[colnames(asv_relab),]
+
+# ask the question - Are individuals more similar to each other than samples are within timepoints?
+
+# within-individual dissimilarity
+within_diss <- dissimilarity(asv_relab, metadata=metadata, individual_variable = "Individual", method="within")
+
+knitr::kable(head(within_diss))
+
+# between-individual dissimilarity at timpoint 1
+metadata_t1 <- metadata[metadata$Timepoint == "Time 1",]
+asv_relab_t1 <- asv_relab[,rownames(metadata_t1)]
+between_diss <- dissimilarity(asv_relab_t1, metadata=metadata_t1, method="between")
+
+knitr::kable(head(between_diss))
+
+# we can then combine and plot them
+diss <- bind_rows(within_diss, between_diss)
+ggplot(diss, aes(x=method, y=dissimilarity)) +
+  geom_violin() +
+  xlab("Dissimilarity type") +
+  ylab("Bray-Curtis dissimilarity") +
+  theme_bw()
+
+```
+
+## plotPCA
+
+This function helps plot PCA score plots. It returns a list of the original data, the PCA result and the ggplot. All dataframes are returned in such a way that that ggplot produced can be modified with additional geom layers.
+
+Usage:
+```{r plotPCA}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+
+# generate some random metadata for the 295 samples - 5 time points with each individual
+# having a data point at each time point
+metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
+                                     rep("Time 2", 59),
+                                     rep("Time 3", 59),
+                                     rep("Time 4", 59),
+                                     rep("Time 5", 59)),
+                       Individual = as.character(c(rep(c(1:59), 5))),
+                       row.names=colnames(asv_transformed),
+                       stringsAsFactors = FALSE)
+metadata$ID <- rownames(metadata)
+
+pca_result <- prcomp(t(asv_transformed), scale = TRUE)
+plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
+
+plot_data$p
+
+# modify default plot
+add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
+col_val <- getPalette(5, "Set3")
+p <- plot_data$p +
+  scale_colour_manual(values = col_val) + # pick own colours
+  scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
+  geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
+p
+```
+
+## rarefaction
+
+Useful for calculating and plotting rarefaction curve to check if read depth captures as much diversity as possible.
+
+```{r rarefaction}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+rarefaction <- rarefaction(asv_counts)
+
+# default plot
+p <- rarefaction$rare_p
+p
+
+# modify default plot -- remove geom_label_repel layer
+p$layers[[2]] <- NULL
+p
+```
+
+## reannotateTax
+
+Reannotates taxonomy table so that "unclassfied" assignments include higher level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level). The implications of this reannotation is illustrated using the following example:
+
+```{r reannotateTax-example1}
+ex1 <- data.frame(ASV = paste0("ASV", 1:5),
+                  Order = "order1",
+                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
+                  Genus = c("unclassified", 'genus1','unclassified','genus2',
+                            "unclassified"),
+                  read_count = 10)
+
+knitr::kable(ex1)
+```
+Analysing the example above at the genus level would result in 3 groups: Genus1 (count 10), Genus2 (10), Unclassified (30)
+
+If you modify your classification at the genus level to include information from higher taxonomic orders, you would get:
+
+```{r reannotateTax-example2}
+ex2 <- ex1[,c('ASV','Order')]
+ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
+ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
+               'order1_unclassified')
+ex2$read_count <- 10
+
+knitr::kable(ex2)
+```
+
+Analysing at the genus level now would result in 5 groups: Genus1 (10), Genus2 (10), Family1_Unclassified (10), Family2_Unclassified (10), Order1_Unclassified (10).
+
+Usage:
+
+```{r reannotateTax}
+# showing the dummy example
+old_tax <- ex1[,2:4]
+old_tax$Kingdom <- 'kingdom1'
+old_tax$Phylum <- 'phylum1'
+old_tax$Class <- 'class1'
+old_tax$Species <- 'unclassified'
+
+old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
+old_tax[old_tax == 'unclassified'] <- NA
+knitr::kable(old_tax)
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(new_tax)
+
+# try with example data
+data(asv_example)
+
+# adding Kingdom column; removing sequence column because don't need asv IDs in this example
+old_tax <- tax_example
+colnames(old_tax)[1] <- 'Kingdom'
+old_tax$Kingdom <- 'Bacteria'
+knitr::kable(head(old_tax))
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(head(new_tax))
+```
+
+## aggregateCount
+
+Aggregates count on a given taxonomy level, providing an aggregated count table and the corresponding taxonomy table. Both data frames are returned in a list.
+
+Notice that after aggregation, featureID is set to the taxonomy by which aggregation was done, and all taxonomy levels below the aggregation level are set to NA. The number of ASVs that were aggregated at each taxon is recorded in the column `n_collapse`
+
+Usage:
+
+```{r aggregateCount}
+data(dss_example)
+# featureID should be row names
+feature_count <- dss_example$merged_abundance_id %>%
+   tibble::column_to_rownames('featureID')
+
+# cleanup sample names
+colnames(feature_count) <- paste0('id', colnames(feature_count))
+# taxonomy table must have columns 'Kingdom','Phylum',
+# 'Class','Order','Family','Genus','Species'
+# and feature IDs in rownames
+feature_tax <- dss_example$merged_taxonomy
+
+# set row order of count and tax tables to be the same
+feature_count <- feature_count[feature_tax$featureID,]
+aggregated_list <- aggregateCount(feature_count, feature_tax,
+                                      aggregate_by = "Family")
+
+summary(aggregated_list)
+knitr::kable(head(aggregated_list[['count_df']][,1:5]))
+knitr::kable(head(aggregated_list[['tax_df']]))
+```
+
+## plotPCoA
+
+ This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
+
+Usage:
+
+```{r plotPCoA}
+data(dss_example)
+met_df <- dss_example$metadata
+
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+count_df <- count_df[,met_df$sampleID]
+relab <- relab(count_df)
+
+iter_var <- c('Genotype','Phenotype')
+for(i in iter_var) {
+  plotPCoA(relab, met_df, colour = i)
+}
+```
+
+## plotSunburst
+Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level. 
+
+You specify a palette for each Phylum, where values are the colour palette to use and name is the corresponding phylum (e.g.`c('Bacteroidetes' = 'Oranges', 'Firmicutes' = 'Greens')`). Palettes should be from [rColorBrewer](https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html). If the number of palettes specified doesn't include all phyla in the tax table, only the specified ones will be coloured and the rest will be in grey. If palettes is set to NULL, the default colours selected by `sunbrustR` will be used.
+
+Additionally the `highlight` parameter can be used to highlight a specific taxon at any taxonomic level and the ones that are not specified will be coloured as grey. e.g. `list("Family"=c("Enterococcaceae","Ruminacoccaceae")`. This is applied after palettes is used to colour by phylum if palettes argument is specified so you can use the `palettes` argument to choose your colour and all taxa not specified by `hightlight` are set to grey.
+
+Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotateTax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
+
+```{r plotSunburst}
+data("dss_example")
+# set count feature ids as rownames
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+
+# clean up some sample names
+colnames(count_df) <- paste0('id', colnames(count_df))
+tax_df <- dss_example$merged_taxonomy
+
+# aggregate counts
+agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+count_genus <- agg_gen$count_df
+
+# reannotate taxonomy
+tax_genus <- reannotateTax(agg_gen$tax_df)
+
+relab <- relab(count_genus)
+# color specific phyla
+plotSunburst(relab = NULL, tax = tax_genus,  
+             palettes = c("Proteobacteria" = "Oranges",
+                          "Bacteroidetes" = "Greens"))
+# color specific phyla taking into account of relative abundance
+plotSunburst(relab = relab, tax = tax_genus,  
+             palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+
+# highlight specific genera
+plotSunburst(relab = relab, tax = tax_genus, 
+             palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+             highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+```
+
+## convert_platemap
+
+This function converts excel plate map to long data frame with map locations. It uses [readxl](https://readxl.tidyverse.org) to read in excel file.
+
+Usage:
+You supply the function with the excel file and specify the sheet name (if applicable) and the cell range that contains your plate map. `convert_platemap` then converts the platemap into a long data frame. The `drop_empty` function allows your to drop unlabeled wells.
+
+```{r convert-platemap, eval=FALSE}
+plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
+                              map_range = 'A1:H12') 
+```
+
+```{r convert-platemap-demo, echo = FALSE}
+# example output of convert_platemap
+data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
+           col = rep(1:12, 8),
+           row = rep(LETTERS[1:8], each = 12),
+           sample_name = paste0('sample_name', 1:96)) 
+```
+
+## truePosRate
+Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
+
+Usage:
+
+```{r truPosRate}
+# this would be better exemplified with actual std data rather than the example samples
+data("dss_example")
+data(zymobiomics)
+
+# set count feature ids as rownames
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+
+# clean up some sample names
+colnames(count_df) <- paste0('id', colnames(count_df))
+tax_df <- dss_example$merged_taxonomy
+
+# aggregate counts
+agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+genus_relab <- relab(agg_gen$count_df)
+
+true_pos_result <- truePosRate(relab=genus_relab,
+                                    annotations=zymobiomics$anno_ncbi_16s,
+                                    level='genus', cutoff=0.01)
+
+# plot true pos rate
+p <- ggplot(true_pos_result,
+            aes(x=rank, y=true.pos.rate, colour=label, group=sample)) +
+  geom_point() +
+  theme_bw() +
+  ylab("TP / (TP + FP)") +
+  scale_colour_manual(values=c("grey", "purple")) +
+  facet_wrap(~sample, scale="free")
+
+p
+```
+
+## filterFeature
+
+Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
+
+There are three methods by which sequences can be filtered. For all three methods, the cut-off threshold is taken into consideration with the prevalence of sequences across the samples*.
+1) 'abs_count' refers to read count.Sets the filter threshold at a specific read count, such that a given sequence must be observed greater than or equal to the cut-off count.
+2) 'percent_sample' refers to percent of sample total. Looks at read counts as abundances relative to the sample total. This is useful for when you want to keep features that make up at least x% in your samples.
+3) 'percent_dataset' refers to percent of dataset total. Looks at read counts as abundances relative to the dataset total. This is useful for when you want to keep features that make up at least x% in your dataset.
+
+*Sequence prevalence is calculated as the number of samples in which sequence abundance is greater than or equal to the cut-off threshold.
+
+Usage:
+
+```{r filterFeature}
+data(dss_example)
+
+# put featureID as rownames
+tax_df <- dss_example$merged_taxonomy
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+# set features in count tax to be in same order
+count_df <- count_df[tax_df$featureID,]
+
+filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
+summary(filtered_ls)
+filtered_count <- filtered_ls$filtered
+dim(filtered_count)
+kable(head(filtered_count[,1:4]))
+```
+
+## metfile_init
+
+This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
+
+Usage:
+This function takes the database file returned from [`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+
+`db_file` is the rsqlite database file
+`out_dir` output directory. default `NULL` so no output file written.
+`ref_table` name of table in the database from which `sampleID` is generated. defaults NULL which uses `merged_abundance_id` (the count table) to get sampleID
+`id_orient` indicates orientation of sampleID in `ref_table` in rows or in columns. options are `row` or `col`
+`dummy` allows you to make a dummy column of NAs
+
+```{r metfile_init, eval=FALSE}
+db_file <- "/path/to/db/file"
+met <- metfile_init(db_file, dummy = "Group")
+
+```
