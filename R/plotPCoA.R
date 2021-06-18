@@ -11,6 +11,9 @@
 #' @param shape string. default NULL. metadata variable to set shape of points by
 #' @param CI numeric. Default 0.95. Confidence interval used to draw ellipse
 #'           around colour variable. set to NULL to omit drawing ellipse
+#' @import vegan
+#' @import dplyr
+#' @import ggplot2
 #' @export
 #' @examples
 #' data(dss_example)
@@ -28,10 +31,6 @@
 
 
 plotPCoA <- function(relab, met, colour=NULL, shape=NULL, CI=0.95) {
-
-  require(vegan)
-  require(dplyr)
-  require(ggplot2)
 
   # check inputs----------------------------------------------------------------
   # check data is in relative abundance format
