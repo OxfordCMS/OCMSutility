@@ -127,7 +127,8 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     group_by(.data[[aggregate_by]]) %>%
     mutate(n_collapse = n(),
               featureID = .data[[aggregate_by]]) %>%
-    ungroup()
+    ungroup() %>%
+    distinct()
 
   return(list('count_df' = aggregated, 'tax_df' = as.data.frame(tax_agg)))
 

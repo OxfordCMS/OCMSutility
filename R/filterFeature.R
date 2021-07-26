@@ -150,7 +150,7 @@ filterFeature <- function(count_df, tax_df,
 
   if(length(empty_feat_ind) > 0) {
 
-    filtered_count <- filtered_count[,featID[!empty_which_ind]]
+    filtered_count <- filtered_count[,featID[!empty_feat_ind]]
     msg <- sprintf("%s asvs contained 0 reads in all samples after ASV filtering. The following asvs have been removed: %s", length(empty_feat_ind), paste(featID[empty_feat_ind], collapse="\n"))
 
     message(msg)

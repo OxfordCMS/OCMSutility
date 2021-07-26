@@ -99,6 +99,8 @@ truePosRate <- function(relab, annotations, level="species", cutoff=0.01){
     }
     sample <- rep(colnames(relab)[i], length(tps))
     res <- data.frame(rank = seq(1:length(tps)),
+                      taxon = ab$taxon,
+                      abundance = ab$abundance,
                       true.pos.rate = tps,
                       sample = sample,
                       label = labels
