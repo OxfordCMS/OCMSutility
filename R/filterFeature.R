@@ -127,7 +127,7 @@ filterFeature <- function(count_df, tax_df,
     # cut-off based on percent of dataset total
     percent_total = relab_by_data[rowSums(relab_by_data >= asv_cutoff) >= prev_data,]
   )
-
+  print(dim(filtered_count))
   if(is.null(filtered_count)) {
     stop("No features remain after filtering. Please select different filter cutoff.")
   }
@@ -136,7 +136,7 @@ filterFeature <- function(count_df, tax_df,
   empty_sample_ind <- which(colSums(filtered_count)==0)
 
   if(length(empty_sample_ind) > 0) {
-    filtered_count <- filtered_count[sampleID[!empty_sample_ind],]
+    filtered_count <- filtered_count[sampleID[,-empty_sample_ind]]
 
     msg <- sprintf("%s samples contained 0 reads after ASV filtering. The following samples have been removed: %s", length(empty_sample_ind), paste(sampleID[empty_sample_ind], collapse="\n"))
 
@@ -149,8 +149,7 @@ filterFeature <- function(count_df, tax_df,
   empty_feat_ind <- which(rowSums(filtered_count)==0)
 
   if(length(empty_feat_ind) > 0) {
-
-    filtered_count <- filtered_count[,featID[!empty_feat_ind]]
+    filtered_count <- filtered_count[featID[-empty_feat_ind],]
     msg <- sprintf("%s asvs contained 0 reads in all samples after ASV filtering. The following asvs have been removed: %s", length(empty_feat_ind), paste(featID[empty_feat_ind], collapse="\n"))
 
     message(msg)
