@@ -121,11 +121,11 @@ filterFeature <- function(count_df, tax_df,
   filtered_count <- switch(
     filter_method,
     # count cut-off
-    abs_count = count_df[rowSums(count_df >= asv_cutoff) >= prev_data,],
+    abs_count = count_df[rowSums(count_df >= asv_cutoff) >= prev_cutoff,],
     # cut-off based on percent of sample total
-    percent_sample = relab_by_sample[rowSums(relab_by_sample >= asv_cutoff) >= prev_data,],
+    percent_sample = relab_by_sample[rowSums(relab_by_sample >= asv_cutoff) >= prev_cutoff,],
     # cut-off based on percent of dataset total
-    percent_total = relab_by_data[rowSums(relab_by_data >= asv_cutoff) >= prev_data,]
+    percent_total = relab_by_data[rowSums(relab_by_data >= asv_cutoff) >= prev_cutoff,]
   )
   print(dim(filtered_count))
   if(is.null(filtered_count)) {
@@ -136,7 +136,7 @@ filterFeature <- function(count_df, tax_df,
   empty_sample_ind <- which(colSums(filtered_count)==0)
 
   if(length(empty_sample_ind) > 0) {
-    filtered_count <- filtered_count[sampleID[,-empty_sample_ind]]
+    filtered_count <- filtered_count[,sampleID[-empty_sample_ind]]
 
     msg <- sprintf("%s samples contained 0 reads after ASV filtering. The following samples have been removed: %s", length(empty_sample_ind), paste(sampleID[empty_sample_ind], collapse="\n"))
 
@@ -195,7 +195,8 @@ filterFeature <- function(count_df, tax_df,
   # plot aggregated view--------------------------------------------------------
   pdata_agg <- pdata %>%
     group_by(featureID) %>%
-    summarise(y = mean(value))
+    mutate(y = mean(value)) %>%
+    distinct(prevalence, y, colour)
 
   p_agg <- ggplot(pdata_agg, aes(x = prevalence, y = y, colour = colour)) +
     geom_point(alpha = 0.5, size = 2) +
