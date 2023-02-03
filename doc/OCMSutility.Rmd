@@ -1,5 +1,6 @@
 ---
 title: "OCMSutility: An R package of general functions for data manipulation, analysis and visualisation"
+date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette:
     toc: true
@@ -51,6 +52,222 @@ dim(tax_example)
 colnames(tax_example)
 ```
 
+
+## filterFeature
+
+Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
+
+There are three methods by which sequences can be filtered. For all three methods, the cut-off threshold is taken into consideration with the prevalence of sequences across the samples*.
+1) 'abs_count' refers to read count.Sets the filter threshold at a specific read count, such that a given sequence must be observed greater than or equal to the cut-off count.
+2) 'percent_sample' refers to percent of sample total. Looks at read counts as abundances relative to the sample total. This is useful for when you want to keep features that make up at least x% in your samples.
+3) 'percent_dataset' refers to percent of dataset total. Looks at read counts as abundances relative to the dataset total. This is useful for when you want to keep features that make up at least x% in your dataset.
+
+*Sequence prevalence is calculated as the number of samples in which sequence abundance is greater than or equal to the cut-off threshold.
+
+Usage:
+
+```{r filterFeature}
+data(dss_example)
+
+# put featureID as rownames
+tax_df <- dss_example$merged_taxonomy
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+# set features in count tax to be in same order
+count_df <- count_df[tax_df$featureID,]
+
+filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
+summary(filtered_ls)
+filtered_count <- filtered_ls$filtered
+dim(filtered_count)
+kable(head(filtered_count[,1:4]))
+```
+
+## relab
+
+This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
+
+Usage:
+
+```{r relab}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+rel_abundance <- relab(asv_counts)
+```
+
+
+## aggregateCount
+
+Aggregates count on a given taxonomy level, providing an aggregated count table and the corresponding taxonomy table. Both data frames are returned in a list.
+
+Notice that after aggregation, featureID is set to the taxonomy by which aggregation was done, and all taxonomy levels below the aggregation level are set to NA. The number of ASVs that were aggregated at each taxon is recorded in the column `n_collapse`
+
+Usage:
+
+```{r aggregateCount}
+data(dss_example)
+# featureID should be row names
+feature_count <- dss_example$merged_abundance_id %>%
+   tibble::column_to_rownames('featureID')
+
+# cleanup sample names
+colnames(feature_count) <- paste0('id', colnames(feature_count))
+# taxonomy table must have columns 'Kingdom','Phylum',
+# 'Class','Order','Family','Genus','Species'
+# and feature IDs in rownames
+feature_tax <- dss_example$merged_taxonomy
+
+# set row order of count and tax tables to be the same
+feature_count <- feature_count[feature_tax$featureID,]
+aggregated_list <- aggregateCount(feature_count, feature_tax,
+                                      aggregate_by = "Family")
+
+summary(aggregated_list)
+knitr::kable(head(aggregated_list[['count_df']][,1:5]))
+knitr::kable(head(aggregated_list[['tax_df']]))
+```
+
+## reannotateTax
+
+Reannotates taxonomy table so that "unclassfied" assignments include higher level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level). The implications of this reannotation is illustrated using the following example:
+
+```{r reannotateTax-example1}
+ex1 <- data.frame(ASV = paste0("ASV", 1:5),
+                  Order = "order1",
+                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
+                  Genus = c("unclassified", 'genus1','unclassified','genus2',
+                            "unclassified"),
+                  read_count = 10)
+
+knitr::kable(ex1)
+```
+Analysing the example above at the genus level would result in 3 groups: Genus1 (count 10), Genus2 (10), Unclassified (30)
+
+If you modify your classification at the genus level to include information from higher taxonomic orders, you would get:
+
+```{r reannotateTax-example2}
+ex2 <- ex1[,c('ASV','Order')]
+ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
+ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
+               'order1_unclassified')
+ex2$read_count <- 10
+
+knitr::kable(ex2)
+```
+
+Analysing at the genus level now would result in 5 groups: Genus1 (10), Genus2 (10), Family1_Unclassified (10), Family2_Unclassified (10), Order1_Unclassified (10).
+
+Usage:
+
+```{r reannotateTax}
+# showing the dummy example
+old_tax <- ex1[,2:4]
+old_tax$Kingdom <- 'kingdom1'
+old_tax$Phylum <- 'phylum1'
+old_tax$Class <- 'class1'
+old_tax$Species <- 'unclassified'
+
+old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
+old_tax[old_tax == 'unclassified'] <- NA
+knitr::kable(old_tax)
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(new_tax)
+
+# try with example data
+data(asv_example)
+
+# adding Kingdom column; removing sequence column because don't need asv IDs in this example
+old_tax <- tax_example
+colnames(old_tax)[1] <- 'Kingdom'
+old_tax$Kingdom <- 'Bacteria'
+knitr::kable(head(old_tax))
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(head(new_tax))
+```
+
+## plotPCoA
+
+ This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
+
+Usage:
+
+```{r plotPCoA}
+data(dss_example)
+met_df <- dss_example$metadata
+
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+count_df <- count_df[,met_df$sampleID]
+relab <- relab(count_df)
+
+iter_var <- c('Genotype','Phenotype')
+plist <- list()
+for(i in iter_var) {
+  plist[[i]] <- plotPCoA(relab, met_df, colour = i)
+}
+
+plist[[1]]
+plist[[2]]
+```
+
+## plotPCA
+
+This function helps plot PCA score plots. It returns a list of the original data, the PCA result and the ggplot. All dataframes are returned in such a way that that ggplot produced can be modified with additional geom layers.
+
+Usage:
+```{r plotPCA}
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+
+# generate some random metadata for the 295 samples - 5 time points with each individual
+# having a data point at each time point
+metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
+                                     rep("Time 2", 59),
+                                     rep("Time 3", 59),
+                                     rep("Time 4", 59),
+                                     rep("Time 5", 59)),
+                       Individual = as.character(c(rep(c(1:59), 5))),
+                       row.names=colnames(asv_transformed),
+                       stringsAsFactors = FALSE)
+metadata$ID <- rownames(metadata)
+
+pca_result <- prcomp(t(asv_transformed), scale = TRUE)
+plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
+
+plot_data$p
+
+# modify default plot
+add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
+col_val <- getPalette(5, "Set3")
+p <- plot_data$p +
+  scale_colour_manual(values = col_val) + # pick own colours
+  scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
+  geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
+p
+```
+
+## getPalette
+
+This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
+
+Usage:
+
+```{r getPalette}
+getPalette(n=10, palette="Set3", preview=TRUE)
+```
+
+
 ## clr
 
 clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
@@ -75,32 +292,6 @@ clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE
 
 # returns ALDEx2 object
 class(clr_transformed)
-```
-
-## relab
-
-This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
-
-Usage:
-
-```{r relab}
-# get example data
-data(asv_example)
-
-# rownames have to be features
-asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
-
-rel_abundance <- relab(asv_counts)
-```
-
-## getPalette
-
-This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
-
-Usage:
-
-```{r getPalette}
-getPalette(n=10, palette="Set3", preview=TRUE)
 ```
 
 ## featurebox
@@ -196,47 +387,6 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 
 ```
 
-## plotPCA
-
-This function helps plot PCA score plots. It returns a list of the original data, the PCA result and the ggplot. All dataframes are returned in such a way that that ggplot produced can be modified with additional geom layers.
-
-Usage:
-```{r plotPCA}
-# get example data
-data(asv_example)
-
-# rownames have to be features
-asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
-
-asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
-
-# generate some random metadata for the 295 samples - 5 time points with each individual
-# having a data point at each time point
-metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
-                                     rep("Time 2", 59),
-                                     rep("Time 3", 59),
-                                     rep("Time 4", 59),
-                                     rep("Time 5", 59)),
-                       Individual = as.character(c(rep(c(1:59), 5))),
-                       row.names=colnames(asv_transformed),
-                       stringsAsFactors = FALSE)
-metadata$ID <- rownames(metadata)
-
-pca_result <- prcomp(t(asv_transformed), scale = TRUE)
-plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
-
-plot_data$p
-
-# modify default plot
-add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
-col_val <- getPalette(5, "Set3")
-p <- plot_data$p +
-  scale_colour_manual(values = col_val) + # pick own colours
-  scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
-  geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
-p
-```
-
 ## rarefaction
 
 Useful for calculating and plotting rarefaction curve to check if read depth captures as much diversity as possible.
@@ -259,117 +409,6 @@ p$layers[[2]] <- NULL
 p
 ```
 
-## reannotateTax
-
-Reannotates taxonomy table so that "unclassfied" assignments include higher level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level). The implications of this reannotation is illustrated using the following example:
-
-```{r reannotateTax-example1}
-ex1 <- data.frame(ASV = paste0("ASV", 1:5),
-                  Order = "order1",
-                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
-                  Genus = c("unclassified", 'genus1','unclassified','genus2',
-                            "unclassified"),
-                  read_count = 10)
-
-knitr::kable(ex1)
-```
-Analysing the example above at the genus level would result in 3 groups: Genus1 (count 10), Genus2 (10), Unclassified (30)
-
-If you modify your classification at the genus level to include information from higher taxonomic orders, you would get:
-
-```{r reannotateTax-example2}
-ex2 <- ex1[,c('ASV','Order')]
-ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
-ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
-               'order1_unclassified')
-ex2$read_count <- 10
-
-knitr::kable(ex2)
-```
-
-Analysing at the genus level now would result in 5 groups: Genus1 (10), Genus2 (10), Family1_Unclassified (10), Family2_Unclassified (10), Order1_Unclassified (10).
-
-Usage:
-
-```{r reannotateTax}
-# showing the dummy example
-old_tax <- ex1[,2:4]
-old_tax$Kingdom <- 'kingdom1'
-old_tax$Phylum <- 'phylum1'
-old_tax$Class <- 'class1'
-old_tax$Species <- 'unclassified'
-
-old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
-old_tax[old_tax == 'unclassified'] <- NA
-knitr::kable(old_tax)
-
-new_tax <- reannotateTax(old_tax)
-knitr::kable(new_tax)
-
-# try with example data
-data(asv_example)
-
-# adding Kingdom column; removing sequence column because don't need asv IDs in this example
-old_tax <- tax_example
-colnames(old_tax)[1] <- 'Kingdom'
-old_tax$Kingdom <- 'Bacteria'
-knitr::kable(head(old_tax))
-
-new_tax <- reannotateTax(old_tax)
-knitr::kable(head(new_tax))
-```
-
-## aggregateCount
-
-Aggregates count on a given taxonomy level, providing an aggregated count table and the corresponding taxonomy table. Both data frames are returned in a list.
-
-Notice that after aggregation, featureID is set to the taxonomy by which aggregation was done, and all taxonomy levels below the aggregation level are set to NA. The number of ASVs that were aggregated at each taxon is recorded in the column `n_collapse`
-
-Usage:
-
-```{r aggregateCount}
-data(dss_example)
-# featureID should be row names
-feature_count <- dss_example$merged_abundance_id %>%
-   tibble::column_to_rownames('featureID')
-
-# cleanup sample names
-colnames(feature_count) <- paste0('id', colnames(feature_count))
-# taxonomy table must have columns 'Kingdom','Phylum',
-# 'Class','Order','Family','Genus','Species'
-# and feature IDs in rownames
-feature_tax <- dss_example$merged_taxonomy
-
-# set row order of count and tax tables to be the same
-feature_count <- feature_count[feature_tax$featureID,]
-aggregated_list <- aggregateCount(feature_count, feature_tax,
-                                      aggregate_by = "Family")
-
-summary(aggregated_list)
-knitr::kable(head(aggregated_list[['count_df']][,1:5]))
-knitr::kable(head(aggregated_list[['tax_df']]))
-```
-
-## plotPCoA
-
- This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
-
-Usage:
-
-```{r plotPCoA}
-data(dss_example)
-met_df <- dss_example$metadata
-
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-count_df <- count_df[,met_df$sampleID]
-relab <- relab(count_df)
-
-iter_var <- c('Genotype','Phenotype')
-for(i in iter_var) {
-  plotPCoA(relab, met_df, colour = i)
-}
-```
 
 ## plotSunburst
 Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level. 
@@ -470,36 +509,6 @@ p <- ggplot(true_pos_result,
 p
 ```
 
-## filterFeature
-
-Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
-
-There are three methods by which sequences can be filtered. For all three methods, the cut-off threshold is taken into consideration with the prevalence of sequences across the samples*.
-1) 'abs_count' refers to read count.Sets the filter threshold at a specific read count, such that a given sequence must be observed greater than or equal to the cut-off count.
-2) 'percent_sample' refers to percent of sample total. Looks at read counts as abundances relative to the sample total. This is useful for when you want to keep features that make up at least x% in your samples.
-3) 'percent_dataset' refers to percent of dataset total. Looks at read counts as abundances relative to the dataset total. This is useful for when you want to keep features that make up at least x% in your dataset.
-
-*Sequence prevalence is calculated as the number of samples in which sequence abundance is greater than or equal to the cut-off threshold.
-
-Usage:
-
-```{r filterFeature}
-data(dss_example)
-
-# put featureID as rownames
-tax_df <- dss_example$merged_taxonomy
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-# set features in count tax to be in same order
-count_df <- count_df[tax_df$featureID,]
-
-filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
-summary(filtered_ls)
-filtered_count <- filtered_ls$filtered
-dim(filtered_count)
-kable(head(filtered_count[,1:4]))
-```
-
 ## metfile_init
 
 This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
@@ -517,4 +526,31 @@ This function takes the database file returned from [`ocms_16s dada2_pipeline bu
 db_file <- "/path/to/db/file"
 met <- metfile_init(db_file, dummy = "Group")
 
+```
+
+## metadata_sparsity
+
+This function checks your metadata for the number of missing values in each sample. This function can be used to check how sparse the metadata is. In human studies, it is easy to have sparse metadata which inadvertently gives subsets of samples simply based on the amount of available information. This function tallies the number of NA in each sample and returns subsets of samples based on the number of missing values they have.
+
+Usage:
+
+Takes in a dataframe where samples are in rows and metadata variables are in columns. The function returns a list where the first item in the list `na_tally` shows the number of samples with a given number of missing values.
+
+```{r metadata-sparsity}
+set.seed(1)
+# setting up example metadata dataframe
+ metadata_example <- data.frame(
+   sampleID = LETTERS[1:10],
+   group = c(rep(1:2, each = 3), rep(3, 4)),
+   age = c(rnorm(6, 30, 5), rep(NA, 4)),
+   sex = c(rep('F', 3), rep(NA, 4), rep('M', 3)),
+   ethnicity = sample(c(NA,1,2,3), 10, replace = TRUE),
+   medication = sample(c(NA,1,2), 10, replace=TRUE))
+
+met_sparse <- metadata_sparsity(metadata_example)
+
+summary(met_sparse)
+met_sparse$na_tally
+met_sparse[[3]]
+met_sparse[[4]]
 ```
