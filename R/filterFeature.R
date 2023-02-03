@@ -94,7 +94,7 @@ filterFeature <- function(count_df, tax_df,
       stop("asv_cutoff must be an integer when filter_method = 'abs_count'")
     }
     # asv_cutoff must not be greater than the max number of reads when filter_method = 'abs_count'
-    if(asv_cutoff > max(count_df[,2:ncol(count_df)])) {
+    if(asv_cutoff > max(count_df)) {
       stop("asv_cutoff cannot be greater than the maximum number of reads when filter_method = 'abs_count'")
     }
   } else {
@@ -127,7 +127,7 @@ filterFeature <- function(count_df, tax_df,
     # cut-off based on percent of dataset total
     percent_total = relab_by_data[rowSums(relab_by_data >= asv_cutoff) >= prev_cutoff,]
   )
-  print(dim(filtered_count))
+
   if(is.null(filtered_count)) {
     stop("No features remain after filtering. Please select different filter cutoff.")
   }
