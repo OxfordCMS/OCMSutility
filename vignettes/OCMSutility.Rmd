@@ -527,3 +527,30 @@ db_file <- "/path/to/db/file"
 met <- metfile_init(db_file, dummy = "Group")
 
 ```
+
+## metadata_sparsity
+
+This function checks your metadata for the number of missing values in each sample. This function can be used to check how sparse the metadata is. In human studies, it is easy to have sparse metadata which inadvertently gives subsets of samples simply based on the amount of available information. This function tallies the number of NA in each sample and returns subsets of samples based on the number of missing values they have.
+
+Usage:
+
+Takes in a dataframe where samples are in rows and metadata variables are in columns. The function returns a list where the first item in the list `na_tally` shows the number of samples with a given number of missing values.
+
+```{r metadata-sparsity}
+set.seed(1)
+# setting up example metadata dataframe
+ metadata_example <- data.frame(
+   sampleID = LETTERS[1:10],
+   group = c(rep(1:2, each = 3), rep(3, 4)),
+   age = c(rnorm(6, 30, 5), rep(NA, 4)),
+   sex = c(rep('F', 3), rep(NA, 4), rep('M', 3)),
+   ethnicity = sample(c(NA,1,2,3), 10, replace = TRUE),
+   medication = sample(c(NA,1,2), 10, replace=TRUE))
+
+met_sparse <- metadata_sparsity(metadata_example)
+
+summary(met_sparse)
+met_sparse$na_tally
+met_sparse[[3]]
+met_sparse[[4]]
+```

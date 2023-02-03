@@ -83,6 +83,30 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   if(any(grepl("^[0-9]", colnames(count_df)))) {
     stop('Samples cannot start with a number')
   }
+
+  # NA features are converted to  string ("NA")
+  # so unclassified taxa is preserved (the way NAs are handled is too variable)
+  if(any(is.na(tax_df[,tax_level]))) {
+    tax_df[is.na(tax_df)] <- 'NA'
+    # message("NA classifications detected. NA has been replaced with prefixed text (i.e. 'p__NA')")
+
+    # for(t in 1:length(tax_level)) {
+    #   if(tax_level[t] == 'Kingdom') {
+    #     tax_df$Kingdom[is.na(tax_df$Kingdom)] <- 'k__NA'
+    #   }
+    #   else {
+    #     na_index <- is.na(tax_df[,tax_level[t]])
+    #     na_str <- sprintf("%s__NA", tolower(substr(tax_level[t],1,1)))
+    #     if(any(na_index)) {
+    #       tax_df[,tax_level[t]][na_index] <- na_str
+    #       concat <- paste(tax_df[,tax_level[t-1]], na_str, sep=";")
+    #       print(head(concat))
+    #       tax_df[na_index,tax_level[t]] <- concat[na_index]
+    #     }
+    #   }
+    # }
+
+  }
   # aggregate counts -----------------------------------------------------------
 
   sampleID <- colnames(count_df)
@@ -118,7 +142,14 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   if('Taxon' %in% tax_column) {
     ind <- which(tax_level == aggregate_by)
     Taxon <- stringr::str_split(tax_df$Taxon, ";", simplify = TRUE)
-    Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
+
+    if(aggregate_by != 'featureID') {
+      Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
+    }
+    else {
+      Taxon <- cbind(tax_df$featureID, Taxon)
+      Taxon <- apply(Taxon[,1:8], 1, paste, collapse = ";")
+    }
     tax_df$Taxon <- Taxon
   }
 
@@ -130,6 +161,21 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     ungroup() %>%
     distinct()
 
+  # when multiple NA taxa found (may have been classified at higher tax levels)
+  # collapse into one where is unclassified at all levels
+  na_ind <- which(tax_agg$featureID == 'NA')
+
+  if(length(na_ind) > 1) {
+    # make dummy entry of all NAs
+    entry <- tax_df[NA,]
+    entry <- entry[1,]
+
+    # remove all NA values
+    tax_agg <- tax_agg %>%
+      filter(featureID != 'NA')
+
+    tax_agg <- tax_agg[order(match(tax_agg$featureID, rownames(aggregated))),]
+  }
   return(list('count_df' = aggregated, 'tax_df' = as.data.frame(tax_agg)))
 
 }
