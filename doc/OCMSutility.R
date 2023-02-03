@@ -25,6 +25,155 @@ dim(asv_example)
 dim(tax_example)
 colnames(tax_example)
 
+## ----filterFeature------------------------------------------------------------
+data(dss_example)
+
+# put featureID as rownames
+tax_df <- dss_example$merged_taxonomy
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+# set features in count tax to be in same order
+count_df <- count_df[tax_df$featureID,]
+
+filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
+summary(filtered_ls)
+filtered_count <- filtered_ls$filtered
+dim(filtered_count)
+kable(head(filtered_count[,1:4]))
+
+## ----relab--------------------------------------------------------------------
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+rel_abundance <- relab(asv_counts)
+
+## ----aggregateCount-----------------------------------------------------------
+data(dss_example)
+# featureID should be row names
+feature_count <- dss_example$merged_abundance_id %>%
+   tibble::column_to_rownames('featureID')
+
+# cleanup sample names
+colnames(feature_count) <- paste0('id', colnames(feature_count))
+# taxonomy table must have columns 'Kingdom','Phylum',
+# 'Class','Order','Family','Genus','Species'
+# and feature IDs in rownames
+feature_tax <- dss_example$merged_taxonomy
+
+# set row order of count and tax tables to be the same
+feature_count <- feature_count[feature_tax$featureID,]
+aggregated_list <- aggregateCount(feature_count, feature_tax,
+                                      aggregate_by = "Family")
+
+summary(aggregated_list)
+knitr::kable(head(aggregated_list[['count_df']][,1:5]))
+knitr::kable(head(aggregated_list[['tax_df']]))
+
+## ----reannotateTax-example1---------------------------------------------------
+ex1 <- data.frame(ASV = paste0("ASV", 1:5),
+                  Order = "order1",
+                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
+                  Genus = c("unclassified", 'genus1','unclassified','genus2',
+                            "unclassified"),
+                  read_count = 10)
+
+knitr::kable(ex1)
+
+## ----reannotateTax-example2---------------------------------------------------
+ex2 <- ex1[,c('ASV','Order')]
+ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
+ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
+               'order1_unclassified')
+ex2$read_count <- 10
+
+knitr::kable(ex2)
+
+## ----reannotateTax------------------------------------------------------------
+# showing the dummy example
+old_tax <- ex1[,2:4]
+old_tax$Kingdom <- 'kingdom1'
+old_tax$Phylum <- 'phylum1'
+old_tax$Class <- 'class1'
+old_tax$Species <- 'unclassified'
+
+old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
+old_tax[old_tax == 'unclassified'] <- NA
+knitr::kable(old_tax)
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(new_tax)
+
+# try with example data
+data(asv_example)
+
+# adding Kingdom column; removing sequence column because don't need asv IDs in this example
+old_tax <- tax_example
+colnames(old_tax)[1] <- 'Kingdom'
+old_tax$Kingdom <- 'Bacteria'
+knitr::kable(head(old_tax))
+
+new_tax <- reannotateTax(old_tax)
+knitr::kable(head(new_tax))
+
+## ----plotPCoA-----------------------------------------------------------------
+data(dss_example)
+met_df <- dss_example$metadata
+
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+count_df <- count_df[,met_df$sampleID]
+relab <- relab(count_df)
+
+iter_var <- c('Genotype','Phenotype')
+plist <- list()
+for(i in iter_var) {
+  plist[[i]] <- plotPCoA(relab, met_df, colour = i)
+}
+
+plist[[1]]
+plist[[2]]
+
+## ----plotPCA------------------------------------------------------------------
+# get example data
+data(asv_example)
+
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+
+# generate some random metadata for the 295 samples - 5 time points with each individual
+# having a data point at each time point
+metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
+                                     rep("Time 2", 59),
+                                     rep("Time 3", 59),
+                                     rep("Time 4", 59),
+                                     rep("Time 5", 59)),
+                       Individual = as.character(c(rep(c(1:59), 5))),
+                       row.names=colnames(asv_transformed),
+                       stringsAsFactors = FALSE)
+metadata$ID <- rownames(metadata)
+
+pca_result <- prcomp(t(asv_transformed), scale = TRUE)
+plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
+
+plot_data$p
+
+# modify default plot
+add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
+col_val <- getPalette(5, "Set3")
+p <- plot_data$p +
+  scale_colour_manual(values = col_val) + # pick own colours
+  scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
+  geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
+p
+
+## ----getPalette---------------------------------------------------------------
+getPalette(n=10, palette="Set3", preview=TRUE)
+
 ## ----clr----------------------------------------------------------------------
 # rownames have to be features
 asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
@@ -40,18 +189,6 @@ clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE
 
 # returns ALDEx2 object
 class(clr_transformed)
-
-## ----relab--------------------------------------------------------------------
-# get example data
-data(asv_example)
-
-# rownames have to be features
-asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
-
-rel_abundance <- relab(asv_counts)
-
-## ----getPalette---------------------------------------------------------------
-getPalette(n=10, palette="Set3", preview=TRUE)
 
 ## ----featurebox---------------------------------------------------------------
 # get example data
@@ -129,41 +266,6 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
   theme_bw()
 
 
-## ----plotPCA------------------------------------------------------------------
-# get example data
-data(asv_example)
-
-# rownames have to be features
-asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
-
-asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
-
-# generate some random metadata for the 295 samples - 5 time points with each individual
-# having a data point at each time point
-metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
-                                     rep("Time 2", 59),
-                                     rep("Time 3", 59),
-                                     rep("Time 4", 59),
-                                     rep("Time 5", 59)),
-                       Individual = as.character(c(rep(c(1:59), 5))),
-                       row.names=colnames(asv_transformed),
-                       stringsAsFactors = FALSE)
-metadata$ID <- rownames(metadata)
-
-pca_result <- prcomp(t(asv_transformed), scale = TRUE)
-plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
-
-plot_data$p
-
-# modify default plot
-add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
-col_val <- getPalette(5, "Set3")
-p <- plot_data$p +
-  scale_colour_manual(values = col_val) + # pick own colours
-  scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
-  geom_text(data = add_meta, aes(x = PC1, y = PC2, label = ID)) # add text label
-p
-
 ## ----rarefaction--------------------------------------------------------------
 # get example data
 data(asv_example)
@@ -180,88 +282,6 @@ p
 # modify default plot -- remove geom_label_repel layer
 p$layers[[2]] <- NULL
 p
-
-## ----reannotateTax-example1---------------------------------------------------
-ex1 <- data.frame(ASV = paste0("ASV", 1:5),
-                  Order = "order1",
-                  Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
-                  Genus = c("unclassified", 'genus1','unclassified','genus2',
-                            "unclassified"),
-                  read_count = 10)
-
-knitr::kable(ex1)
-
-## ----reannotateTax-example2---------------------------------------------------
-ex2 <- ex1[,c('ASV','Order')]
-ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
-ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
-               'order1_unclassified')
-ex2$read_count <- 10
-
-knitr::kable(ex2)
-
-## ----reannotateTax------------------------------------------------------------
-# showing the dummy example
-old_tax <- ex1[,2:4]
-old_tax$Kingdom <- 'kingdom1'
-old_tax$Phylum <- 'phylum1'
-old_tax$Class <- 'class1'
-old_tax$Species <- 'unclassified'
-
-old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Species')]
-old_tax[old_tax == 'unclassified'] <- NA
-knitr::kable(old_tax)
-
-new_tax <- reannotateTax(old_tax)
-knitr::kable(new_tax)
-
-# try with example data
-data(asv_example)
-
-# adding Kingdom column; removing sequence column because don't need asv IDs in this example
-old_tax <- tax_example
-colnames(old_tax)[1] <- 'Kingdom'
-old_tax$Kingdom <- 'Bacteria'
-knitr::kable(head(old_tax))
-
-new_tax <- reannotateTax(old_tax)
-knitr::kable(head(new_tax))
-
-## ----aggregateCount-----------------------------------------------------------
-data(dss_example)
-# featureID should be row names
-feature_count <- dss_example$merged_abundance_id %>%
-   tibble::column_to_rownames('featureID')
-
-# cleanup sample names
-colnames(feature_count) <- paste0('id', colnames(feature_count))
-# taxonomy table must have columns 'Kingdom','Phylum',
-# 'Class','Order','Family','Genus','Species'
-# and feature IDs in rownames
-feature_tax <- dss_example$merged_taxonomy
-
-# set row order of count and tax tables to be the same
-feature_count <- feature_count[feature_tax$featureID,]
-aggregated_list <- aggregateCount(feature_count, feature_tax,
-                                      aggregate_by = "Family")
-
-summary(aggregated_list)
-knitr::kable(head(aggregated_list[['count_df']][,1:5]))
-knitr::kable(head(aggregated_list[['tax_df']]))
-
-## ----plotPCoA-----------------------------------------------------------------
-data(dss_example)
-met_df <- dss_example$metadata
-
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-count_df <- count_df[,met_df$sampleID]
-relab <- relab(count_df)
-
-iter_var <- c('Genotype','Phenotype')
-for(i in iter_var) {
-  plotPCoA(relab, met_df, colour = i)
-}
 
 ## ----plotSunburst-------------------------------------------------------------
 data("dss_example")
@@ -337,24 +357,26 @@ p <- ggplot(true_pos_result,
 
 p
 
-## ----filterFeature------------------------------------------------------------
-data(dss_example)
-
-# put featureID as rownames
-tax_df <- dss_example$merged_taxonomy
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-# set features in count tax to be in same order
-count_df <- count_df[tax_df$featureID,]
-
-filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
-summary(filtered_ls)
-filtered_count <- filtered_ls$filtered
-dim(filtered_count)
-kable(head(filtered_count[,1:4]))
-
 ## ----metfile_init, eval=FALSE-------------------------------------------------
 #  db_file <- "/path/to/db/file"
 #  met <- metfile_init(db_file, dummy = "Group")
 #  
+
+## ----metadata-sparsity--------------------------------------------------------
+set.seed(1)
+# setting up example metadata dataframe
+ metadata_example <- data.frame(
+   sampleID = LETTERS[1:10],
+   group = c(rep(1:2, each = 3), rep(3, 4)),
+   age = c(rnorm(6, 30, 5), rep(NA, 4)),
+   sex = c(rep('F', 3), rep(NA, 4), rep('M', 3)),
+   ethnicity = sample(c(NA,1,2,3), 10, replace = TRUE),
+   medication = sample(c(NA,1,2), 10, replace=TRUE))
+
+met_sparse <- metadata_sparsity(metadata_example)
+
+summary(met_sparse)
+met_sparse$na_tally
+met_sparse[[3]]
+met_sparse[[4]]
 
