@@ -16,7 +16,7 @@ clean:
 
 README.md : vignettes/OCMSutility.Rmd
 #	echo "Rendering the OCMSutility vignette"
-	Rscript -e 'rmarkdown::render("vignettes/OCMSutility.Rmd", output_format = "md_document", output_options = list(pandoc_args = c("-t", "markdown")))'
+	Rscript -e 'rmarkdown::render("vignettes/OCMSutility.Rmd", output_format = "md_document", output_options = list(pandoc_args = c("-t", "gfm")))'
 #	echo "Correcting image paths"
 #	sed -i -- 's,../inst,inst,g' vignettes/OCMSutility.md
 	Rscript -e 'file <- gsub("\\.\\./inst", "inst", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
