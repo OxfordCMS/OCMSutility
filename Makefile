@@ -20,6 +20,7 @@ README.md : vignettes/OCMSutility.Rmd
 #	echo "Correcting image paths"
 #	sed -i -- 's,../inst,inst,g' vignettes/OCMSutility.md
 	Rscript -e 'file <- gsub("\\.\\./inst", "inst", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
+	Rscript -e 'file <- gsub("OCMSutility_files", "vignettes/OCMSutility_files", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
 #	echo "Correcting paths to other reference vignettes"
 	Rscript -e 'file <- gsub("\\((.*)\\.([rR]md)","(vignettes/\\1.\\2", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
 #	echo "Copying output to README.md"
