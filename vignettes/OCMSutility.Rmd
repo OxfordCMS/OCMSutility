@@ -555,3 +555,36 @@ met_sparse$na_tally
 met_sparse[[3]]
 met_sparse[[4]]
 ```
+
+## pca_by_var
+
+This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Currently, only numeric metadata variables are allowed.
+
+```{r pca_by_var}
+data(iris)
+dd <- iris
+
+dd$species_num <- NA
+dd$species_num[dd$Species == 'setosa'] <- 1
+dd$species_num[dd$Species == 'versicolor'] <- 2
+dd$species_num[dd$Species == 'virginica'] <- 3
+
+set.seed(1)
+dd$var1 <- rep(rnorm(15, 25, 3), each=10)
+
+set.seed(1)
+dd$var2 <- rep(rnorm(10, 3, 0.5), 15)
+rownames(dd) <- paste0('sample',1:nrow(dd))
+ddata <- dd[,1:4]
+mdata <- dd[,6:8]
+
+p_list <- pca_by_var(ddata, mdata)
+
+# biplot
+p_list$main_pca
+```
+```{r}
+# panel by metadata variables
+cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
+
+```

@@ -9,19 +9,21 @@ Authors@R: c(person("Sandi","Yen",
              email = "nicholas.ilott@kennedy.ox.ac.uk", 
              role = c("aut")))
 Description: Package holds functions that are commonly used in microbiome
-    analysis. Part of the OCMS sandbox toolkit.
+  analysis. Part of the OCMS sandbox toolkit.
 License: MIT
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    knitr,
-    rmarkdown
+  cowplot,
+  knitr,
+  rmarkdown
 biocView: 
 VignetteBuilder: knitr
 Imports:
   ALDEx2,
   dplyr,
   foreach,
+  ggfortify,
   ggplot2,
   ggrepel,
   gtools,
@@ -37,4 +39,4 @@ Imports:
   vegan
 RoxygenNote: 7.2.3
 Depends: 
-    R (>= 2.10)
+    R (>= 3.50)
