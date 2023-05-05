@@ -34,19 +34,21 @@
 #'
 #' @examples
 #'
+#' set.seed(1)
 #' data(iris)
 #' dd <- iris
 #'
+#' # setting up numeric version of Species
 #' dd$species_num <- NA
 #' dd$species_num[dd$Species == 'setosa'] <- 1
 #' dd$species_num[dd$Species == 'versicolor'] <- 2
 #' dd$species_num[dd$Species == 'virginica'] <- 3
 #'
-#' set.seed(1)
+#' # creating som dummy metadata variable
 #' dd$var1 <- rep(rnorm(15, 25, 3), each=10)
-#'
-#' set.seed(1)
 #' dd$var2 <- rep(rnorm(10, 3, 0.5), 15)
+#'
+#' # adding sample identifiers
 #' rownames(dd) <- paste0('sample',1:nrow(dd))
 #' ddata <- dd[,1:4]
 #' mdata <- dd[,6:8]
@@ -55,8 +57,12 @@
 #'
 #' # biplot
 #' p_list$main_pca
+#' # pca with metadata variables overlayed
+#' p_list$species_num
+#' p_list$var1
+#' p_list$var2
 #'
-#' # panel by metadata variables
+#' # can use cowplot::plot_grid to put all plots into one
 #' cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
 
 pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
