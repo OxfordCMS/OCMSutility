@@ -438,18 +438,19 @@ count_genus <- agg_gen$count_df
 tax_genus <- reannotateTax(agg_gen$tax_df)
 
 relab <- relab(count_genus)
+
 # color specific phyla
-plotSunburst(relab = NULL, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges",
-                          "Bacteroidetes" = "Greens"))
+# plotSunburst(relab = NULL, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges",
+#                           "Bacteroidetes" = "Greens"))
 # color specific phyla taking into account of relative abundance
-plotSunburst(relab = relab, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+# plotSunburst(relab = relab, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
 
 # highlight specific genera
-plotSunburst(relab = relab, tax = tax_genus, 
-             palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
-             highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+# plotSunburst(relab = relab, tax = tax_genus, 
+#              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+#              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
 ```
 
 ## convert_platemap
