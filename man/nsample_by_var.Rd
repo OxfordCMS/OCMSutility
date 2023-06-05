@@ -17,21 +17,25 @@ nsample_by_var(ddata, id, var)
 dataframe. tally of number of id per variable
 }
 \description{
-Tallies the number of samples for metadata variables.
+Tallies the number of samples per identifier for metadata variables
+by counting the number of non-NA values for each metadata variable
+for a given identifier.
 This can be helpful in time course data where you want to check the
 number of samples per individual. This can also be used to check how complete
 your metadata is.
 }
 \examples{
 set.seed(1)
-# time course data: checking number of samples per patient for each metadata variable
+# time course data: checking number of samples per patient for each metadata
+# variable
 df <- data.frame(sample_id = paste0("sample", 1:100),
-                 patient_id = sample(LETTERS[1:25], replace=TRUE),
+                 patient_id = rep(LETTERS[1:25], 4),
                  var1 = sample(c(rnorm(30, 10, 0.5), rnorm(40, 25, 2),
                                  rep(NA, 30)), 100),
-                 var2 = sample(c(rnorm(85, 0.5, 0.01),
-                                 rep(NA, 15)), 100),
-                 var3 = sample(c(LETTERS[1:5], NA), 100, replace=TRUE))
+                 var2 = sample(c(rnorm(65, 0.5, 0.01),
+                                 rep(0, 20),
+rep(NA, 15)), 100),
+                 var3 = sample(c(letters[1:5], NA), 100, replace=TRUE))
 
 nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 }
