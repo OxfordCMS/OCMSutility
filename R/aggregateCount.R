@@ -133,14 +133,16 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   }
 
   # set levels lower than aggregated level to NA
-  ind <- which(tax_level == aggregate_by) + 1
-  to_na <- tax_level[ind:length(tax_level)]
+  if(!aggregate_by %in% c('Species', 'featureID')) {
+    ind <- which(tax_level == aggregate_by) + 1
+    to_na <- tax_level[ind:length(tax_level)]
+    tax_df[, to_na] <- NA
+  }
 
-  tax_df[, to_na] <- NA
 
   # update Taxon column
   if('Taxon' %in% tax_column) {
-    ind <- which(tax_level == aggregate_by)
+    ind <- which(tax_level == aggregate_by) - 1
     Taxon <- stringr::str_split(tax_df$Taxon, ";", simplify = TRUE)
 
     if(aggregate_by != 'featureID') {
