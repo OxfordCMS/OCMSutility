@@ -170,13 +170,12 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   na_ind <- which(tax_agg$featureID == 'NA')
 
   if(length(na_ind) > 1) {
-    # make dummy entry of all NAs
-    entry <- tax_df[NA,]
-    entry <- entry[1,]
 
     # remove all NA values
     tax_agg <- tax_agg %>%
-      filter(featureID != 'NA')
+      filter(featureID != 'NA') %>%
+      # add dummy entry of all NAs
+      add_row(featureID='NA', n_collapse=length(na_ind))
 
     tax_agg <- tax_agg[order(match(tax_agg$featureID, rownames(aggregated))),]
   }
