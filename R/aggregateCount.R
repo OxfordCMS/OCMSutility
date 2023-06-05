@@ -145,12 +145,14 @@ aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
     ind <- which(tax_level == aggregate_by) - 1
     Taxon <- stringr::str_split(tax_df$Taxon, ";", simplify = TRUE)
 
-    if(aggregate_by != 'featureID') {
-      Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
-    }
-    else {
+    if(aggregate_by == 'Kingdom') {
+      Taxon <- tax_df$Kingdom
+    } else if(aggregate_by == 'featureID') {
       Taxon <- cbind(tax_df$featureID, Taxon)
       Taxon <- apply(Taxon[,1:8], 1, paste, collapse = ";")
+    }
+    else {
+      Taxon <- apply(Taxon[,1:ind], 1, paste, collapse = ";")
     }
     tax_df$Taxon <- Taxon
   }
