@@ -98,7 +98,7 @@ kable(head(filtered_count[,1:4]))
 ```
 
 |        | 2DSS\_\_10 | 2DSS\_\_11 | 2DSS\_\_13 | 2DSS\_\_14 |
-|:-------|-----------:|-----------:|-----------:|-----------:|
+| :----- | ---------: | ---------: | ---------: | ---------: |
 | ASV108 |  0.0005656 |  0.0012191 |  0.0000000 |  0.0000000 |
 | ASV128 |  0.0018854 |  0.0000000 |  0.0051209 |  0.0000000 |
 | ASV57  |  0.0066931 |  0.0000000 |  0.0000000 |  0.0000000 |
@@ -162,7 +162,7 @@ knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 ```
 
 |                                | id2DSS\_\_10 | id2DSS\_\_11 | id2DSS\_\_13 | id2DSS\_\_14 | id2DSS\_\_16 |
-|:-------------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
+| :----------------------------- | -----------: | -----------: | -----------: | -----------: | -----------: |
 | Acidaminococcaceae             |           10 |            4 |            0 |            0 |            0 |
 | Anaeroplasmataceae             |           60 |            0 |            7 |            0 |            0 |
 | Bacteroidaceae                 |         1118 |         2921 |          262 |          256 |         1484 |
@@ -175,7 +175,7 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 ```
 
 | featureID                      | sequence | Kingdom  | Phylum         | Class              | Order             | Family                         | Genus | Species | Taxon                                                                                                                      | n\_collapse |
-|:-------------------------------|:---------|:---------|:---------------|:-------------------|:------------------|:-------------------------------|:------|:--------|:---------------------------------------------------------------------------------------------------------------------------|------------:|
+| :----------------------------- | :------- | :------- | :------------- | :----------------- | :---------------- | :----------------------------- | :---- | :------ | :------------------------------------------------------------------------------------------------------------------------- | ----------: |
 | Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae;g\_\_Acidaminococcus         |           4 |
 | Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae;g\_\_Phascolarctobacterium   |           4 |
 | Anaeroplasmataceae             | NA       | Bacteria | Tenericutes    | Mollicutes         | Anaeroplasmatales | Anaeroplasmataceae             | NA    | NA      | k\_\_Bacteria;p\_\_Tenericutes;c\_\_Mollicutes;o\_\_Anaeroplasmatales;f\_\_Anaeroplasmataceae;g\_\_Anaeroplasma            |           2 |
@@ -203,7 +203,7 @@ knitr::kable(ex1)
 ```
 
 | ASV  | Order  | Family       | Genus        | read\_count |
-|:-----|:-------|:-------------|:-------------|------------:|
+| :--- | :----- | :----------- | :----------- | ----------: |
 | ASV1 | order1 | family1      | unclassified |          10 |
 | ASV2 | order1 | family1      | genus1       |          10 |
 | ASV3 | order1 | family2      | unclassified |          10 |
@@ -227,7 +227,7 @@ knitr::kable(ex2)
 ```
 
 | ASV  | Order  | Family               | Genus                 | read\_count |
-|:-----|:-------|:---------------------|:----------------------|------------:|
+| :--- | :----- | :------------------- | :-------------------- | ----------: |
 | ASV1 | order1 | family1              | family1\_unclassified |          10 |
 | ASV2 | order1 | family1              | genus1                |          10 |
 | ASV3 | order1 | family2              | family2\_unclassified |          10 |
@@ -254,7 +254,7 @@ knitr::kable(old_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family  | Genus  | Species |
-|:---------|:--------|:-------|:-------|:--------|:-------|:--------|
+| :------- | :------ | :----- | :----- | :------ | :----- | :------ |
 | kingdom1 | phylum1 | class1 | order1 | family1 | NA     | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family1 | genus1 | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family2 | NA     | NA      |
@@ -262,12 +262,13 @@ knitr::kable(old_tax)
 | kingdom1 | phylum1 | class1 | order1 | NA      | NA     | NA      |
 
 ``` r
+
 new_tax <- reannotateTax(old_tax)
 knitr::kable(new_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family               | Genus                 | Species               |
-|:---------|:--------|:-------|:-------|:---------------------|:----------------------|:----------------------|
+| :------- | :------ | :----- | :----- | :------------------- | :-------------------- | :-------------------- |
 | kingdom1 | phylum1 | class1 | order1 | family1              | family1\_unclassified | family1\_unclassified |
 | kingdom1 | phylum1 | class1 | order1 | family1              | genus1                | genus1\_unclassified  |
 | kingdom1 | phylum1 | class1 | order1 | family2              | family2\_unclassified | family2\_unclassified |
@@ -275,6 +276,7 @@ knitr::kable(new_tax)
 | kingdom1 | phylum1 | class1 | order1 | order1\_unclassified | order1\_unclassified  | order1\_unclassified  |
 
 ``` r
+
 # try with example data
 data(asv_example)
 
@@ -286,7 +288,7 @@ knitr::kable(head(old_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
+| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | NA                                   |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
@@ -295,12 +297,13 @@ knitr::kable(head(old_tax))
 | Bacteria | Firmicutes     | Clostridia         | Clostridiales   | Lachnospiraceae    | Clostridium XlVa | NA                                   |
 
 ``` r
+
 new_tax <- reannotateTax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
+| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | Prevotella\_unclassified             |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
@@ -383,6 +386,7 @@ plot_data$p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plotPCA-1.png)
 
 ``` r
+
 # modify default plot
 add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
 col_val <- getPalette(5, "Set3")
@@ -407,7 +411,8 @@ p
 
 This is a convenience function for getting a set of colours for plotting
 purposes. Setting preview=TRUE will show you the colours. The colours
-can be changed by adding a palette(s) to the palette argument.
+can be changed by adding a palette(s) to the palette
+    argument.
 
 Usage:
 
@@ -503,7 +508,8 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 
 The default palettes used are “Set2”, “Set3” and “Set4”, and the result
 will depend on the number of colours you need. You can change the
-colours if you like by adding manual scale:
+colours if you like by adding manual
+scale:
 
 ``` r
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
@@ -567,7 +573,7 @@ knitr::kable(head(within_diss))
 ```
 
 | dissimilarity | method            |
-|--------------:|:------------------|
+| ------------: | :---------------- |
 |     0.7080197 | Within-individual |
 |     0.8067290 | Within-individual |
 |     0.8098117 | Within-individual |
@@ -576,6 +582,7 @@ knitr::kable(head(within_diss))
 |     0.9769913 | Within-individual |
 
 ``` r
+
 # between-individual dissimilarity at timpoint 1
 metadata_t1 <- metadata[metadata$Timepoint == "Time 1",]
 asv_relab_t1 <- asv_relab[,rownames(metadata_t1)]
@@ -586,7 +593,7 @@ knitr::kable(head(between_diss))
 ```
 
 | dissimilarity | method             |
-|--------------:|:-------------------|
+| ------------: | :----------------- |
 |     0.8130555 | Between-individual |
 |     0.8108123 | Between-individual |
 |     0.8153680 | Between-individual |
@@ -595,6 +602,7 @@ knitr::kable(head(between_diss))
 |     0.8061727 | Between-individual |
 
 ``` r
+
 # we can then combine and plot them
 diss <- bind_rows(within_diss, between_diss)
 ggplot(diss, aes(x=method, y=dissimilarity)) +
@@ -663,6 +671,7 @@ p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/rarefaction-1.png)
 
 ``` r
+
 # modify default plot -- remove geom_label_repel layer
 p$layers[[2]] <- NULL
 p
@@ -720,91 +729,20 @@ count_genus <- agg_gen$count_df
 tax_genus <- reannotateTax(agg_gen$tax_df)
 
 relab <- relab(count_genus)
-# color specific phyla
-plotSunburst(relab = NULL, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges",
-                          "Bacteroidetes" = "Greens"))
-#> Warning: Returning more (or less) than 1 row per `summarise()` group was deprecated in dplyr 1.1.0.
-#> i Please use `reframe()` instead.
-#> i When switching from `summarise()` to `reframe()`, remember that `reframe()` always returns an ungrouped data frame and adjust accordingly.
-#> i The deprecated feature was likely used in the OCMSutility package.
-#>   Please report the issue to the authors.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
-#> PhantomJS not found. You can install it with webshot::install_phantomjs(). If it is installed, please make sure the phantomjs executable can be found via the PATH variable.
-```
 
-<div class="sunburst html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-ec7d2dadf84ac0a0876e" style="width:576px;height:384px; position:relative;">
-<div>
-<div class="sunburst-main">
-<div class="sunburst-sequence"></div>
-<div class="sunburst-chart">
-<div class="sunburst-explanation" style="visibility:hidden;"></div>
-</div>
-</div>
-<div class="sunburst-sidebar">
-<input type="checkbox" class="sunburst-togglelegend" style="visibility:hidden;">Legend</input>
-<div class="sunburst-legend" style="visibility:hidden;"></div>
-</div>
-</div>
-</div>
-<script type="application/json" data-for="htmlwidget-ec7d2dadf84ac0a0876e">{"x":{"data":{"children":[{"name":"Firmicutes","children":[{"name":"Clostridia","children":[{"name":"Clostridiales","children":[{"name":"Lachnospiraceae","children":[{"name":"Acetatifactor","size":1,"colname":"X5"},{"name":"Anaerosporobacter","size":1,"colname":"X5"},{"name":"Anaerostipes","size":1,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Blautia","size":3,"colname":"X5"},{"name":"Butyrivibrio","size":1,"colname":"X5"},{"name":"Clostridium XlVa","size":1,"colname":"X5"},{"name":"Clostridium XlVb","size":1,"colname":"X5"},{"name":"Coprococcus","size":2,"colname":"X5"},{"name":"Coprococcus","size":2,"colname":"X5"},{"name":"Coprococcus","size":2,"colname":"X5"},{"name":"Coprococcus","size":2,"colname":"X5"},{"name":"Dorea","size":1,"colname":"X5"},{"name":"Eisenbergiella","size":1,"colname":"X5"},{"name":"Fusicatenibacter","size":1,"colname":"X5"},{"name":"Hespellia","size":1,"colname":"X5"},{"name":"Lachnospiracea incertae sedis","size":1,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"},{"name":"Roseburia","size":3,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XI","children":[{"name":"Anaerococcus","size":2,"colname":"X5"},{"name":"Anaerococcus","size":2,"colname":"X5"},{"name":"Anaerococcus","size":2,"colname":"X5"},{"name":"Anaerococcus","size":2,"colname":"X5"}],"colname":"X4"},{"name":"Ruminococcaceae","children":[{"name":"Anaerotruncus","size":1,"colname":"X5"},{"name":"Butyricicoccus","size":1,"colname":"X5"},{"name":"Clostridium III","size":1,"colname":"X5"},{"name":"Clostridium IV","size":1,"colname":"X5"},{"name":"Faecalibacterium","size":2,"colname":"X5"},{"name":"Faecalibacterium","size":2,"colname":"X5"},{"name":"Faecalibacterium","size":2,"colname":"X5"},{"name":"Faecalibacterium","size":2,"colname":"X5"},{"name":"Flavonifractor","size":1,"colname":"X5"},{"name":"Gemmiger","size":1,"colname":"X5"},{"name":"Intestinimonas","size":1,"colname":"X5"},{"name":"Oscillibacter","size":1,"colname":"X5"},{"name":"Pseudoflavonifractor","size":1,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Ruminococcus","size":4,"colname":"X5"},{"name":"Sporobacter","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XIII","children":[{"name":"Anaerovorax","size":1,"colname":"X5"},{"name":"Mogibacterium","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Peptostreptococcaceae","children":[{"name":"Clostridium XI","size":1,"colname":"X5"},{"name":"Intestinibacter","size":1,"colname":"X5"},{"name":"Romboutsia","size":2,"colname":"X5"},{"name":"Romboutsia","size":2,"colname":"X5"},{"name":"Romboutsia","size":2,"colname":"X5"},{"name":"Romboutsia","size":2,"colname":"X5"},{"name":"Terrisporobacter","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiaceae 1","children":[{"name":"Clostridium sensu stricto","size":2,"colname":"X5"},{"name":"Clostridium sensu stricto","size":2,"colname":"X5"},{"name":"Clostridium sensu stricto","size":2,"colname":"X5"},{"name":"Clostridium sensu stricto","size":2,"colname":"X5"}],"colname":"X4"},{"name":"Eubacteriaceae","children":[{"name":"Eubacterium","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Peptoniphilaceae","children":[{"name":"Peptoniphilus","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Negativicutes","children":[{"name":"Selenomonadales","children":[{"name":"Acidaminococcaceae","children":[{"name":"Acidaminococcus","size":2,"colname":"X5"},{"name":"Acidaminococcus","size":2,"colname":"X5"},{"name":"Acidaminococcus","size":2,"colname":"X5"},{"name":"Acidaminococcus","size":2,"colname":"X5"},{"name":"Phascolarctobacterium","size":2,"colname":"X5"},{"name":"Phascolarctobacterium","size":2,"colname":"X5"},{"name":"Phascolarctobacterium","size":2,"colname":"X5"},{"name":"Phascolarctobacterium","size":2,"colname":"X5"}],"colname":"X4"},{"name":"Veillonellaceae","children":[{"name":"Dialister","size":2,"colname":"X5"},{"name":"Dialister","size":2,"colname":"X5"},{"name":"Dialister","size":2,"colname":"X5"},{"name":"Dialister","size":2,"colname":"X5"},{"name":"Megamonas","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Erysipelotrichia","children":[{"name":"Erysipelotrichales","children":[{"name":"Erysipelotrichaceae","children":[{"name":"Clostridium XVIII","size":1,"colname":"X5"},{"name":"Erysipelotrichaceae incertae sedis","size":1,"colname":"X5"},{"name":"Faecalitalea","size":1,"colname":"X5"},{"name":"Holdemanella","size":2,"colname":"X5"},{"name":"Holdemanella","size":2,"colname":"X5"},{"name":"Holdemanella","size":2,"colname":"X5"},{"name":"Holdemanella","size":2,"colname":"X5"},{"name":"Turicibacter","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Bacilli","children":[{"name":"Lactobacillales","children":[{"name":"Enterococcaceae","children":[{"name":"Enterococcus","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Lactobacillaceae","children":[{"name":"Lactobacillus","size":2,"colname":"X5"},{"name":"Lactobacillus","size":2,"colname":"X5"},{"name":"Lactobacillus","size":2,"colname":"X5"},{"name":"Lactobacillus","size":2,"colname":"X5"}],"colname":"X4"},{"name":"Streptococcaceae","children":[{"name":"Lactococcus","size":1,"colname":"X5"},{"name":"Streptococcus","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Bacillales","children":[{"name":"Staphylococcaceae","children":[{"name":"Staphylococcus","size":2,"colname":"X5"},{"name":"Staphylococcus","size":2,"colname":"X5"},{"name":"Staphylococcus","size":2,"colname":"X5"},{"name":"Staphylococcus","size":2,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Proteobacteria","children":[{"name":"Gammaproteobacteria","children":[{"name":"Pseudomonadales","children":[{"name":"Moraxellaceae","children":[{"name":"Acinetobacter","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Pseudomonadaceae","children":[{"name":"Pseudomonas","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Enterobacteriales","children":[{"name":"Enterobacteriaceae","children":[{"name":"Escherichia/Shigella","size":1,"colname":"X5"},{"name":"Salmonella","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Pasteurellales","children":[{"name":"Pasteurellaceae","children":[{"name":"Haemophilus","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Deltaproteobacteria","children":[{"name":"Desulfovibrionales","children":[{"name":"Desulfovibrionaceae","children":[{"name":"Bilophila","size":2,"colname":"X5"},{"name":"Bilophila","size":2,"colname":"X5"},{"name":"Bilophila","size":2,"colname":"X5"},{"name":"Bilophila","size":2,"colname":"X5"},{"name":"Desulfovibrio","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Epsilonproteobacteria","children":[{"name":"Campylobacterales","children":[{"name":"Helicobacteraceae","children":[{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"},{"name":"Helicobacter","size":3,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Betaproteobacteria","children":[{"name":"Burkholderiales","children":[{"name":"Oxalobacteraceae","children":[{"name":"Oxalobacter","size":1,"colname":"X5"}],"colname":"X4"},{"name":"Sutterellaceae","children":[{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"},{"name":"Parasutterella","size":3,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Verrucomicrobia","children":[{"name":"Verrucomicrobiae","children":[{"name":"Verrucomicrobiales","children":[{"name":"Verrucomicrobiaceae","children":[{"name":"Akkermansia","size":2,"colname":"X5"},{"name":"Akkermansia","size":2,"colname":"X5"},{"name":"Akkermansia","size":2,"colname":"X5"},{"name":"Akkermansia","size":2,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Bacteroidetes","children":[{"name":"Bacteroidia","children":[{"name":"Bacteroidales","children":[{"name":"Rikenellaceae","children":[{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"},{"name":"Alistipes","size":6,"colname":"X5"}],"colname":"X4"},{"name":"Prevotellaceae","children":[{"name":"Alloprevotella","size":1,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"},{"name":"Prevotella","size":3,"colname":"X5"}],"colname":"X4"},{"name":"Bacteroidaceae","children":[{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"},{"name":"Bacteroides","size":11,"colname":"X5"}],"colname":"X4"},{"name":"Porphyromonadaceae","children":[{"name":"Barnesiella","size":1,"colname":"X5"},{"name":"Coprobacter","size":2,"colname":"X5"},{"name":"Coprobacter","size":2,"colname":"X5"},{"name":"Coprobacter","size":2,"colname":"X5"},{"name":"Coprobacter","size":2,"colname":"X5"},{"name":"Odoribacter","size":2,"colname":"X5"},{"name":"Odoribacter","size":2,"colname":"X5"},{"name":"Odoribacter","size":2,"colname":"X5"},{"name":"Odoribacter","size":2,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Parabacteroides","size":4,"colname":"X5"},{"name":"Porphyromonas","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Tenericutes","children":[{"name":"Mollicutes","children":[{"name":"Anaeroplasmatales","children":[{"name":"Anaeroplasmataceae","children":[{"name":"Anaeroplasma","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Actinobacteria","children":[{"name":"Actinobacteria","children":[{"name":"Bifidobacteriales","children":[{"name":"Bifidobacteriaceae","children":[{"name":"Bifidobacterium","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Coriobacteriales","children":[{"name":"Coriobacteriaceae","children":[{"name":"Enterorhabdus","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Fusobacteria","children":[{"name":"Fusobacteriia","children":[{"name":"Fusobacteriales","children":[{"name":"Fusobacteriaceae","children":[{"name":"Fusobacterium","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Euryarchaeota","children":[{"name":"Methanobacteria","children":[{"name":"Methanobacteriales","children":[{"name":"Methanobacteriaceae","children":[{"name":"Methanobrevibacter","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Deferribacteres","children":[{"name":"Deferribacteres","children":[{"name":"Deferribacterales","children":[{"name":"Deferribacteraceae","children":[{"name":"Mucispirillum","size":1,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"}],"name":"root"},"options":{"legendOrder":null,"colors":{"range":["#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#FFF5EB","#FEF0E2","#FEECDA","#FEE8D2","#FDE2C7","#FDDCBB","#FDD6AE","#FDD0A2","#FDC692","#FDBC82","#FDB272","#FDA964","#FD9F56","#FD9649","#FD8D3C","#F98230","#F67824","#F26E18","#ED6410","#E65A0B","#DF5106","#D94801","#CA4201","#BB3D02","#AD3802","#A03303","#952F03","#8A2B03","#7F2704","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#F7FCF5","#EDF8E9","#E3F4DD","#D3EDCC","#C1E6BB","#ADDEA7","#98D493","#80C97F","#66BD6F","#4BB062","#37A055","#278F48","#147E3A","#026E2D","#005924","#00441B","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9"],"domain":["Firmicutes","Clostridia","Negativicutes","Erysipelotrichia","Bacilli","Clostridiales","Selenomonadales","Erysipelotrichales","Lactobacillales","Bacillales","Lachnospiraceae","Acidaminococcaceae","Clostridiales Incertae Sedis XI","Ruminococcaceae","Clostridiales Incertae Sedis XIII","Peptostreptococcaceae","Erysipelotrichaceae","Clostridiaceae 1","Veillonellaceae","Enterococcaceae","Eubacteriaceae","Lactobacillaceae","Streptococcaceae","Peptoniphilaceae","Staphylococcaceae","Acetatifactor","Acidaminococcus","Anaerococcus","Anaerosporobacter","Anaerostipes","Anaerotruncus","Anaerovorax","Blautia","Butyricicoccus","Butyrivibrio","Clostridium III","Clostridium IV","Clostridium XI","Clostridium XVIII","Clostridium XlVa","Clostridium XlVb","Clostridium sensu stricto","Coprococcus","Dialister","Dorea","Eisenbergiella","Enterococcus","Erysipelotrichaceae incertae sedis","Eubacterium","Faecalibacterium","Faecalitalea","Flavonifractor","Fusicatenibacter","Gemmiger","Hespellia","Holdemanella","Intestinibacter","Intestinimonas","Lachnospiracea incertae sedis","Lactobacillus","Lactococcus","Megamonas","Mogibacterium","Oscillibacter","Peptoniphilus","Phascolarctobacterium","Pseudoflavonifractor","Romboutsia","Roseburia","Ruminococcus","Sporobacter","Staphylococcus","Streptococcus","Terrisporobacter","Turicibacter","Proteobacteria","Gammaproteobacteria","Deltaproteobacteria","Epsilonproteobacteria","Betaproteobacteria","Pseudomonadales","Desulfovibrionales","Enterobacteriales","Pasteurellales","Campylobacterales","Burkholderiales","Moraxellaceae","Desulfovibrionaceae","Enterobacteriaceae","Pasteurellaceae","Helicobacteraceae","Oxalobacteraceae","Sutterellaceae","Pseudomonadaceae","Acinetobacter","Bilophila","Desulfovibrio","Escherichia/Shigella","Haemophilus","Helicobacter","Oxalobacter","Parasutterella","Pseudomonas","Salmonella","Verrucomicrobia","Verrucomicrobiae","Verrucomicrobiales","Verrucomicrobiaceae","Akkermansia","Bacteroidetes","Bacteroidia","Bacteroidales","Rikenellaceae","Prevotellaceae","Bacteroidaceae","Porphyromonadaceae","Alistipes","Alloprevotella","Bacteroides","Barnesiella","Coprobacter","Odoribacter","Parabacteroides","Porphyromonas","Prevotella","Tenericutes","Mollicutes","Anaeroplasmatales","Anaeroplasmataceae","Anaeroplasma","Actinobacteria","Bifidobacteriales","Coriobacteriales","Bifidobacteriaceae","Coriobacteriaceae","Bifidobacterium","Enterorhabdus","Fusobacteria","Fusobacteriia","Fusobacteriales","Fusobacteriaceae","Fusobacterium","Euryarchaeota","Methanobacteria","Methanobacteriales","Methanobacteriaceae","Methanobrevibacter","Deferribacteres","Deferribacterales","Deferribacteraceae","Mucispirillum"]},"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+# color specific phyla
+# plotSunburst(relab = NULL, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges",
+#                           "Bacteroidetes" = "Greens"))
 # color specific phyla taking into account of relative abundance
-plotSunburst(relab = relab, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
-#> # A tibble: 6 x 2
-#>   path                                                                 avg_relab
-#>   <chr>                                                                    <dbl>
-#> 1 Firmicutes-Clostridia-Clostridiales-Lachnospiraceae-Acetatifactor      0.307  
-#> 2 Firmicutes-Negativicutes-Selenomonadales-Acidaminococcaceae-Acidami~   0.00804
-#> 3 Firmicutes-Negativicutes-Selenomonadales-Acidaminococcaceae-Acidami~   0.00804
-#> 4 Proteobacteria-Gammaproteobacteria-Pseudomonadales-Moraxellaceae-Ac~   0.0655 
-#> 5 Verrucomicrobia-Verrucomicrobiae-Verrucomicrobiales-Verrucomicrobia~   3.39   
-#> 6 Verrucomicrobia-Verrucomicrobiae-Verrucomicrobiales-Verrucomicrobia~   3.39
-<div class="sunburst html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-86645af809a4a2307e95" style="width:576px;height:384px; position:relative;">
-<div>
-<div class="sunburst-main">
-<div class="sunburst-sequence"></div>
-<div class="sunburst-chart">
-<div class="sunburst-explanation" style="visibility:hidden;"></div>
-</div>
-</div>
-<div class="sunburst-sidebar">
-<input type="checkbox" class="sunburst-togglelegend" style="visibility:hidden;">Legend</input>
-<div class="sunburst-legend" style="visibility:hidden;"></div>
-</div>
-</div>
-</div>
-<script type="application/json" data-for="htmlwidget-86645af809a4a2307e95">{"x":{"data":{"children":[{"name":"Firmicutes","children":[{"name":"Clostridia","children":[{"name":"Clostridiales","children":[{"name":"Lachnospiraceae","children":[{"name":"Acetatifactor","size":0.3069,"colname":"X5"},{"name":"Anaerosporobacter","size":0.0268,"colname":"X5"},{"name":"Anaerostipes","size":0.1968,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Butyrivibrio","size":0.4787,"colname":"X5"},{"name":"Clostridium XlVa","size":13.0705,"colname":"X5"},{"name":"Clostridium XlVb","size":0.4378,"colname":"X5"},{"name":"Coprococcus","size":0.0178,"colname":"X5"},{"name":"Coprococcus","size":0.0178,"colname":"X5"},{"name":"Dorea","size":0.1527,"colname":"X5"},{"name":"Eisenbergiella","size":0.0349,"colname":"X5"},{"name":"Fusicatenibacter","size":0.0341,"colname":"X5"},{"name":"Hespellia","size":0.1547,"colname":"X5"},{"name":"Lachnospiracea incertae sedis","size":0.4895,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XI","children":[{"name":"Anaerococcus","size":0.0035,"colname":"X5"},{"name":"Anaerococcus","size":0.0035,"colname":"X5"}],"colname":"X4"},{"name":"Ruminococcaceae","children":[{"name":"Anaerotruncus","size":0.0369,"colname":"X5"},{"name":"Butyricicoccus","size":0.0948,"colname":"X5"},{"name":"Clostridium III","size":0.0028,"colname":"X5"},{"name":"Clostridium IV","size":0.6123,"colname":"X5"},{"name":"Faecalibacterium","size":0.4382,"colname":"X5"},{"name":"Faecalibacterium","size":0.4382,"colname":"X5"},{"name":"Flavonifractor","size":0.6035,"colname":"X5"},{"name":"Gemmiger","size":0.0535,"colname":"X5"},{"name":"Intestinimonas","size":1.2954,"colname":"X5"},{"name":"Oscillibacter","size":1.0706,"colname":"X5"},{"name":"Pseudoflavonifractor","size":0.0525,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Sporobacter","size":0.2312,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XIII","children":[{"name":"Anaerovorax","size":0.0144,"colname":"X5"},{"name":"Mogibacterium","size":0.0015,"colname":"X5"}],"colname":"X4"},{"name":"Peptostreptococcaceae","children":[{"name":"Clostridium XI","size":0.408,"colname":"X5"},{"name":"Intestinibacter","size":0.0026,"colname":"X5"},{"name":"Romboutsia","size":0.5804,"colname":"X5"},{"name":"Romboutsia","size":0.5804,"colname":"X5"},{"name":"Terrisporobacter","size":0.0025,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiaceae 1","children":[{"name":"Clostridium sensu stricto","size":1.9915,"colname":"X5"},{"name":"Clostridium sensu stricto","size":1.9915,"colname":"X5"}],"colname":"X4"},{"name":"Eubacteriaceae","children":[{"name":"Eubacterium","size":0.1071,"colname":"X5"}],"colname":"X4"},{"name":"Peptoniphilaceae","children":[{"name":"Peptoniphilus","size":0.0007,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Negativicutes","children":[{"name":"Selenomonadales","children":[{"name":"Acidaminococcaceae","children":[{"name":"Acidaminococcus","size":0.008,"colname":"X5"},{"name":"Acidaminococcus","size":0.008,"colname":"X5"},{"name":"Phascolarctobacterium","size":0.0067,"colname":"X5"},{"name":"Phascolarctobacterium","size":0.0067,"colname":"X5"}],"colname":"X4"},{"name":"Veillonellaceae","children":[{"name":"Dialister","size":0.0249,"colname":"X5"},{"name":"Dialister","size":0.0249,"colname":"X5"},{"name":"Megamonas","size":0.0012,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Erysipelotrichia","children":[{"name":"Erysipelotrichales","children":[{"name":"Erysipelotrichaceae","children":[{"name":"Clostridium XVIII","size":0.2107,"colname":"X5"},{"name":"Erysipelotrichaceae incertae sedis","size":0.0166,"colname":"X5"},{"name":"Faecalitalea","size":1.1174,"colname":"X5"},{"name":"Holdemanella","size":0.0065,"colname":"X5"},{"name":"Holdemanella","size":0.0065,"colname":"X5"},{"name":"Turicibacter","size":0.5125,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Bacilli","children":[{"name":"Lactobacillales","children":[{"name":"Enterococcaceae","children":[{"name":"Enterococcus","size":0.5393,"colname":"X5"}],"colname":"X4"},{"name":"Lactobacillaceae","children":[{"name":"Lactobacillus","size":2.4292,"colname":"X5"},{"name":"Lactobacillus","size":2.4292,"colname":"X5"}],"colname":"X4"},{"name":"Streptococcaceae","children":[{"name":"Lactococcus","size":0.0805,"colname":"X5"},{"name":"Streptococcus","size":0.0044,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Bacillales","children":[{"name":"Staphylococcaceae","children":[{"name":"Staphylococcus","size":0.0045,"colname":"X5"},{"name":"Staphylococcus","size":0.0045,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Proteobacteria","children":[{"name":"Gammaproteobacteria","children":[{"name":"Pseudomonadales","children":[{"name":"Moraxellaceae","children":[{"name":"Acinetobacter","size":0.0655,"colname":"X5"}],"colname":"X4"},{"name":"Pseudomonadaceae","children":[{"name":"Pseudomonas","size":0.0358,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Enterobacteriales","children":[{"name":"Enterobacteriaceae","children":[{"name":"Escherichia/Shigella","size":4.8301,"colname":"X5"},{"name":"Salmonella","size":0.0625,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Pasteurellales","children":[{"name":"Pasteurellaceae","children":[{"name":"Haemophilus","size":0.0026,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Deltaproteobacteria","children":[{"name":"Desulfovibrionales","children":[{"name":"Desulfovibrionaceae","children":[{"name":"Bilophila","size":0.0061,"colname":"X5"},{"name":"Bilophila","size":0.0061,"colname":"X5"},{"name":"Desulfovibrio","size":0.6828,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Epsilonproteobacteria","children":[{"name":"Campylobacterales","children":[{"name":"Helicobacteraceae","children":[{"name":"Helicobacter","size":3.2783,"colname":"X5"},{"name":"Helicobacter","size":3.2783,"colname":"X5"},{"name":"Helicobacter","size":3.2783,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Betaproteobacteria","children":[{"name":"Burkholderiales","children":[{"name":"Oxalobacteraceae","children":[{"name":"Oxalobacter","size":0.0009,"colname":"X5"}],"colname":"X4"},{"name":"Sutterellaceae","children":[{"name":"Parasutterella","size":0.2054,"colname":"X5"},{"name":"Parasutterella","size":0.2054,"colname":"X5"},{"name":"Parasutterella","size":0.2054,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Verrucomicrobia","children":[{"name":"Verrucomicrobiae","children":[{"name":"Verrucomicrobiales","children":[{"name":"Verrucomicrobiaceae","children":[{"name":"Akkermansia","size":3.3897,"colname":"X5"},{"name":"Akkermansia","size":3.3897,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Bacteroidetes","children":[{"name":"Bacteroidia","children":[{"name":"Bacteroidales","children":[{"name":"Rikenellaceae","children":[{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"}],"colname":"X4"},{"name":"Prevotellaceae","children":[{"name":"Alloprevotella","size":3.0431,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"}],"colname":"X4"},{"name":"Bacteroidaceae","children":[{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"}],"colname":"X4"},{"name":"Porphyromonadaceae","children":[{"name":"Barnesiella","size":5.5504,"colname":"X5"},{"name":"Coprobacter","size":0.2449,"colname":"X5"},{"name":"Coprobacter","size":0.2449,"colname":"X5"},{"name":"Odoribacter","size":1.765,"colname":"X5"},{"name":"Odoribacter","size":1.765,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Porphyromonas","size":0.003,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Tenericutes","children":[{"name":"Mollicutes","children":[{"name":"Anaeroplasmatales","children":[{"name":"Anaeroplasmataceae","children":[{"name":"Anaeroplasma","size":0.148,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Actinobacteria","children":[{"name":"Actinobacteria","children":[{"name":"Bifidobacteriales","children":[{"name":"Bifidobacteriaceae","children":[{"name":"Bifidobacterium","size":0.0228,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Coriobacteriales","children":[{"name":"Coriobacteriaceae","children":[{"name":"Enterorhabdus","size":0.0018,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Fusobacteria","children":[{"name":"Fusobacteriia","children":[{"name":"Fusobacteriales","children":[{"name":"Fusobacteriaceae","children":[{"name":"Fusobacterium","size":0.0009,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Euryarchaeota","children":[{"name":"Methanobacteria","children":[{"name":"Methanobacteriales","children":[{"name":"Methanobacteriaceae","children":[{"name":"Methanobrevibacter","size":0.0326,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Deferribacteres","children":[{"name":"Deferribacteres","children":[{"name":"Deferribacterales","children":[{"name":"Deferribacteraceae","children":[{"name":"Mucispirillum","size":0.1939,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"}],"name":"root"},"options":{"legendOrder":null,"colors":{"range":["#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#FFF5EB","#FEF0E2","#FEECDA","#FEE8D2","#FDE2C7","#FDDCBB","#FDD6AE","#FDD0A2","#FDC692","#FDBC82","#FDB272","#FDA964","#FD9F56","#FD9649","#FD8D3C","#F98230","#F67824","#F26E18","#ED6410","#E65A0B","#DF5106","#D94801","#CA4201","#BB3D02","#AD3802","#A03303","#952F03","#8A2B03","#7F2704","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#F7FCF5","#EDF8E9","#E3F4DD","#D3EDCC","#C1E6BB","#ADDEA7","#98D493","#80C97F","#66BD6F","#4BB062","#37A055","#278F48","#147E3A","#026E2D","#005924","#00441B","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9"],"domain":["Firmicutes","Clostridia","Negativicutes","Erysipelotrichia","Bacilli","Clostridiales","Selenomonadales","Erysipelotrichales","Lactobacillales","Bacillales","Lachnospiraceae","Acidaminococcaceae","Clostridiales Incertae Sedis XI","Ruminococcaceae","Clostridiales Incertae Sedis XIII","Peptostreptococcaceae","Erysipelotrichaceae","Clostridiaceae 1","Veillonellaceae","Enterococcaceae","Eubacteriaceae","Lactobacillaceae","Streptococcaceae","Peptoniphilaceae","Staphylococcaceae","Acetatifactor","Acidaminococcus","Anaerococcus","Anaerosporobacter","Anaerostipes","Anaerotruncus","Anaerovorax","Blautia","Butyricicoccus","Butyrivibrio","Clostridium III","Clostridium IV","Clostridium XI","Clostridium XVIII","Clostridium XlVa","Clostridium XlVb","Clostridium sensu stricto","Coprococcus","Dialister","Dorea","Eisenbergiella","Enterococcus","Erysipelotrichaceae incertae sedis","Eubacterium","Faecalibacterium","Faecalitalea","Flavonifractor","Fusicatenibacter","Gemmiger","Hespellia","Holdemanella","Intestinibacter","Intestinimonas","Lachnospiracea incertae sedis","Lactobacillus","Lactococcus","Megamonas","Mogibacterium","Oscillibacter","Peptoniphilus","Phascolarctobacterium","Pseudoflavonifractor","Romboutsia","Roseburia","Ruminococcus","Sporobacter","Staphylococcus","Streptococcus","Terrisporobacter","Turicibacter","Proteobacteria","Gammaproteobacteria","Deltaproteobacteria","Epsilonproteobacteria","Betaproteobacteria","Pseudomonadales","Desulfovibrionales","Enterobacteriales","Pasteurellales","Campylobacterales","Burkholderiales","Moraxellaceae","Desulfovibrionaceae","Enterobacteriaceae","Pasteurellaceae","Helicobacteraceae","Oxalobacteraceae","Sutterellaceae","Pseudomonadaceae","Acinetobacter","Bilophila","Desulfovibrio","Escherichia/Shigella","Haemophilus","Helicobacter","Oxalobacter","Parasutterella","Pseudomonas","Salmonella","Verrucomicrobia","Verrucomicrobiae","Verrucomicrobiales","Verrucomicrobiaceae","Akkermansia","Bacteroidetes","Bacteroidia","Bacteroidales","Rikenellaceae","Prevotellaceae","Bacteroidaceae","Porphyromonadaceae","Alistipes","Alloprevotella","Bacteroides","Barnesiella","Coprobacter","Odoribacter","Parabacteroides","Porphyromonas","Prevotella","Tenericutes","Mollicutes","Anaeroplasmatales","Anaeroplasmataceae","Anaeroplasma","Actinobacteria","Bifidobacteriales","Coriobacteriales","Bifidobacteriaceae","Coriobacteriaceae","Bifidobacterium","Enterorhabdus","Fusobacteria","Fusobacteriia","Fusobacteriales","Fusobacteriaceae","Fusobacterium","Euryarchaeota","Methanobacteria","Methanobacteriales","Methanobacteriaceae","Methanobrevibacter","Deferribacteres","Deferribacterales","Deferribacteraceae","Mucispirillum"]},"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+# plotSunburst(relab = relab, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
 
 # highlight specific genera
-plotSunburst(relab = relab, tax = tax_genus, 
-             palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
-             highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
-#> # A tibble: 6 x 2
-#>   path                                                                 avg_relab
-#>   <chr>                                                                    <dbl>
-#> 1 Firmicutes-Clostridia-Clostridiales-Lachnospiraceae-Acetatifactor      0.307  
-#> 2 Firmicutes-Negativicutes-Selenomonadales-Acidaminococcaceae-Acidami~   0.00804
-#> 3 Firmicutes-Negativicutes-Selenomonadales-Acidaminococcaceae-Acidami~   0.00804
-#> 4 Proteobacteria-Gammaproteobacteria-Pseudomonadales-Moraxellaceae-Ac~   0.0655 
-#> 5 Verrucomicrobia-Verrucomicrobiae-Verrucomicrobiales-Verrucomicrobia~   3.39   
-#> 6 Verrucomicrobia-Verrucomicrobiae-Verrucomicrobiales-Verrucomicrobia~   3.39
-<div class="sunburst html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-d4da2016d1d049e321af" style="width:576px;height:384px; position:relative;">
-<div>
-<div class="sunburst-main">
-<div class="sunburst-sequence"></div>
-<div class="sunburst-chart">
-<div class="sunburst-explanation" style="visibility:hidden;"></div>
-</div>
-</div>
-<div class="sunburst-sidebar">
-<input type="checkbox" class="sunburst-togglelegend" style="visibility:hidden;">Legend</input>
-<div class="sunburst-legend" style="visibility:hidden;"></div>
-</div>
-</div>
-</div>
-<script type="application/json" data-for="htmlwidget-d4da2016d1d049e321af">{"x":{"data":{"children":[{"name":"Firmicutes","children":[{"name":"Clostridia","children":[{"name":"Clostridiales","children":[{"name":"Lachnospiraceae","children":[{"name":"Acetatifactor","size":0.3069,"colname":"X5"},{"name":"Anaerosporobacter","size":0.0268,"colname":"X5"},{"name":"Anaerostipes","size":0.1968,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Blautia","size":0.3825,"colname":"X5"},{"name":"Butyrivibrio","size":0.4787,"colname":"X5"},{"name":"Clostridium XlVa","size":13.0705,"colname":"X5"},{"name":"Clostridium XlVb","size":0.4378,"colname":"X5"},{"name":"Coprococcus","size":0.0178,"colname":"X5"},{"name":"Coprococcus","size":0.0178,"colname":"X5"},{"name":"Dorea","size":0.1527,"colname":"X5"},{"name":"Eisenbergiella","size":0.0349,"colname":"X5"},{"name":"Fusicatenibacter","size":0.0341,"colname":"X5"},{"name":"Hespellia","size":0.1547,"colname":"X5"},{"name":"Lachnospiracea incertae sedis","size":0.4895,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"},{"name":"Roseburia","size":0.3031,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XI","children":[{"name":"Anaerococcus","size":0.0035,"colname":"X5"},{"name":"Anaerococcus","size":0.0035,"colname":"X5"}],"colname":"X4"},{"name":"Ruminococcaceae","children":[{"name":"Anaerotruncus","size":0.0369,"colname":"X5"},{"name":"Butyricicoccus","size":0.0948,"colname":"X5"},{"name":"Clostridium III","size":0.0028,"colname":"X5"},{"name":"Clostridium IV","size":0.6123,"colname":"X5"},{"name":"Faecalibacterium","size":0.4382,"colname":"X5"},{"name":"Faecalibacterium","size":0.4382,"colname":"X5"},{"name":"Flavonifractor","size":0.6035,"colname":"X5"},{"name":"Gemmiger","size":0.0535,"colname":"X5"},{"name":"Intestinimonas","size":1.2954,"colname":"X5"},{"name":"Oscillibacter","size":1.0706,"colname":"X5"},{"name":"Pseudoflavonifractor","size":0.0525,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Ruminococcus","size":0.1415,"colname":"X5"},{"name":"Sporobacter","size":0.2312,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiales Incertae Sedis XIII","children":[{"name":"Anaerovorax","size":0.0144,"colname":"X5"},{"name":"Mogibacterium","size":0.0015,"colname":"X5"}],"colname":"X4"},{"name":"Peptostreptococcaceae","children":[{"name":"Clostridium XI","size":0.408,"colname":"X5"},{"name":"Intestinibacter","size":0.0026,"colname":"X5"},{"name":"Romboutsia","size":0.5804,"colname":"X5"},{"name":"Romboutsia","size":0.5804,"colname":"X5"},{"name":"Terrisporobacter","size":0.0025,"colname":"X5"}],"colname":"X4"},{"name":"Clostridiaceae 1","children":[{"name":"Clostridium sensu stricto","size":1.9915,"colname":"X5"},{"name":"Clostridium sensu stricto","size":1.9915,"colname":"X5"}],"colname":"X4"},{"name":"Eubacteriaceae","children":[{"name":"Eubacterium","size":0.1071,"colname":"X5"}],"colname":"X4"},{"name":"Peptoniphilaceae","children":[{"name":"Peptoniphilus","size":0.0007,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Negativicutes","children":[{"name":"Selenomonadales","children":[{"name":"Acidaminococcaceae","children":[{"name":"Acidaminococcus","size":0.008,"colname":"X5"},{"name":"Acidaminococcus","size":0.008,"colname":"X5"},{"name":"Phascolarctobacterium","size":0.0067,"colname":"X5"},{"name":"Phascolarctobacterium","size":0.0067,"colname":"X5"}],"colname":"X4"},{"name":"Veillonellaceae","children":[{"name":"Dialister","size":0.0249,"colname":"X5"},{"name":"Dialister","size":0.0249,"colname":"X5"},{"name":"Megamonas","size":0.0012,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Erysipelotrichia","children":[{"name":"Erysipelotrichales","children":[{"name":"Erysipelotrichaceae","children":[{"name":"Clostridium XVIII","size":0.2107,"colname":"X5"},{"name":"Erysipelotrichaceae incertae sedis","size":0.0166,"colname":"X5"},{"name":"Faecalitalea","size":1.1174,"colname":"X5"},{"name":"Holdemanella","size":0.0065,"colname":"X5"},{"name":"Holdemanella","size":0.0065,"colname":"X5"},{"name":"Turicibacter","size":0.5125,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Bacilli","children":[{"name":"Lactobacillales","children":[{"name":"Enterococcaceae","children":[{"name":"Enterococcus","size":0.5393,"colname":"X5"}],"colname":"X4"},{"name":"Lactobacillaceae","children":[{"name":"Lactobacillus","size":2.4292,"colname":"X5"},{"name":"Lactobacillus","size":2.4292,"colname":"X5"}],"colname":"X4"},{"name":"Streptococcaceae","children":[{"name":"Lactococcus","size":0.0805,"colname":"X5"},{"name":"Streptococcus","size":0.0044,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Bacillales","children":[{"name":"Staphylococcaceae","children":[{"name":"Staphylococcus","size":0.0045,"colname":"X5"},{"name":"Staphylococcus","size":0.0045,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Proteobacteria","children":[{"name":"Gammaproteobacteria","children":[{"name":"Pseudomonadales","children":[{"name":"Moraxellaceae","children":[{"name":"Acinetobacter","size":0.0655,"colname":"X5"}],"colname":"X4"},{"name":"Pseudomonadaceae","children":[{"name":"Pseudomonas","size":0.0358,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Enterobacteriales","children":[{"name":"Enterobacteriaceae","children":[{"name":"Escherichia/Shigella","size":4.8301,"colname":"X5"},{"name":"Salmonella","size":0.0625,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Pasteurellales","children":[{"name":"Pasteurellaceae","children":[{"name":"Haemophilus","size":0.0026,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Deltaproteobacteria","children":[{"name":"Desulfovibrionales","children":[{"name":"Desulfovibrionaceae","children":[{"name":"Bilophila","size":0.0061,"colname":"X5"},{"name":"Bilophila","size":0.0061,"colname":"X5"},{"name":"Desulfovibrio","size":0.6828,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Epsilonproteobacteria","children":[{"name":"Campylobacterales","children":[{"name":"Helicobacteraceae","children":[{"name":"Helicobacter","size":3.2783,"colname":"X5"},{"name":"Helicobacter","size":3.2783,"colname":"X5"},{"name":"Helicobacter","size":3.2783,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"},{"name":"Betaproteobacteria","children":[{"name":"Burkholderiales","children":[{"name":"Oxalobacteraceae","children":[{"name":"Oxalobacter","size":0.0009,"colname":"X5"}],"colname":"X4"},{"name":"Sutterellaceae","children":[{"name":"Parasutterella","size":0.2054,"colname":"X5"},{"name":"Parasutterella","size":0.2054,"colname":"X5"},{"name":"Parasutterella","size":0.2054,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Verrucomicrobia","children":[{"name":"Verrucomicrobiae","children":[{"name":"Verrucomicrobiales","children":[{"name":"Verrucomicrobiaceae","children":[{"name":"Akkermansia","size":3.3897,"colname":"X5"},{"name":"Akkermansia","size":3.3897,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Bacteroidetes","children":[{"name":"Bacteroidia","children":[{"name":"Bacteroidales","children":[{"name":"Rikenellaceae","children":[{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"},{"name":"Alistipes","size":5.149,"colname":"X5"}],"colname":"X4"},{"name":"Prevotellaceae","children":[{"name":"Alloprevotella","size":3.0431,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"},{"name":"Prevotella","size":1.5241,"colname":"X5"}],"colname":"X4"},{"name":"Bacteroidaceae","children":[{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"},{"name":"Bacteroides","size":30.0569,"colname":"X5"}],"colname":"X4"},{"name":"Porphyromonadaceae","children":[{"name":"Barnesiella","size":5.5504,"colname":"X5"},{"name":"Coprobacter","size":0.2449,"colname":"X5"},{"name":"Coprobacter","size":0.2449,"colname":"X5"},{"name":"Odoribacter","size":1.765,"colname":"X5"},{"name":"Odoribacter","size":1.765,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Parabacteroides","size":0.9277,"colname":"X5"},{"name":"Porphyromonas","size":0.003,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Tenericutes","children":[{"name":"Mollicutes","children":[{"name":"Anaeroplasmatales","children":[{"name":"Anaeroplasmataceae","children":[{"name":"Anaeroplasma","size":0.148,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Actinobacteria","children":[{"name":"Actinobacteria","children":[{"name":"Bifidobacteriales","children":[{"name":"Bifidobacteriaceae","children":[{"name":"Bifidobacterium","size":0.0228,"colname":"X5"}],"colname":"X4"}],"colname":"X3"},{"name":"Coriobacteriales","children":[{"name":"Coriobacteriaceae","children":[{"name":"Enterorhabdus","size":0.0018,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Fusobacteria","children":[{"name":"Fusobacteriia","children":[{"name":"Fusobacteriales","children":[{"name":"Fusobacteriaceae","children":[{"name":"Fusobacterium","size":0.0009,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Euryarchaeota","children":[{"name":"Methanobacteria","children":[{"name":"Methanobacteriales","children":[{"name":"Methanobacteriaceae","children":[{"name":"Methanobrevibacter","size":0.0326,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"},{"name":"Deferribacteres","children":[{"name":"Deferribacteres","children":[{"name":"Deferribacterales","children":[{"name":"Deferribacteraceae","children":[{"name":"Mucispirillum","size":0.1939,"colname":"X5"}],"colname":"X4"}],"colname":"X3"}],"colname":"X2"}],"colname":"X1"}],"name":"root"},"options":{"legendOrder":null,"colors":{"range":["#F7FBFF","#F4F9FE","#D9D9D9","#D9D9D9","#D9D9D9","#E9F2FA","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#DCE9F6","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#62A7D2","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#F7FCF5","#EDF8E9","#E3F4DD","#D9D9D9","#D9D9D9","#ADDEA7","#D9D9D9","#D9D9D9","#D9D9D9","#4BB062","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9","#D9D9D9"],"domain":["Firmicutes","Clostridia","Negativicutes","Erysipelotrichia","Bacilli","Clostridiales","Selenomonadales","Erysipelotrichales","Lactobacillales","Bacillales","Lachnospiraceae","Acidaminococcaceae","Clostridiales Incertae Sedis XI","Ruminococcaceae","Clostridiales Incertae Sedis XIII","Peptostreptococcaceae","Erysipelotrichaceae","Clostridiaceae 1","Veillonellaceae","Enterococcaceae","Eubacteriaceae","Lactobacillaceae","Streptococcaceae","Peptoniphilaceae","Staphylococcaceae","Acetatifactor","Acidaminococcus","Anaerococcus","Anaerosporobacter","Anaerostipes","Anaerotruncus","Anaerovorax","Blautia","Butyricicoccus","Butyrivibrio","Clostridium III","Clostridium IV","Clostridium XI","Clostridium XVIII","Clostridium XlVa","Clostridium XlVb","Clostridium sensu stricto","Coprococcus","Dialister","Dorea","Eisenbergiella","Enterococcus","Erysipelotrichaceae incertae sedis","Eubacterium","Faecalibacterium","Faecalitalea","Flavonifractor","Fusicatenibacter","Gemmiger","Hespellia","Holdemanella","Intestinibacter","Intestinimonas","Lachnospiracea incertae sedis","Lactobacillus","Lactococcus","Megamonas","Mogibacterium","Oscillibacter","Peptoniphilus","Phascolarctobacterium","Pseudoflavonifractor","Romboutsia","Roseburia","Ruminococcus","Sporobacter","Staphylococcus","Streptococcus","Terrisporobacter","Turicibacter","Proteobacteria","Gammaproteobacteria","Deltaproteobacteria","Epsilonproteobacteria","Betaproteobacteria","Pseudomonadales","Desulfovibrionales","Enterobacteriales","Pasteurellales","Campylobacterales","Burkholderiales","Moraxellaceae","Desulfovibrionaceae","Enterobacteriaceae","Pasteurellaceae","Helicobacteraceae","Oxalobacteraceae","Sutterellaceae","Pseudomonadaceae","Acinetobacter","Bilophila","Desulfovibrio","Escherichia/Shigella","Haemophilus","Helicobacter","Oxalobacter","Parasutterella","Pseudomonas","Salmonella","Verrucomicrobia","Verrucomicrobiae","Verrucomicrobiales","Verrucomicrobiaceae","Akkermansia","Bacteroidetes","Bacteroidia","Bacteroidales","Rikenellaceae","Prevotellaceae","Bacteroidaceae","Porphyromonadaceae","Alistipes","Alloprevotella","Bacteroides","Barnesiella","Coprobacter","Odoribacter","Parabacteroides","Porphyromonas","Prevotella","Tenericutes","Mollicutes","Anaeroplasmatales","Anaeroplasmataceae","Anaeroplasma","Actinobacteria","Bifidobacteriales","Coriobacteriales","Bifidobacteriaceae","Coriobacteriaceae","Bifidobacterium","Enterorhabdus","Fusobacteria","Fusobacteriia","Fusobacteriales","Fusobacteriaceae","Fusobacterium","Euryarchaeota","Methanobacteria","Methanobacteriales","Methanobacteriaceae","Methanobrevibacter","Deferribacteres","Deferribacterales","Deferribacteraceae","Mucispirillum"]},"valueField":"size","percent":true,"count":false,"explanation":null,"breadcrumb":[],"legend":[],"sortFunction":null,"sumNodes":true}},"evals":[],"jsHooks":[]}</script>
+# plotSunburst(relab = relab, tax = tax_genus, 
+#              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+#              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+```
 
 ## convert\_platemap
 
@@ -923,7 +861,8 @@ plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
 ## truePosRate
 
 Calculate rate of true positives in positive control standards. Used in
-OCMS\_zymobioimcs report.
+OCMS\_zymobioimcs
+report.
 
 Usage:
 
@@ -967,8 +906,8 @@ p
 This helper function initiates a metadata table that is compatible with
 `OCMSlooksy`.
 
-Usage: This function takes the database file returned from
-[`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+Usage: This function takes the database file returned from [`ocms_16s
+dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
 
 `db_file` is the rsqlite database file `out_dir` output directory.
 default `NULL` so no output file written. `ref_table` name of table in
@@ -1076,6 +1015,7 @@ p_list$main_pca
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-1.png)
 
 ``` r
+
 # pca with metadata variables overlayed
 p_list$species_num
 ```
@@ -1083,20 +1023,81 @@ p_list$species_num
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-2.png)
 
 ``` r
+
 p_list$var1
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-3.png)
 
 ``` r
+
 p_list$var2
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-4.png)
 
 ``` r
+
 # can put all pca plots into one figure with cowplot::plot_grid
 cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-5.png)
+
+## nsample\_by\_var
+
+This function counts the number of samples for each individual for a
+given metadata variable. This is useful in time course data when you
+want to check how complete the metadata variables are. This is
+complementary to `metadata_sparsity`, which tells you which gives
+information on missing values, while `nsample_by_var` gives information
+on the available metadata.
+
+Usage:
+
+Takes in a dataframe where samples are in rows and metadata variables
+are in columns. Providing the identifier column and the metadata
+variables to tally, the function returns a tally of the number of non-NA
+samples for each identifier for a given metadata variable.
+
+In the example below, we have 25 patients, each with 4 time point
+samples, and three metadata variables.
+
+``` r
+df <- data.frame(sample_id = paste0("sample", 1:100),
+                patient_id = rep(LETTERS[1:25], 4),
+                var1 = sample(c(rnorm(30, 10, 0.5), rnorm(40, 25, 2),
+                                rep(NA, 30)), 100),
+                var2 = sample(c(rnorm(65, 0.5, 0.01),
+                                rep(0, 20),
+rep(NA, 15)), 100),
+                var3 = sample(c(letters[1:5], NA), 100, replace=TRUE))
+
+nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
+#>    patient_id var1 var2 var3
+#> 1           A    2    4    3
+#> 2           B    4    3    3
+#> 3           C    1    3    2
+#> 4           D    3    3    4
+#> 5           E    3    3    4
+#> 6           F    3    4    3
+#> 7           G    4    4    3
+#> 8           H    1    2    2
+#> 9           I    1    4    4
+#> 10          J    3    4    1
+#> 11          K    2    4    4
+#> 12          L    4    4    3
+#> 13          M    4    2    4
+#> 14          N    0    4    3
+#> 15          O    3    3    4
+#> 16          P    3    4    4
+#> 17          Q    3    4    4
+#> 18          R    3    4    3
+#> 19          S    2    2    3
+#> 20          T    2    3    3
+#> 21          U    4    4    4
+#> 22          V    3    3    3
+#> 23          W    4    4    3
+#> 24          X    4    3    3
+#> 25          Y    4    3    4
+```

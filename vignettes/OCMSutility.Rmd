@@ -438,18 +438,19 @@ count_genus <- agg_gen$count_df
 tax_genus <- reannotateTax(agg_gen$tax_df)
 
 relab <- relab(count_genus)
+
 # color specific phyla
-plotSunburst(relab = NULL, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges",
-                          "Bacteroidetes" = "Greens"))
+# plotSunburst(relab = NULL, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges",
+#                           "Bacteroidetes" = "Greens"))
 # color specific phyla taking into account of relative abundance
-plotSunburst(relab = relab, tax = tax_genus,  
-             palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+# plotSunburst(relab = relab, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
 
 # highlight specific genera
-plotSunburst(relab = relab, tax = tax_genus, 
-             palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
-             highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+# plotSunburst(relab = relab, tax = tax_genus, 
+#              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+#              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
 ```
 
 ## convert_platemap
@@ -595,4 +596,26 @@ p_list$var2
 # can put all pca plots into one figure with cowplot::plot_grid
 cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
 
+```
+
+## nsample_by_var
+This function counts the number of samples for each individual for a given metadata variable. This is useful in time course data when you want to check how complete the metadata variables are. This is complementary to `metadata_sparsity`, which tells you which gives information on missing values, while `nsample_by_var` gives information on the available metadata.
+
+Usage:
+
+Takes in a dataframe where samples are in rows and metadata variables are in columns. Providing the identifier column and the metadata variables to tally, the function returns a tally of the number of non-NA samples for each identifier for a given metadata variable. 
+
+In the example below, we have 25 patients, each with 4 time point samples, and three metadata variables.
+
+```{r}
+df <- data.frame(sample_id = paste0("sample", 1:100),
+                patient_id = rep(LETTERS[1:25], 4),
+                var1 = sample(c(rnorm(30, 10, 0.5), rnorm(40, 25, 2),
+                                rep(NA, 30)), 100),
+                var2 = sample(c(rnorm(65, 0.5, 0.01),
+                                rep(0, 20),
+rep(NA, 15)), 100),
+                var3 = sample(c(letters[1:5], NA), 100, replace=TRUE))
+
+nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 ```
