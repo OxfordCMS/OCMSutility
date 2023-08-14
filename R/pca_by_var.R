@@ -35,35 +35,31 @@
 #' @examples
 #'
 #' set.seed(1)
-#' data(iris)
-#' dd <- iris
+#' data(dss_example)
+#' ddata <- dss_example$merged_abundance_id[,2:26]
+#' rownames(ddata) <- dss_example$merged_abundance_id[,1]
+#' ddata <- as.data.frame(t(ddata))
 #'
-#' # setting up numeric version of Species
-#' dd$species_num <- NA
-#' dd$species_num[dd$Species == 'setosa'] <- 1
-#' dd$species_num[dd$Species == 'versicolor'] <- 2
-#' dd$species_num[dd$Species == 'virginica'] <- 3
+#' mdata <- dss_example$metadata
+#' mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
 #'
-#' # creating som dummy metadata variable
-#' dd$var1 <- rep(rnorm(15, 25, 3), each=10)
-#' dd$var2 <- rep(rnorm(10, 3, 0.5), 15)
-#'
-#' # adding sample identifiers
-#' rownames(dd) <- paste0('sample',1:nrow(dd))
-#' ddata <- dd[,1:4]
-#' mdata <- dd[,6:8]
-#'
+#' # creating some dummy metadata variable
+#' mdata$var1 <- rep(rnorm(5, 25, 3), each=5)
+#' mdata$var2 <- rep(rnorm(5, 3, 0.5), 5)
+#' mdata$var3 <- as.factor(rep(letters[1:5], each=5))
+#' mdata <- mdata[,c('Phenotype','var1','var2','var3')]
 #' p_list <- pca_by_var(ddata, mdata)
 #'
 #' # biplot
 #' p_list$main_pca
 #' # pca with metadata variables overlayed
-#' p_list$species_num
+#' p_list$Phenotype
 #' p_list$var1
 #' p_list$var2
+#' p_list$var3
 #'
 #' # can use cowplot::plot_grid to put all plots into one
-#' cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
+#' cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 
 pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
                        score_colour = FALSE, score_label=FALSE) {
@@ -149,8 +145,19 @@ pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
       theme_bw(14) +
       theme(legend.title=element_blank(),
             axis.title = element_blank()) +
-      scale_fill_gradientn(colours=brewer.pal(11,'Spectral')) +
       labs(subtitle=i)
+
+    if(is.numeric(mdata[,i])) {
+      p_curr <- p_curr +
+        scale_fill_gradientn(colours=brewer.pal(11,'Spectral'))
+    } else if(is.character(mdata[,i]) | is.factor(mdata[,i])) {
+      pal <- c(brewer.pal(8, 'Dark2'), brewer.pal(8, 'Pastel2'))
+
+      if(length(unique(mdata[,i])) <= length(pal)) {
+        p_curr <- p_curr +
+          scale_fill_manual(values=pal)
+      }
+    }
 
     out_list[[i]] <- p_curr
   }
