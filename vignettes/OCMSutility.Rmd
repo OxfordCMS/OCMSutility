@@ -559,42 +559,37 @@ met_sparse[[4]]
 
 ## pca_by_var
 
-This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Currently, only numeric metadata variables are allowed.
+This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors.
 
 ```{r pca_by_var}
 set.seed(1)
-data(iris)
-dd <- iris
+data(dss_example)
 
-# setting up numeric version of Species
-dd$species_num <- NA
-dd$species_num[dd$Species == 'setosa'] <- 1
-dd$species_num[dd$Species == 'versicolor'] <- 2
-dd$species_num[dd$Species == 'virginica'] <- 3
+# samples in rows
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- as.data.frame(t(ddata))
+mdata <- dss_example$metadata
+mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
 
-# creating som dummy metadata variable
-dd$var1 <- rep(rnorm(15, 25, 3), each=10)
-dd$var2 <- rep(rnorm(10, 3, 0.5), 15)
-
-# adding sample identifiers
-rownames(dd) <- paste0('sample',1:nrow(dd))
-ddata <- dd[,1:4]
-mdata <- dd[,6:8]
-
+# creating some dummy metadata variable
+mdata$var1 <- rep(rnorm(5, 25, 3), each=5)
+mdata$var2 <- rep(rnorm(5, 3, 0.5), 5)
+mdata$var3 <- as.factor(rep(letters[1:5], each=5))
+mdata <- mdata[,c('Phenotype','var1','var2','var3')]
 p_list <- pca_by_var(ddata, mdata)
 
 # biplot
 p_list$main_pca
 
 # pca with metadata variables overlayed
-p_list$species_num
-
+p_list$Phenotype
 p_list$var1
-
 p_list$var2
+p_list$var3
 
-# can put all pca plots into one figure with cowplot::plot_grid
-cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
+# can use cowplot::plot_grid to put all plots into one
+cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 
 ```
 
