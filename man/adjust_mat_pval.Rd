@@ -32,6 +32,6 @@ feat_mat <- t(feat_mat)
 # correlation matrix
 corr_result <- psych::corr.test(feat_mat)
 
-adjust_mat_pval(corr_result$p.value)
-adjust_mat_pval(corr_result$p.value, out_type='dataframe')
+adjust_mat_pval(corr_result$p)
+adjust_mat_pval(corr_result$p, out_type='dataframe')
 }
