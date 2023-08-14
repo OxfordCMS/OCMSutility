@@ -985,29 +985,25 @@ which can be useful during exploratory analysis where you want to see
 how different metadata variables map onto a PCA plot. This function
 produces a named list of plots, where the first plot is the score/biplot
 and subsequent plots are the same PCA plot but colour coded by a given
-metadata variable. Currently, only numeric metadata variables are
-allowed.
+metadata variable. Metadata variables can be numeric, character, or
+factors.
 
 ``` r
 set.seed(1)
-data(iris)
-dd <- iris
+data(dss_example)
 
-# setting up numeric version of Species
-dd$species_num <- NA
-dd$species_num[dd$Species == 'setosa'] <- 1
-dd$species_num[dd$Species == 'versicolor'] <- 2
-dd$species_num[dd$Species == 'virginica'] <- 3
+# samples in rows
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- as.data.frame(t(ddata))
+mdata <- dss_example$metadata
+mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
 
-# creating som dummy metadata variable
-dd$var1 <- rep(rnorm(15, 25, 3), each=10)
-dd$var2 <- rep(rnorm(10, 3, 0.5), 15)
-
-# adding sample identifiers
-rownames(dd) <- paste0('sample',1:nrow(dd))
-ddata <- dd[,1:4]
-mdata <- dd[,6:8]
-
+# creating some dummy metadata variable
+mdata$var1 <- rep(rnorm(5, 25, 3), each=5)
+mdata$var2 <- rep(rnorm(5, 3, 0.5), 5)
+mdata$var3 <- as.factor(rep(letters[1:5], each=5))
+mdata <- mdata[,c('Phenotype','var1','var2','var3')]
 p_list <- pca_by_var(ddata, mdata)
 
 # biplot
@@ -1019,32 +1015,36 @@ p_list$main_pca
 ``` r
 
 # pca with metadata variables overlayed
-p_list$species_num
+p_list$Phenotype
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-2.png)
 
 ``` r
-
 p_list$var1
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-3.png)
 
 ``` r
-
 p_list$var2
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-4.png)
 
 ``` r
-
-# can put all pca plots into one figure with cowplot::plot_grid
-cowplot::plot_grid(plotlist=list(p_list$species_num, p_list$var1, p_list$var2))
+p_list$var3
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-5.png)
+
+``` r
+
+# can use cowplot::plot_grid to put all plots into one
+cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-6.png)
 
 ## nsample\_by\_var
 
@@ -1077,31 +1077,31 @@ rep(NA, 15)), 100),
 
 nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 #>    patient_id var1 var2 var3
-#> 1           A    2    4    3
-#> 2           B    4    3    3
-#> 3           C    1    3    2
-#> 4           D    3    3    4
-#> 5           E    3    3    4
-#> 6           F    3    4    3
-#> 7           G    4    4    3
-#> 8           H    1    2    2
-#> 9           I    1    4    4
-#> 10          J    3    4    1
-#> 11          K    2    4    4
-#> 12          L    4    4    3
-#> 13          M    4    2    4
-#> 14          N    0    4    3
+#> 1           A    4    4    3
+#> 2           B    4    4    4
+#> 3           C    4    3    4
+#> 4           D    4    2    1
+#> 5           E    2    2    3
+#> 6           F    1    4    3
+#> 7           G    3    3    4
+#> 8           H    3    4    4
+#> 9           I    2    4    4
+#> 10          J    3    4    4
+#> 11          K    2    4    3
+#> 12          L    2    4    2
+#> 13          M    4    3    2
+#> 14          N    2    4    3
 #> 15          O    3    3    4
-#> 16          P    3    4    4
-#> 17          Q    3    4    4
-#> 18          R    3    4    3
-#> 19          S    2    2    3
-#> 20          T    2    3    3
-#> 21          U    4    4    4
-#> 22          V    3    3    3
-#> 23          W    4    4    3
-#> 24          X    4    3    3
-#> 25          Y    4    3    4
+#> 16          P    4    3    4
+#> 17          Q    1    4    3
+#> 18          R    3    3    3
+#> 19          S    2    4    3
+#> 20          T    3    4    4
+#> 21          U    4    3    1
+#> 22          V    4    2    4
+#> 23          W    0    4    4
+#> 24          X    2    3    4
+#> 25          Y    4    3    3
 ```
 
 ## sym\_mat2df
