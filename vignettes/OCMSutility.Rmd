@@ -619,3 +619,62 @@ rep(NA, 15)), 100),
 
 nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 ```
+
+## sym_mat2df
+
+Converts symmetrical matrix to long dataframe, with columns `x`, `y`, `value`. Helpful for correlation or distance matrices
+
+Usage:
+```{r}
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# correlation matrix
+corr_result <- cor(feat_mat)
+sym_mat2df(corr_result)
+```
+
+## adjust_mat_pval
+
+Adjust matrix of p-values for multiple correction and returns the adjusted p-values as symmertrical matrix or as long dataframe. Helpful for correlation matrices.
+
+Usage:
+```{r}
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# correlation matrix
+corr_result <- psych::corr.test(feat_mat)
+adjust_mat_pval(corr_result$p.value)
+adjust_mat_pval(corr_result$p.value, out_type='dataframe')
+```
+
+## compare_cor_ci
+
+Performs pairwise correlations of features with adjusted p-values. Correlations and confidence intervals calculated for each sample group.
+
+Usage:
+```{r}
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# metadata in same order
+met_df <- dss_example$metadata
+met_df <- met_df[match(rownames(feat_mat), met_df$sampleID),]
+compare_cor_ci(feat_mat, met_df$Phenotype)
+```
