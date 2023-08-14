@@ -174,14 +174,14 @@ knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 knitr::kable(head(aggregated_list[['tax_df']]))
 ```
 
-| featureID                      | sequence | Kingdom  | Phylum         | Class              | Order             | Family                         | Genus | Species | Taxon                                                                                                                      | n\_collapse |
-| :----------------------------- | :------- | :------- | :------------- | :----------------- | :---------------- | :----------------------------- | :---- | :------ | :------------------------------------------------------------------------------------------------------------------------- | ----------: |
-| Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae;g\_\_Acidaminococcus         |           4 |
-| Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae;g\_\_Phascolarctobacterium   |           4 |
-| Anaeroplasmataceae             | NA       | Bacteria | Tenericutes    | Mollicutes         | Anaeroplasmatales | Anaeroplasmataceae             | NA    | NA      | k\_\_Bacteria;p\_\_Tenericutes;c\_\_Mollicutes;o\_\_Anaeroplasmatales;f\_\_Anaeroplasmataceae;g\_\_Anaeroplasma            |           2 |
-| Bacteroidaceae                 | NA       | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales     | Bacteroidaceae                 | NA    | NA      | k\_\_Bacteria;p\_\_Bacteroidetes;c\_\_Bacteroidia;o\_\_Bacteroidales;f\_\_Bacteroidaceae;g\_\_Bacteroides                  |          39 |
-| Bifidobacteriaceae             | NA       | Bacteria | Actinobacteria | Actinobacteria     | Bifidobacteriales | Bifidobacteriaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Actinobacteria;c\_\_Actinobacteria;o\_\_Bifidobacteriales;f\_\_Bifidobacteriaceae;g\_\_Bifidobacterium  |           3 |
-| Burkholderiales incertae sedis | NA       | Bacteria | Proteobacteria | Betaproteobacteria | Burkholderiales   | Burkholderiales incertae sedis | NA    | NA      | k\_\_Bacteria;p\_\_Proteobacteria;c\_\_Betaproteobacteria;o\_\_Burkholderiales;f\_\_Burkholderiales incertae sedis;g\_\_NA |           1 |
+| featureID                      | sequence | Kingdom  | Phylum         | Class              | Order             | Family                         | Genus | Species | Taxon                                                                                                              | n\_collapse |
+| :----------------------------- | :------- | :------- | :------------- | :----------------- | :---------------- | :----------------------------- | :---- | :------ | :----------------------------------------------------------------------------------------------------------------- | ----------: |
+| Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae                      |           4 |
+| Anaeroplasmataceae             | NA       | Bacteria | Tenericutes    | Mollicutes         | Anaeroplasmatales | Anaeroplasmataceae             | NA    | NA      | k\_\_Bacteria;p\_\_Tenericutes;c\_\_Mollicutes;o\_\_Anaeroplasmatales;f\_\_Anaeroplasmataceae                      |           2 |
+| Bacteroidaceae                 | NA       | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales     | Bacteroidaceae                 | NA    | NA      | k\_\_Bacteria;p\_\_Bacteroidetes;c\_\_Bacteroidia;o\_\_Bacteroidales;f\_\_Bacteroidaceae                           |          39 |
+| Bifidobacteriaceae             | NA       | Bacteria | Actinobacteria | Actinobacteria     | Bifidobacteriales | Bifidobacteriaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Actinobacteria;c\_\_Actinobacteria;o\_\_Bifidobacteriales;f\_\_Bifidobacteriaceae               |           3 |
+| Burkholderiales incertae sedis | NA       | Bacteria | Proteobacteria | Betaproteobacteria | Burkholderiales   | Burkholderiales incertae sedis | NA    | NA      | k\_\_Bacteria;p\_\_Proteobacteria;c\_\_Betaproteobacteria;o\_\_Burkholderiales;f\_\_Burkholderiales incertae sedis |           1 |
+| Clostridiaceae 1               | NA       | Bacteria | Firmicutes     | Clostridia         | Clostridiales     | Clostridiaceae 1               | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Clostridia;o\_\_Clostridiales;f\_\_Clostridiaceae 1                             |           6 |
 
 ## reannotateTax
 
@@ -397,7 +397,8 @@ p <- plot_data$p +
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 p
-#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2
+#> 3.3.4.
 #> i Please use "none" instead.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
@@ -655,7 +656,8 @@ rarefaction <- rarefaction(asv_counts)
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
 
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.
+#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2
+#> 3.3.4.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
@@ -1100,4 +1102,141 @@ nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 #> 23          W    4    4    3
 #> 24          X    4    3    3
 #> 25          Y    4    3    4
+```
+
+## sym\_mat2df
+
+Converts symmetrical matrix to long dataframe, with columns `x`, `y`,
+`value`. Helpful for correlation or distance matrices
+
+Usage:
+
+``` r
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# correlation matrix
+corr_result <- cor(feat_mat)
+sym_mat2df(corr_result)
+#>      X1   X2        value
+#> 1  ASV1 ASV2  0.328933077
+#> 2  ASV1 ASV3  0.458898743
+#> 3  ASV1 ASV4  0.273324036
+#> 4  ASV1 ASV5  0.770830067
+#> 5  ASV1 ASV6  0.577547045
+#> 6  ASV2 ASV3  0.162107933
+#> 7  ASV2 ASV4 -0.002684052
+#> 8  ASV2 ASV5  0.384139309
+#> 9  ASV2 ASV6  0.318054017
+#> 10 ASV3 ASV4  0.102121821
+#> 11 ASV3 ASV5  0.700666100
+#> 12 ASV3 ASV6  0.834738679
+#> 13 ASV4 ASV5  0.315981925
+#> 14 ASV4 ASV6  0.121482740
+#> 15 ASV5 ASV6  0.749430510
+```
+
+## adjust\_mat\_pval
+
+Adjust matrix of p-values for multiple correction and returns the
+adjusted p-values as symmertrical matrix or as long dataframe. Helpful
+for correlation matrices.
+
+Usage:
+
+``` r
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# correlation matrix
+corr_result <- psych::corr.test(feat_mat)
+adjust_mat_pval(corr_result$p)
+#>              ASV1 ASV2         ASV3 ASV4         ASV5         ASV6
+#> ASV1 1.0000000000    1 5.257982e-01    1 0.0006842817 8.253906e-02
+#> ASV2 1.0000000000    1 1.000000e+00    1 1.0000000000 1.000000e+00
+#> ASV3 0.5257981878    1 1.000000e+00    1 0.0043193475 4.783898e-05
+#> ASV4 1.0000000000    1 1.000000e+00    1 1.0000000000 1.000000e+00
+#> ASV5 0.0006842817    1 4.319347e-03    1 1.0000000000 1.053959e-03
+#> ASV6 0.0825390647    1 4.783898e-05    1 0.0010539587 1.000000e+00
+adjust_mat_pval(corr_result$p, out_type='dataframe')
+#>      X1   X2      padjust
+#> 1  ASV1 ASV2 1.000000e+00
+#> 2  ASV1 ASV3 5.257982e-01
+#> 3  ASV1 ASV4 1.000000e+00
+#> 4  ASV1 ASV5 6.842817e-04
+#> 5  ASV1 ASV6 8.253906e-02
+#> 6  ASV2 ASV3 1.000000e+00
+#> 7  ASV2 ASV4 1.000000e+00
+#> 8  ASV2 ASV5 1.000000e+00
+#> 9  ASV2 ASV6 1.000000e+00
+#> 10 ASV3 ASV4 1.000000e+00
+#> 11 ASV3 ASV5 4.319347e-03
+#> 12 ASV3 ASV6 4.783898e-05
+#> 13 ASV4 ASV5 1.000000e+00
+#> 14 ASV4 ASV6 1.000000e+00
+#> 15 ASV5 ASV6 1.053959e-03
+```
+
+## compare\_cor\_ci
+
+Performs pairwise correlations of features with adjusted p-values.
+Correlations and confidence intervals calculated for each sample group.
+
+Usage:
+
+``` r
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# metadata in same order
+met_df <- dss_example$metadata
+met_df <- met_df[match(rownames(feat_mat), met_df$sampleID),]
+compare_cor_ci(feat_mat, met_df$Phenotype)
+#> Warning in cor(x, use = use, method = method): the standard deviation is zero
+#>       x    y group  n           r          p     p.adj    lower_ci  upper_ci
+#> 1  ASV1 ASV2   DSS 13          NA         NA        NA          NA        NA
+#> 2  ASV1 ASV3   DSS 13 -0.17292227 0.57211293 0.8796790 -0.66093523 0.4178774
+#> 3  ASV1 ASV4   DSS 13 -0.34430158 0.94229442 0.7479965 -0.75252840 0.2550722
+#> 4  ASV1 ASV5   DSS 13 -0.02232353         NA 0.9422944 -0.56634285 0.5352453
+#> 5  ASV1 ASV6   DSS 13          NA 0.58645268        NA          NA        NA
+#> 6  ASV2 ASV3   DSS 13          NA 0.24933216        NA          NA        NA
+#> 7  ASV2 ASV4   DSS 13          NA         NA        NA          NA        NA
+#> 8  ASV2 ASV5   DSS 13          NA         NA        NA          NA        NA
+#> 9  ASV2 ASV6   DSS 13          NA         NA        NA          NA        NA
+#> 10 ASV3 ASV4   DSS 13  0.49936118         NA 0.4939076 -0.07121951 0.8237103
+#> 11 ASV3 ASV5   DSS 13  0.16659937         NA 0.8796790 -0.42323641 0.6572529
+#> 12 ASV3 ASV6   DSS 13          NA 0.81852228        NA          NA        NA
+#> 13 ASV4 ASV5   DSS 13 -0.07067946 0.08231793 0.9422944 -0.59836252 0.4997685
+#> 14 ASV4 ASV6   DSS 13          NA         NA        NA          NA        NA
+#> 15 ASV5 ASV6   DSS 13          NA         NA        NA          NA        NA
+#> 16 ASV1 ASV2 water 12  0.18564204 0.56349873 0.8193311 -0.43455744 0.6864130
+#> 17 ASV1 ASV3 water 12  0.08650613 0.78922369 0.8455968 -0.51285678 0.6291719
+#> 18 ASV1 ASV4 water 12  0.13702012 0.03866202 0.8193311 -0.47416823 0.6590932
+#> 19 ASV1 ASV5 water 12  0.60121866 0.69985094 0.2899652  0.04170797 0.8736692
+#> 20 ASV1 ASV6 water 12  0.12008510 0.14872901 0.8193311 -0.48740718 0.6492428
+#> 21 ASV2 ASV3 water 12 -0.04731533 0.67110167 0.8839068 -0.60479416 0.5412845
+#> 22 ASV2 ASV4 water 12 -0.12450292 0.71008691 0.8193311 -0.65182972 0.4839803
+#> 23 ASV2 ASV5 water 12  0.25704233 0.41994958 0.8193311 -0.37168987 0.7241234
+#> 24 ASV2 ASV6 water 12  0.12330163 0.01030401 0.8193311 -0.48491396 0.6511275
+#> 25 ASV3 ASV4 water 12 -0.18837193 0.88390679 0.8193311 -0.68790611 0.4322600
+#> 26 ASV3 ASV5 water 12  0.44347367 0.70262984 0.7436451 -0.17495605 0.8109741
+#> 27 ASV3 ASV6 water 12  0.70591564 0.54824959 0.1545601  0.22191935 0.9108202
+#> 28 ASV4 ASV5 water 12  0.19281163 0.55767227 0.8193311 -0.42850631 0.6903254
+#> 29 ASV4 ASV6 water 12 -0.29445657 0.35286181 0.8193311 -0.74282830 0.3362712
+#> 30 ASV5 ASV6 water 12  0.36129770 0.24854130 0.8193311 -0.26821893 0.7745888
 ```
