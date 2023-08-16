@@ -96,7 +96,7 @@ pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
       p_biplot <- autoplot(pcx, x=PC[1], y=PC[2], data=mdata,
                            label=score_label,
                            loadings=TRUE,
-                           loadings.label=load_label, loadings.colour=NA,
+                           loadings.label=TRUE, loadings.colour=NA,
                            loadings.label.colour='purple')
     } else {
       p_biplot <- autoplot(pcx, x=PC[1], y=PC[2], data=mdata,
