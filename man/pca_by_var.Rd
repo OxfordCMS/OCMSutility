@@ -18,7 +18,8 @@ pca_by_var(
 rows should match mdata}
 
 \item{mdata}{dataframe. samples in rows. sample ids in rownames.
-rows should match ddata. all variables should be numeric.}
+rows should match ddata. Variables can be numeric,
+characters, or factors}
 
 \item{PC}{numeric vector of length 2. specifies the PCs to plot.
 default is `c(1,2)`}
