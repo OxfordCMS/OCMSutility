@@ -7,7 +7,8 @@
 #' @param ddata dataframe. samples in rows. sample ids in rownames.
 #'              rows should match mdata
 #' @param mdata dataframe. samples in rows. sample ids in rownames.
-#'              rows should match ddata. all variables should be numeric.
+#'              rows should match ddata. Variables can be numeric,
+#'              characters, or factors
 #' @param PC numeric vector of length 2. specifies the PCs to plot.
 #'           default is `c(1,2)`
 #' @param biplot logical. show PCA as score plot or biplot
@@ -95,7 +96,7 @@ pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
       p_biplot <- autoplot(pcx, x=PC[1], y=PC[2], data=mdata,
                            label=score_label,
                            loadings=TRUE,
-                           loadings.label=TRUE, loadings.colour=NA,
+                           loadings.label=load_label, loadings.colour=NA,
                            loadings.label.colour='purple')
     } else {
       p_biplot <- autoplot(pcx, x=PC[1], y=PC[2], data=mdata,
@@ -141,7 +142,7 @@ pca_by_var <- function(ddata, mdata, PC=c(1,2), biplot=TRUE,
     x = sprintf("PC%d", PC[1])
     y = sprintf("PC%d", PC[2])
     p_curr <- ggplot(pdata, aes(x=!!sym(x), y=!!sym(y), fill=!!sym(i))) +
-      geom_point(shape=21, size=4) +
+      geom_point(shape=21, size=4, alpha=0.6) +
       theme_bw(14) +
       theme(legend.title=element_blank(),
             axis.title = element_blank()) +
