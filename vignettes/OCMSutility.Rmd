@@ -38,22 +38,40 @@ library(tibble)
 
 This package was created by members of the Oxford Centre for Microbiome Studies (OCMS). It is a collection of functions that we have found useful and hope that they are useful to others. The functions span data manipulation, statistical analysis and data visualisation, predominantly for microbiome data. Functions in this package and use cases are documented below.
 
-## example data
+# Package Data
+This package comes with an example 16S dataset, which is the DSS study ([link needed]). Different aspects of this example data can be accessed.
 
-An example 16S dataset is included in the package. You can load this with `data(asv_example)`
+## asv_example
 
-```{r}
+A dataframe with samples in columns, features in rows. First column is `sequence`.
+
+```{r asv_example}
 data(asv_example)
 
 # 49 ASVs and 296 samples
 dim(asv_example)
+```
+
+## tax_example
+A dataframe of taxonomic classification of ASVs in `asv_example`
+```{r tax_example}
+data(tax_example)
 
 # 49 ASVs, with taxonomic levels in columns 
 dim(tax_example)
 colnames(tax_example)
 ```
 
+## dss_example
+A list of dataframes. Contains ASV count, ASV taxonomy, and metadata for the DSS experiment. Dataframes are structured to be compatible with `OCMSlooksy`
 
+```{r dss_example}
+data(dss_example)
+
+summary(dss_example)
+```
+
+# 16S Data Manipulation
 ## filterFeature
 
 Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
@@ -192,6 +210,54 @@ new_tax <- reannotateTax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
+## clr
+
+clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
+
+Usage:
+
+```{r clr}
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
+
+clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+
+# returns data frame with transformed abundance estamtes with imputed zeroes
+class(clr_transformed)
+dim(clr_transformed)
+```
+
+This will return a data frame with transformed abundance estimates (most common use case). It is also possible to return the ALDEx2 object instead.
+
+```{r clr_object}
+clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE)
+
+# returns ALDEx2 object
+class(clr_transformed)
+```
+
+## metfile_init
+
+This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
+
+Usage:
+This function takes the database file returned from [`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+
+`db_file` is the rsqlite database file
+`out_dir` output directory. default `NULL` so no output file written.
+`ref_table` name of table in the database from which `sampleID` is generated. defaults NULL which uses `merged_abundance_id` (the count table) to get sampleID
+`id_orient` indicates orientation of sampleID in `ref_table` in rows or in columns. options are `row` or `col`
+`dummy` allows you to make a dummy column of NAs
+
+```{r metfile_init, eval=FALSE}
+db_file <- "/path/to/db/file"
+met <- metfile_init(db_file, dummy = "Group")
+
+```
+
+# Data Visualisation
+These functions produce plots.
+
 ## plotPCoA
 
  This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
@@ -258,43 +324,6 @@ p <- plot_data$p +
 p
 ```
 
-## getPalette
-
-This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
-
-Usage:
-
-```{r getPalette}
-getPalette(n=10, palette="Set3", preview=TRUE)
-```
-
-
-## clr
-
-clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
-
-Usage:
-
-```{r clr}
-# rownames have to be features
-asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
-
-clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
-
-# returns data frame with transformed abundance estamtes with imputed zeroes
-class(clr_transformed)
-dim(clr_transformed)
-```
-
-This will return a data frame with transformed abundance estimates (most common use case). It is also possible to return the ALDEx2 object instead.
-
-```{r clr_object}
-clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE)
-
-# returns ALDEx2 object
-class(clr_transformed)
-```
-
 ## featurebox
 
 This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
@@ -330,6 +359,200 @@ The default palettes used are "Set2", "Set3" and "Set4", and the result will dep
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
   scale_colour_manual(values=getPalette(n=5, palette="Set1"))
 
+```
+
+## pca_by_var
+
+This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors.
+
+```{r pca_by_var}
+set.seed(1)
+data(dss_example)
+
+# samples in rows
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- as.data.frame(t(ddata))
+mdata <- dss_example$metadata
+mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
+
+# creating some dummy metadata variable
+mdata$var1 <- rep(rnorm(5, 25, 3), each=5)
+mdata$var2 <- rep(rnorm(5, 3, 0.5), 5)
+mdata$var3 <- as.factor(rep(letters[1:5], each=5))
+mdata <- mdata[,c('Phenotype','var1','var2','var3')]
+p_list <- pca_by_var(ddata, mdata)
+
+# biplot
+p_list$main_pca
+
+# pca with metadata variables overlayed
+p_list$Phenotype
+p_list$var1
+p_list$var2
+p_list$var3
+
+# can use cowplot::plot_grid to put all plots into one
+cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
+
+```
+
+## pcoa_by_var
+
+This function overlays numeric metadata variables onto a PCoA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCoA plot. This function produces a named list of plots, where the first plot is the plain PCoA and subsequent plots are the same PCoA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors, but confidence interval ellipses will only be drawn for categorical variables.
+
+```{r pcoa_by_var}
+set.seed(1)
+data(dss_example)
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- as.data.frame(t(relab(ddata)))
+
+mdata <- dss_example$metadata
+mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
+
+# creating some dummy metadata variable
+mdata$var1 <- rnorm(25, 0.5, 3)
+mdata$var2 <- rep(LETTERS[21:25], 5)
+mdata$var3 <- as.factor(rep(letters[1:5], each=5))
+mdata <- mdata[,c('Phenotype','var1','var2','var3')]
+p_list <- pcoa_by_var(ddata, mdata)
+
+# pcoa
+p_list$main_pcoa
+# pcoa with metadata variables overlayed. no ellipses draw when variables are numeric
+p_list$Phenotype
+p_list$var1
+p_list$var2
+p_list$var3
+
+# can use cowplot::plot_grid to put all plots into one
+cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
+```
+
+## plotSunburst
+Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level. 
+
+You specify a palette for each Phylum, where values are the colour palette to use and name is the corresponding phylum (e.g.`c('Bacteroidetes' = 'Oranges', 'Firmicutes' = 'Greens')`). Palettes should be from [rColorBrewer](https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html). If the number of palettes specified doesn't include all phyla in the tax table, only the specified ones will be coloured and the rest will be in grey. If palettes is set to NULL, the default colours selected by `sunbrustR` will be used.
+
+Additionally the `highlight` parameter can be used to highlight a specific taxon at any taxonomic level and the ones that are not specified will be coloured as grey. e.g. `list("Family"=c("Enterococcaceae","Ruminacoccaceae")`. This is applied after palettes is used to colour by phylum if palettes argument is specified so you can use the `palettes` argument to choose your colour and all taxa not specified by `hightlight` are set to grey.
+
+Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotateTax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
+
+```{r plotSunburst}
+data("dss_example")
+# set count feature ids as rownames
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+
+# clean up some sample names
+colnames(count_df) <- paste0('id', colnames(count_df))
+tax_df <- dss_example$merged_taxonomy
+
+# aggregate counts
+agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+count_genus <- agg_gen$count_df
+
+# reannotate taxonomy
+tax_genus <- reannotateTax(agg_gen$tax_df)
+
+relab <- relab(count_genus)
+
+# color specific phyla
+# plotSunburst(relab = NULL, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges",
+#                           "Bacteroidetes" = "Greens"))
+# color specific phyla taking into account of relative abundance
+# plotSunburst(relab = relab, tax = tax_genus,  
+#              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
+
+# highlight specific genera
+# plotSunburst(relab = relab, tax = tax_genus, 
+#              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
+#              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
+```
+
+# Analysis
+These functions perform simple analyses.
+
+## truePosRate
+Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
+
+Usage:
+
+```{r truPosRate}
+# this would be better exemplified with actual std data rather than the example samples
+data("dss_example")
+data(zymobiomics)
+
+# set count feature ids as rownames
+count_df <- dss_example$merged_abundance_id %>%
+  column_to_rownames('featureID')
+
+# clean up some sample names
+colnames(count_df) <- paste0('id', colnames(count_df))
+tax_df <- dss_example$merged_taxonomy
+
+# aggregate counts
+agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+genus_relab <- relab(agg_gen$count_df)
+
+true_pos_result <- truePosRate(relab=genus_relab,
+                                    annotations=zymobiomics$anno_ncbi_16s,
+                                    level='genus', cutoff=0.01)
+
+# plot true pos rate
+p <- ggplot(true_pos_result,
+            aes(x=rank, y=true.pos.rate, colour=label, group=sample)) +
+  geom_point() +
+  theme_bw() +
+  ylab("TP / (TP + FP)") +
+  scale_colour_manual(values=c("grey", "purple")) +
+  facet_wrap(~sample, scale="free")
+
+p
+```
+
+## nsample_by_var
+This function counts the number of samples for each individual for a given metadata variable. This is useful in time course data when you want to check how complete the metadata variables are. This is complementary to `metadata_sparsity`, which tells you which gives information on missing values, while `nsample_by_var` gives information on the available metadata.
+
+Usage:
+
+Takes in a dataframe where samples are in rows and metadata variables are in columns. Providing the identifier column and the metadata variables to tally, the function returns a tally of the number of non-NA samples for each identifier for a given metadata variable. 
+
+In the example below, we have 25 patients, each with 4 time point samples, and three metadata variables.
+
+```{r nsample_by_var}
+df <- data.frame(sample_id = paste0("sample", 1:100),
+                patient_id = rep(LETTERS[1:25], 4),
+                var1 = sample(c(rnorm(30, 10, 0.5), rnorm(40, 25, 2),
+                                rep(NA, 30)), 100),
+                var2 = sample(c(rnorm(65, 0.5, 0.01),
+                                rep(0, 20),
+rep(NA, 15)), 100),
+                var3 = sample(c(letters[1:5], NA), 100, replace=TRUE))
+
+nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
+```
+
+## compare_cor_ci
+
+Performs pairwise correlations of features with adjusted p-values. Correlations and confidence intervals calculated for each sample group.
+
+Usage:
+```{r compare_cor_ci}
+# load example data
+data(dss_example)
+
+# subset features, features in columns
+feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
+rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
+feat_mat <- t(feat_mat)
+
+# metadata in same order
+met_df <- dss_example$metadata
+met_df <- met_df[match(rownames(feat_mat), met_df$sampleID),]
+compare_cor_ci(feat_mat, met_df$Phenotype)
 ```
 
 ## dissimilarity
@@ -454,126 +677,6 @@ p$layers[[2]] <- NULL
 p
 ```
 
-
-## plotSunburst
-Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level. 
-
-You specify a palette for each Phylum, where values are the colour palette to use and name is the corresponding phylum (e.g.`c('Bacteroidetes' = 'Oranges', 'Firmicutes' = 'Greens')`). Palettes should be from [rColorBrewer](https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html). If the number of palettes specified doesn't include all phyla in the tax table, only the specified ones will be coloured and the rest will be in grey. If palettes is set to NULL, the default colours selected by `sunbrustR` will be used.
-
-Additionally the `highlight` parameter can be used to highlight a specific taxon at any taxonomic level and the ones that are not specified will be coloured as grey. e.g. `list("Family"=c("Enterococcaceae","Ruminacoccaceae")`. This is applied after palettes is used to colour by phylum if palettes argument is specified so you can use the `palettes` argument to choose your colour and all taxa not specified by `hightlight` are set to grey.
-
-Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotateTax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
-
-```{r plotSunburst}
-data("dss_example")
-# set count feature ids as rownames
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-
-# clean up some sample names
-colnames(count_df) <- paste0('id', colnames(count_df))
-tax_df <- dss_example$merged_taxonomy
-
-# aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
-count_genus <- agg_gen$count_df
-
-# reannotate taxonomy
-tax_genus <- reannotateTax(agg_gen$tax_df)
-
-relab <- relab(count_genus)
-
-# color specific phyla
-# plotSunburst(relab = NULL, tax = tax_genus,  
-#              palettes = c("Proteobacteria" = "Oranges",
-#                           "Bacteroidetes" = "Greens"))
-# color specific phyla taking into account of relative abundance
-# plotSunburst(relab = relab, tax = tax_genus,  
-#              palettes = c("Proteobacteria" = "Oranges", "Bacteroidetes" = "Greens"))
-
-# highlight specific genera
-# plotSunburst(relab = relab, tax = tax_genus, 
-#              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
-#              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
-```
-
-## convert_platemap
-
-This function converts excel plate map to long data frame with map locations. It uses [readxl](https://readxl.tidyverse.org) to read in excel file.
-
-Usage:
-You supply the function with the excel file and specify the sheet name (if applicable) and the cell range that contains your plate map. `convert_platemap` then converts the platemap into a long data frame. The `drop_empty` function allows your to drop unlabeled wells.
-
-```{r convert-platemap, eval=FALSE}
-plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
-                              map_range = 'A1:H12') 
-```
-
-```{r convert-platemap-demo, echo = FALSE}
-# example output of convert_platemap
-data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
-           col = rep(1:12, 8),
-           row = rep(LETTERS[1:8], each = 12),
-           sample_name = paste0('sample_name', 1:96)) 
-```
-
-## truePosRate
-Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
-
-Usage:
-
-```{r truPosRate}
-# this would be better exemplified with actual std data rather than the example samples
-data("dss_example")
-data(zymobiomics)
-
-# set count feature ids as rownames
-count_df <- dss_example$merged_abundance_id %>%
-  column_to_rownames('featureID')
-
-# clean up some sample names
-colnames(count_df) <- paste0('id', colnames(count_df))
-tax_df <- dss_example$merged_taxonomy
-
-# aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
-genus_relab <- relab(agg_gen$count_df)
-
-true_pos_result <- truePosRate(relab=genus_relab,
-                                    annotations=zymobiomics$anno_ncbi_16s,
-                                    level='genus', cutoff=0.01)
-
-# plot true pos rate
-p <- ggplot(true_pos_result,
-            aes(x=rank, y=true.pos.rate, colour=label, group=sample)) +
-  geom_point() +
-  theme_bw() +
-  ylab("TP / (TP + FP)") +
-  scale_colour_manual(values=c("grey", "purple")) +
-  facet_wrap(~sample, scale="free")
-
-p
-```
-
-## metfile_init
-
-This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
-
-Usage:
-This function takes the database file returned from [`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
-
-`db_file` is the rsqlite database file
-`out_dir` output directory. default `NULL` so no output file written.
-`ref_table` name of table in the database from which `sampleID` is generated. defaults NULL which uses `merged_abundance_id` (the count table) to get sampleID
-`id_orient` indicates orientation of sampleID in `ref_table` in rows or in columns. options are `row` or `col`
-`dummy` allows you to make a dummy column of NAs
-
-```{r metfile_init, eval=FALSE}
-db_file <- "/path/to/db/file"
-met <- metfile_init(db_file, dummy = "Group")
-
-```
-
 ## metadata_sparsity
 
 This function checks your metadata for the number of missing values in each sample. This function can be used to check how sparse the metadata is. In human studies, it is easy to have sparse metadata which inadvertently gives subsets of samples simply based on the amount of available information. This function tallies the number of NA in each sample and returns subsets of samples based on the number of missing values they have.
@@ -601,95 +704,37 @@ met_sparse[[3]]
 met_sparse[[4]]
 ```
 
-## pca_by_var
+# Utility
+These functions are helful for data manipulation in general.
 
-This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors.
+## getPalette
 
-```{r pca_by_var}
-set.seed(1)
-data(dss_example)
-
-# samples in rows
-ddata <- dss_example$merged_abundance_id[,2:26]
-rownames(ddata) <- dss_example$merged_abundance_id[,1]
-ddata <- as.data.frame(t(ddata))
-mdata <- dss_example$metadata
-mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
-
-# creating some dummy metadata variable
-mdata$var1 <- rep(rnorm(5, 25, 3), each=5)
-mdata$var2 <- rep(rnorm(5, 3, 0.5), 5)
-mdata$var3 <- as.factor(rep(letters[1:5], each=5))
-mdata <- mdata[,c('Phenotype','var1','var2','var3')]
-p_list <- pca_by_var(ddata, mdata)
-
-# biplot
-p_list$main_pca
-
-# pca with metadata variables overlayed
-p_list$Phenotype
-p_list$var1
-p_list$var2
-p_list$var3
-
-# can use cowplot::plot_grid to put all plots into one
-cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
-
-```
-
-## pcoa_by_var
-
-This function overlays numeric metadata variables onto a PCoA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCoA plot. This function produces a named list of plots, where the first plot is the plain PCoA and subsequent plots are the same PCoA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors, but confidence interval ellipses will only be drawn for categorical variables.
-
-```{r pcoa_by_var}
-set.seed(1)
-data(dss_example)
-ddata <- dss_example$merged_abundance_id[,2:26]
-rownames(ddata) <- dss_example$merged_abundance_id[,1]
-ddata <- as.data.frame(t(relab(ddata)))
-
-mdata <- dss_example$metadata
-mdata <- mdata[match(rownames(ddata), mdata$sampleID),]
-
-# creating some dummy metadata variable
-mdata$var1 <- rnorm(25, 0.5, 3)
-mdata$var2 <- rep(LETTERS[21:25], 5)
-mdata$var3 <- as.factor(rep(letters[1:5], each=5))
-mdata <- mdata[,c('Phenotype','var1','var2','var3')]
-p_list <- pcoa_by_var(ddata, mdata)
-
-# pcoa
-p_list$main_pcoa
-# pcoa with metadata variables overlayed. no ellipses draw when variables are numeric
-p_list$Phenotype
-p_list$var1
-p_list$var2
-p_list$var3
-
-# can use cowplot::plot_grid to put all plots into one
-cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
-```
-
-## nsample_by_var
-This function counts the number of samples for each individual for a given metadata variable. This is useful in time course data when you want to check how complete the metadata variables are. This is complementary to `metadata_sparsity`, which tells you which gives information on missing values, while `nsample_by_var` gives information on the available metadata.
+This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
 
 Usage:
 
-Takes in a dataframe where samples are in rows and metadata variables are in columns. Providing the identifier column and the metadata variables to tally, the function returns a tally of the number of non-NA samples for each identifier for a given metadata variable. 
+```{r getPalette}
+getPalette(n=10, palette="Set3", preview=TRUE)
+```
 
-In the example below, we have 25 patients, each with 4 time point samples, and three metadata variables.
+## convert_platemap
 
-```{r nsample_by_var}
-df <- data.frame(sample_id = paste0("sample", 1:100),
-                patient_id = rep(LETTERS[1:25], 4),
-                var1 = sample(c(rnorm(30, 10, 0.5), rnorm(40, 25, 2),
-                                rep(NA, 30)), 100),
-                var2 = sample(c(rnorm(65, 0.5, 0.01),
-                                rep(0, 20),
-rep(NA, 15)), 100),
-                var3 = sample(c(letters[1:5], NA), 100, replace=TRUE))
+This function converts excel plate map to long data frame with map locations. It uses [readxl](https://readxl.tidyverse.org) to read in excel file.
 
-nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
+Usage:
+You supply the function with the excel file and specify the sheet name (if applicable) and the cell range that contains your plate map. `convert_platemap` then converts the platemap into a long data frame. The `drop_empty` function allows your to drop unlabeled wells.
+
+```{r convert-platemap, eval=FALSE}
+plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
+                              map_range = 'A1:H12') 
+```
+
+```{r convert-platemap-demo, echo = FALSE}
+# example output of convert_platemap
+data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
+           col = rep(1:12, 8),
+           row = rep(LETTERS[1:8], each = 12),
+           sample_name = paste0('sample_name', 1:96)) 
 ```
 
 ## sym_mat2df
@@ -729,26 +774,6 @@ feat_mat <- t(feat_mat)
 corr_result <- psych::corr.test(feat_mat)
 adjust_mat_pval(corr_result$p)
 adjust_mat_pval(corr_result$p, out_type='dataframe')
-```
-
-## compare_cor_ci
-
-Performs pairwise correlations of features with adjusted p-values. Correlations and confidence intervals calculated for each sample group.
-
-Usage:
-```{r compare_cor_ci}
-# load example data
-data(dss_example)
-
-# subset features, features in columns
-feat_mat <- dss_example$merged_abundance_id[1:6,2:26]
-rownames(feat_mat) <- dss_example$merged_abundance_id[1:6,1]
-feat_mat <- t(feat_mat)
-
-# metadata in same order
-met_df <- dss_example$metadata
-met_df <- met_df[match(rownames(feat_mat), met_df$sampleID),]
-compare_cor_ci(feat_mat, met_df$Phenotype)
 ```
 
 ## remove_geom
