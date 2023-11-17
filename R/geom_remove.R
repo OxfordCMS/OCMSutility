@@ -10,13 +10,15 @@
 #' d <- data.frame(
 #' x = runif(10),
 #' y = runif(10),
-#' label = sprintf("label%s", 1:10)
+#' label = sprintf("label%s", 1:10))
 #'
 #' # ggplot with geom_text_repel from ggrepel
-#' p <- ggplot(d, aes(x, y, label = label)) + geom_point() + geom_text_repel()
+#' p <- ggplot(d, aes(x, y, label = label)) +
+#'     geom_point() +
+#'     geom_text()
 #'
 #' # Remove the labels added by ggrepel.
-#' p <- remove_geom(p, "GeomTextRepel")
+#' p <- remove_geom(p, "GeomText")
 
 remove_geom <- function(ggplot2_object, geom_type) {
   # Delete layers that match the requested type.
