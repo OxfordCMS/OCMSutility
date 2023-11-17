@@ -397,8 +397,7 @@ p <- plot_data$p +
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 p
-#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2
-#> 3.3.4.
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
 #> i Please use "none" instead.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
@@ -528,14 +527,15 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 
 ## dissimilarity
 
-The purpose of this function is to determine dissimilarity between
-samples using Bray-Curtis dissimilarity. This is typically done if you
-want to compare dissimilarity between groups or compare
-within-individual dissimilarity with between-individual similarity where
-you have multiple samples per individual. The function takes a relative
-abundance matrix and relevant metadata as input and outputs a data frame
-with Bray-Curtis dissimilarity measure that can be plotted. Below is an
-example where this may be of use.
+This function is bested used for repeated measures data. The purpose of
+this function is to determine dissimilarity between samples using
+Bray-Curtis dissimilarity. This is typically done if you want to compare
+dissimilarity between groups or compare within-individual dissimilarity
+with between-individual similarity where you have multiple samples per
+individual. The function takes a relative abundance matrix and relevant
+metadata as input and outputs a data frame with Bray-Curtis
+dissimilarity measure that can be plotted. Below is an example where
+this may be of use.
 
 Usage:
 
@@ -615,6 +615,66 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/dissimilarity-1.png)
 
+## bcdissimilarity
+
+Useful for measuring sample dissimilarity using Bray-Curtis distances.
+You can supply a metadata variable to assign comparisons as either
+within-group or between group. This is useful when assessing the within
+group dissimilarity (either as a whole, or for each individual group)
+compared to between group dissimilarity. This function differs from
+`dissimilarity` in that this can be applied to non-repeated measures
+data.
+
+If within/between group assignments are not necessary, set `var=NULL`
+
+This function returns a list:
+
+  - `bc_df` long dataframe of dissimilarity scores respective metadata
+    of the comparison
+  - `bc_dist` symmetrical matrix of Bray-Curtis distances
+
+<!-- end list -->
+
+``` r
+data(dss_example)
+count_table <- dss_example$merged_abundance_id %>% column_to_rownames('featureID')
+relab_table <- relab(count_table)
+met_table <- dss_example$metadata
+
+# bray curtis for one metadata variable
+bc_result <- bcdissimilarity(relab_table, met_table, 'sampleID','Phenotype')
+pdata <- bc_result$bc_df
+p_phen <- ggplot(pdata, aes(x=value, y=dist)) +
+  geom_violin() +
+  theme_bw(14) +
+  ylab('Bray-Curtis Dissimilarity') +
+  xlab('Phenotype')
+
+p_phen
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-1.png)
+
+``` r
+
+# for multiple metadata variables
+bc_data <- c()
+for(var in c('Phenotype','Genotype')) {
+   bc_result <- bcdissimilarity(relab_table, met_table, 'sampleID', var)
+   bc_data <- rbind(bc_data, bc_result$bc_df)
+}
+p_bc <- ggplot(bc_data, aes(x=comparison, y=dist)) +
+  geom_violin() +
+  theme_bw(14) +
+  facet_wrap(~met_var) +
+  ylab('Bray-Curtis Dissimilarity') +
+  theme(axis.title.x=element_blank())
+
+p_bc
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-2.png)
+
 ## rarefaction
 
 Useful for calculating and plotting rarefaction curve to check if read
@@ -656,8 +716,7 @@ rarefaction <- rarefaction(asv_counts)
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
 
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2
-#> 3.3.4.
+#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
@@ -1307,3 +1366,32 @@ compare_cor_ci(feat_mat, met_df$Phenotype)
 #> 29 ASV4 ASV6 water 12 -0.29445657 0.35286181 0.8193311 -0.74282830 0.3362712
 #> 30 ASV5 ASV6 water 12  0.36129770 0.24854130 0.8193311 -0.26821893 0.7745888
 ```
+
+## remove\_geom
+
+Remove a specific geom layer from a
+ggplot.
+
+Usage:
+
+``` r
+d <- data.frame(x = runif(10),y = runif(10),label = sprintf("label%s", 1:10))
+                
+# ggplot with geom_text_repel from ggrepel
+p1 <- ggplot(d, aes(x, y, label = label)) + 
+  geom_point() + 
+  geom_text()
+
+# Remove the labels added by ggrepel.
+p2 <- remove_geom(p1, "GeomText")
+
+p1
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/remove_geom-1.png)
+
+``` r
+p2
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/remove_geom-2.png)
