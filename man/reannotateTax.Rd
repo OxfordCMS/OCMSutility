@@ -14,10 +14,10 @@ updated taxonomy table with "unclassified" prepended with higher level classific
 }
 \description{
 Reannotate taxonomy
-}
-\details{
-Reannotates taxonomy table so that "unclassfied" assignments include higher
-level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level).
+`r lifecycle::badge("deprecated")`
+
+`reannotateTax` was renamed to `reannotate_tax` for more consistent
+function naming nomenclature in `OCMSutility`. Usage is still exactly the same
 }
 \examples{
 data(asv_example)
@@ -28,5 +28,37 @@ old_tax$Kingdom <- 'Bacteria'
 knitr::kable(head(old_tax))
 
 new_tax <- reannotateTax(old_tax)
+# ->
+new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 }
+\keyword{"unclassfied"}
+\keyword{(as}
+\keyword{Family}
+\keyword{Reannotates}
+\keyword{This}
+\keyword{an}
+\keyword{assignments}
+\keyword{at}
+\keyword{be}
+\keyword{biological}
+\keyword{classfied}
+\keyword{classifications.}
+\keyword{could}
+\keyword{genus}
+\keyword{helps}
+\keyword{higher}
+\keyword{include}
+\keyword{internal}
+\keyword{it}
+\keyword{level}
+\keyword{level).}
+\keyword{meaning}
+\keyword{of}
+\keyword{preserve}
+\keyword{so}
+\keyword{table}
+\keyword{taxonomy}
+\keyword{that}
+\keyword{the}
+\keyword{unclassfied}

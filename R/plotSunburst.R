@@ -45,8 +45,6 @@
 #' @import dplyr
 #' @import RColorBrewer
 #' @import sunburstR
-
-#' @export
 #' @examples
 #' data("dss_example")
 #' #' set count feature ids as rownames

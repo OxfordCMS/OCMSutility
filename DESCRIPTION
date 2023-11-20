@@ -1,7 +1,7 @@
 Package: OCMSutility
 Type: Package
 Title: Utility functions for OCMS
-Version: 0.2.0
+Version: 0.3.0
 Authors@R: c(person("Sandi","Yen", 
              email = "sandi.yen@kennedy.ox.ac.uk", 
              role = c("aut","cre")),
@@ -14,6 +14,7 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Suggests: 
+  sunburstR,
   cowplot,
   knitr,
   rmarkdown
@@ -28,16 +29,15 @@ Imports:
   ggplot2,
   ggrepel,
   gtools,
+  lifecycle,
   phyloseq,
   psych,
   readxl,
-  reshape,
   reshape2,
   RColorBrewer,
   RSQLite,
   tibble,
   stringr,
-  sunburstR,
   vegan
 RoxygenNote: 7.2.3
 Depends: 

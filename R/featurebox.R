@@ -7,7 +7,7 @@
 #' @param group_by character; grouping variable for boxplot. If set then variable must be present in metadata.
 #' If NULL each sample is plotted separately.
 #' @import ggplot2
-#' @import reshape
+#' @import reshape2
 #' @import gtools
 #' @import RColorBrewer
 #' @export
@@ -59,7 +59,7 @@ featurebox <- function(abundance_matrix, metadata=NULL, features=NULL, group_by=
     mat$feature <- rownames(mat)
 
     # reshape
-    mat.m <- reshape::melt(mat)
+    mat.m <- reshape2::melt(mat)
 
     # add metadata
     mat.m$covariate <- metadata[mat.m$variable, group_by]

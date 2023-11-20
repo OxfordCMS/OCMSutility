@@ -6,38 +6,12 @@
 \usage{
 aggregateCount(count_df, tax_df = NULL, aggregate_by = NULL)
 }
-\arguments{
-\item{count_df}{dataframe. count table with samples in columns and
-ASV in rows. feature IDs in row names.}
-
-\item{tax_df}{dataframe. featureID column should
-match rownames of \code{count_df}.
-Has columns \code{'Kingdom','Phylum',
-'Class','Order','Family','Genus','Species'}.
-Can also have \code{Taxon} column (see details).}
-
-\item{aggregate_by}{Aggregate counts by taxonomic level.
-Set to \code{NULL} to keep reads at ASV level. default \code{NULL} .
-Must be one of \code{c('Kingdom','Phylum','Class','Order','Family',
-'Genus','Species')}.}
-}
-\value{
-returns a list of aggregated count table
-    (\code{count_df}) and updated taxonomy table (\code{tax_df})
-}
 \description{
 Aggregate read counts based on taxonomic level
-}
-\details{
-If \code{tax_df} has sequences column and features are aggregated,
-the sequence column is set to NA. If tax_df has Taxon column with
-notation of p__phylum;c__class;o__order... then those are truncated
-at the aggregation level.
+`r lifecycle::badge("deprecated")`
 
-All taxa downstream of aggregation level are set to NA
-
-The aggregated taxonomy table has an additional column, \code{n_collapse},
-which is the number of ASVs that were aggregated.
+`aggregateCount` was renamed to `aggregate_count` for more consistent
+function naming nomenclature in `OCMSutility`. Usage is still exactly the same
 }
 \examples{
 data(dss_example)
@@ -51,8 +25,13 @@ feature_tax <- dss_example$merged_taxonomy
 
 # set row order of count and tax tables to be the same
 feature_count <- feature_count[feature_tax$featureID,]
+
 aggregated_list <- aggregateCount(feature_count, feature_tax,
+                                  aggregate_by = "Family")
+# ->
+aggregated_list <- aggregate_count(feature_count, feature_tax,
                                   aggregate_by = "Family")
 
 summary(aggregated_list)
 }
+\keyword{internal}
