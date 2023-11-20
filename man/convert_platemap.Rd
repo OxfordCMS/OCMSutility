@@ -4,10 +4,20 @@
 \alias{convert_platemap}
 \title{convert_platemap}
 \usage{
-convert_platemap(map_file, sheet = NULL, map_range, drop_empty = TRUE, ...)
+convert_platemap(
+  from_file = TRUE,
+  plate_map,
+  sheet = NULL,
+  map_range,
+  drop_empty = TRUE,
+  ...
+)
 }
 \arguments{
-\item{map_file}{excel file containing plate map}
+\item{from_file}{logical. Set to `TRUE` if supplying platemap from excel file.
+Set to `FALSE` if supplying a `data.frame`. Default TRUE.}
+
+\item{plate_map}{excel file containing plate map}
 
 \item{sheet}{name or number of excel sheet. defaults to first sheet}
 
@@ -25,4 +35,7 @@ datafame of platemap in long form
 function to convert excel plate map to long data frame with map locations.
 uses \code{readxl} to read in excel file so additional arguments
 are passed to \code{readxl::read_excel}
+}
+\details{
+When `from_file=FALSE`, plate rows (e.g. A, B, C etc.) are set as rownames.
 }

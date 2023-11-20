@@ -1,10 +1,6 @@
 ``` r
 library(knitr)
 library(OCMSutility)
-#> Warning: replacing previous import 'dplyr::rename' by 'reshape::rename' when
-#> loading 'OCMSutility'
-#> Warning: replacing previous import 'reshape::expand' by 'tidyr::expand' when
-#> loading 'OCMSutility'
 library(ggplot2)
 library(dplyr)
 #> 
@@ -82,7 +78,7 @@ summary(dss_example)
 
 # 16S Data Manipulation
 
-## filterFeature
+## filter\_feature
 
 Filters count table based on sequence abundance and prevalence. This
 function returns several outputs that detail which features were
@@ -116,7 +112,7 @@ count_df <- dss_example$merged_abundance_id %>%
 # set features in count tax to be in same order
 count_df <- count_df[tax_df$featureID,]
 
-filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
+filtered_ls <- filter_feature(count_df, tax_df, 'percent_sample', 0.001, 2)
 #> Kept 303/734 (41.28%) features with read counts >= 0.001% with sample total read count in >= 2/25 (8%) samples
 summary(filtered_ls)
 #>             Length Class      Mode     
@@ -159,7 +155,7 @@ asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example
 rel_abundance <- relab(asv_counts)
 ```
 
-## aggregateCount
+## aggregate\_count
 
 Aggregates count on a given taxonomy level, providing an aggregated
 count table and the corresponding taxonomy table. Both data frames are
@@ -187,7 +183,7 @@ feature_tax <- dss_example$merged_taxonomy
 
 # set row order of count and tax tables to be the same
 feature_count <- feature_count[feature_tax$featureID,]
-aggregated_list <- aggregateCount(feature_count, feature_tax,
+aggregated_list <- aggregate_count(feature_count, feature_tax,
                                       aggregate_by = "Family")
 
 summary(aggregated_list)
@@ -219,7 +215,7 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 | Burkholderiales incertae sedis | NA       | Bacteria | Proteobacteria | Betaproteobacteria | Burkholderiales   | Burkholderiales incertae sedis | NA    | NA      | k\_\_Bacteria;p\_\_Proteobacteria;c\_\_Betaproteobacteria;o\_\_Burkholderiales;f\_\_Burkholderiales incertae sedis |           1 |
 | Clostridiaceae 1               | NA       | Bacteria | Firmicutes     | Clostridia         | Clostridiales     | Clostridiaceae 1               | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Clostridia;o\_\_Clostridiales;f\_\_Clostridiaceae 1                             |           6 |
 
-## reannotateTax
+## reannotate\_tax
 
 Reannotates taxonomy table so that “unclassfied” assignments include
 higher level classifications. This helps preserve the biological meaning
@@ -299,7 +295,7 @@ knitr::kable(old_tax)
 
 ``` r
 
-new_tax <- reannotateTax(old_tax)
+new_tax <- reannotate_tax(old_tax)
 knitr::kable(new_tax)
 ```
 
@@ -334,7 +330,7 @@ knitr::kable(head(old_tax))
 
 ``` r
 
-new_tax <- reannotateTax(old_tax)
+new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
@@ -412,7 +408,7 @@ met <- metfile_init(db_file, dummy = "Group")
 
 These functions produce plots.
 
-## plotPCoA
+## plot\_pcoa
 
 This is a simple PCoA function that colours all points by one metadata
 variable. It can be helpful to visualise metadata variables
@@ -432,21 +428,21 @@ relab <- relab(count_df)
 iter_var <- c('Genotype','Phenotype')
 plist <- list()
 for(i in iter_var) {
-  plist[[i]] <- plotPCoA(relab, met_df, colour = i)
+  plist[[i]] <- plot_pcoa(relab, met_df, colour = i)
 }
 
 plist[[1]]
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/plotPCoA-1.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pcoa-1.png)
 
 ``` r
 plist[[2]]
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/plotPCoA-2.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pcoa-2.png)
 
-## plotPCA
+## 
 
 This function helps plot PCA score plots. It returns a list of the
 original data, the PCA result and the ggplot. All dataframes are
@@ -479,18 +475,18 @@ metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
 metadata$ID <- rownames(metadata)
 
 pca_result <- prcomp(t(asv_transformed), scale = TRUE)
-plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
+plot_data <- plot_pca(pca_result, metadata, colourby='Timepoint')
 
 plot_data$p
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/plotPCA-1.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-1.png)
 
 ``` r
 
 # modify default plot
 add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
-col_val <- getPalette(5, "Set3")
+col_val <- get_palette(5, "Set3")
 p <- plot_data$p +
   scale_colour_manual(values = col_val) + # pick own colours
   scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
@@ -498,15 +494,17 @@ p <- plot_data$p +
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 p
-#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in
+#> ggplot2 3.3.4.
 #> i Please use "none" instead.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/plotPCA-2.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-2.png)
 
 ## featurebox
 
@@ -705,6 +703,12 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 
 ## plotSunburst
 
+This function has been moved to be an internal function, and the
+`sunburstR` has been removed as a dependency (is now a suggested
+package). This change has come about due to lack of use and an effort to
+reduce the dependency overhead of the package. The funciton is still
+accessible with `OCMSutility:::plotSunburst`
+
 Creates interactive sunburst plot based on taxonomy. The sunburst plot
 can show areas based on relative abundance or based on the number of
 taxa at a given taxonomic level.
@@ -728,7 +732,7 @@ is specified so you can use the `palettes` argument to choose your
 colour and all taxa not specified by `hightlight` are set to grey.
 
 Note: NAs in the taxonomy table cause colouring to be assigned in
-unexpected order so it is best to use `reannotateTax` to apply a
+unexpected order so it is best to use `reannotate_tax` to apply a
 taxonomy roll-down and remove all NAs.
 [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens
 (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy
@@ -746,11 +750,11 @@ colnames(count_df) <- paste0('id', colnames(count_df))
 tax_df <- dss_example$merged_taxonomy
 
 # aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+agg_gen <- aggregate_count(count_df[tax_df$featureID,], tax_df, "Genus")
 count_genus <- agg_gen$count_df
 
 # reannotate taxonomy
-tax_genus <- reannotateTax(agg_gen$tax_df)
+tax_genus <- reannotate_tax(agg_gen$tax_df)
 
 relab <- relab(count_genus)
 
@@ -772,7 +776,7 @@ relab <- relab(count_genus)
 
 These functions perform simple analyses.
 
-## truePosRate
+## true\_pos\_rate
 
 Calculate rate of true positives in positive control standards. Used in
 OCMS\_zymobioimcs
@@ -794,10 +798,10 @@ colnames(count_df) <- paste0('id', colnames(count_df))
 tax_df <- dss_example$merged_taxonomy
 
 # aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+agg_gen <- aggregate_count(count_df[tax_df$featureID,], tax_df, "Genus")
 genus_relab <- relab(agg_gen$count_df)
 
-true_pos_result <- truePosRate(relab=genus_relab,
+true_pos_result <- true_pos_rate(relab=genus_relab,
                                     annotations=zymobiomics$anno_ncbi_16s,
                                     level='genus', cutoff=0.01)
 
@@ -813,7 +817,7 @@ p <- ggplot(true_pos_result,
 p
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/truPosRate-1.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/true_pos_rate-1.png)
 
 ## nsample\_by\_var
 
@@ -1118,11 +1122,13 @@ rarefaction <- rarefaction(asv_counts)
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
 
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as of ggplot2 3.3.4.
+#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
+#> of ggplot2 3.3.4.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
+#> generated.
 
 # default plot
 p <- rarefaction$rare_p
@@ -1200,7 +1206,7 @@ met_sparse[[4]]
 
 These functions are helful for data manipulation in general.
 
-## getPalette
+## get\_palette
 
 This is a convenience function for getting a set of colours for plotting
 purposes. Setting preview=TRUE will show you the colours. The colours
@@ -1213,7 +1219,7 @@ Usage:
 getPalette(n=10, palette="Set3", preview=TRUE)
 ```
 
-![](vignettes/OCMSutility_files/figure-markdown_strict/getPalette-1.png)
+![](vignettes/OCMSutility_files/figure-markdown_strict/get_palette-1.png)
 
     #>  [1] "#8DD3C7" "#FFFFB3" "#BEBADA" "#FB8072" "#80B1D3" "#FDB462" "#B3DE69"
     #>  [8] "#FCCDE5" "#D9D9D9" "#BC80BD"
@@ -1230,107 +1236,52 @@ name (if applicable) and the cell range that contains your plate map.
 The `drop_empty` function allows your to drop unlabeled wells.
 
 ``` r
-plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
+convert_platemap(plate_map = "my96wellplate.xlsx",
                               map_range = 'A1:H12') 
 ```
 
-    #>    well_id col row   sample_name
-    #> 1       A1   1   A  sample_name1
-    #> 2       A2   2   A  sample_name2
-    #> 3       A3   3   A  sample_name3
-    #> 4       A4   4   A  sample_name4
-    #> 5       A5   5   A  sample_name5
-    #> 6       A6   6   A  sample_name6
-    #> 7       A7   7   A  sample_name7
-    #> 8       A8   8   A  sample_name8
-    #> 9       A9   9   A  sample_name9
-    #> 10     A10  10   A sample_name10
-    #> 11     A11  11   A sample_name11
-    #> 12     A12  12   A sample_name12
-    #> 13      B1   1   B sample_name13
-    #> 14      B2   2   B sample_name14
-    #> 15      B3   3   B sample_name15
-    #> 16      B4   4   B sample_name16
-    #> 17      B5   5   B sample_name17
-    #> 18      B6   6   B sample_name18
-    #> 19      B7   7   B sample_name19
-    #> 20      B8   8   B sample_name20
-    #> 21      B9   9   B sample_name21
-    #> 22     B10  10   B sample_name22
-    #> 23     B11  11   B sample_name23
-    #> 24     B12  12   B sample_name24
-    #> 25      C1   1   C sample_name25
-    #> 26      C2   2   C sample_name26
-    #> 27      C3   3   C sample_name27
-    #> 28      C4   4   C sample_name28
-    #> 29      C5   5   C sample_name29
-    #> 30      C6   6   C sample_name30
-    #> 31      C7   7   C sample_name31
-    #> 32      C8   8   C sample_name32
-    #> 33      C9   9   C sample_name33
-    #> 34     C10  10   C sample_name34
-    #> 35     C11  11   C sample_name35
-    #> 36     C12  12   C sample_name36
-    #> 37      D1   1   D sample_name37
-    #> 38      D2   2   D sample_name38
-    #> 39      D3   3   D sample_name39
-    #> 40      D4   4   D sample_name40
-    #> 41      D5   5   D sample_name41
-    #> 42      D6   6   D sample_name42
-    #> 43      D7   7   D sample_name43
-    #> 44      D8   8   D sample_name44
-    #> 45      D9   9   D sample_name45
-    #> 46     D10  10   D sample_name46
-    #> 47     D11  11   D sample_name47
-    #> 48     D12  12   D sample_name48
-    #> 49      E1   1   E sample_name49
-    #> 50      E2   2   E sample_name50
-    #> 51      E3   3   E sample_name51
-    #> 52      E4   4   E sample_name52
-    #> 53      E5   5   E sample_name53
-    #> 54      E6   6   E sample_name54
-    #> 55      E7   7   E sample_name55
-    #> 56      E8   8   E sample_name56
-    #> 57      E9   9   E sample_name57
-    #> 58     E10  10   E sample_name58
-    #> 59     E11  11   E sample_name59
-    #> 60     E12  12   E sample_name60
-    #> 61      F1   1   F sample_name61
-    #> 62      F2   2   F sample_name62
-    #> 63      F3   3   F sample_name63
-    #> 64      F4   4   F sample_name64
-    #> 65      F5   5   F sample_name65
-    #> 66      F6   6   F sample_name66
-    #> 67      F7   7   F sample_name67
-    #> 68      F8   8   F sample_name68
-    #> 69      F9   9   F sample_name69
-    #> 70     F10  10   F sample_name70
-    #> 71     F11  11   F sample_name71
-    #> 72     F12  12   F sample_name72
-    #> 73      G1   1   G sample_name73
-    #> 74      G2   2   G sample_name74
-    #> 75      G3   3   G sample_name75
-    #> 76      G4   4   G sample_name76
-    #> 77      G5   5   G sample_name77
-    #> 78      G6   6   G sample_name78
-    #> 79      G7   7   G sample_name79
-    #> 80      G8   8   G sample_name80
-    #> 81      G9   9   G sample_name81
-    #> 82     G10  10   G sample_name82
-    #> 83     G11  11   G sample_name83
-    #> 84     G12  12   G sample_name84
-    #> 85      H1   1   H sample_name85
-    #> 86      H2   2   H sample_name86
-    #> 87      H3   3   H sample_name87
-    #> 88      H4   4   H sample_name88
-    #> 89      H5   5   H sample_name89
-    #> 90      H6   6   H sample_name90
-    #> 91      H7   7   H sample_name91
-    #> 92      H8   8   H sample_name92
-    #> 93      H9   9   H sample_name93
-    #> 94     H10  10   H sample_name94
-    #> 95     H11  11   H sample_name95
-    #> 96     H12  12   H sample_name96
+    #>    well_id               col            row             well_value       
+    #>  Length:96          Min.   : 1.00   Length:96          Length:96         
+    #>  Class :character   1st Qu.: 3.75   Class :character   Class :character  
+    #>  Mode  :character   Median : 6.50   Mode  :character   Mode  :character  
+    #>                     Mean   : 6.50                                        
+    #>                     3rd Qu.: 9.25                                        
+    #>                     Max.   :12.00
+
+| well\_id | col | row | well\_value   |
+| :------- | --: | :-- | :------------ |
+| A1       |   1 | A   | sample\_name1 |
+| A2       |   2 | A   | sample\_name2 |
+| A3       |   3 | A   | sample\_name3 |
+| A4       |   4 | A   | sample\_name4 |
+| A5       |   5 | A   | sample\_name5 |
+| A6       |   6 | A   | sample\_name6 |
+
+``` r
+# example output of convert_platemap
+myplate <- as.data.frame(matrix(rnorm(96, mean=0.1, sd=0.05), 
+                                nrow=8, ncol=12, 
+                                dimnames=list(LETTERS[1:8], 1:12)))
+plate_df <- convert_platemap(from_file = FALSE, plate_map = myplate) 
+print(summary(plate_df))
+#>      row                col              well_value          well_id         
+#>  Length:96          Length:96          Min.   :0.0005324   Length:96         
+#>  Class :character   Class :character   1st Qu.:0.0752879   Class :character  
+#>  Mode  :character   Mode  :character   Median :0.1037227   Mode  :character  
+#>                                        Mean   :0.1061450                     
+#>                                        3rd Qu.:0.1348888                     
+#>                                        Max.   :0.2200809
+kable(head(plate_df))
+```
+
+| row | col | well\_value | well\_id |
+| :-- | :-- | ----------: | :------- |
+| A   | 1   |   0.0991905 | A1       |
+| B   | 1   |   0.1471918 | B1       |
+| C   | 1   |   0.1410611 | C1       |
+| D   | 1   |   0.1296951 | D1       |
+| E   | 1   |   0.1459489 | E1       |
+| F   | 1   |   0.1391068 | F1       |
 
 ## sym\_mat2df
 

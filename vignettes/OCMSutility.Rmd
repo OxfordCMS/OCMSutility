@@ -72,7 +72,7 @@ summary(dss_example)
 ```
 
 # 16S Data Manipulation
-## filterFeature
+## filter_feature
 
 Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
 
@@ -85,7 +85,7 @@ There are three methods by which sequences can be filtered. For all three method
 
 Usage:
 
-```{r filterFeature}
+```{r filter_feature}
 data(dss_example)
 
 # put featureID as rownames
@@ -95,7 +95,7 @@ count_df <- dss_example$merged_abundance_id %>%
 # set features in count tax to be in same order
 count_df <- count_df[tax_df$featureID,]
 
-filtered_ls <- filterFeature(count_df, tax_df, 'percent_sample', 0.001, 2)
+filtered_ls <- filter_feature(count_df, tax_df, 'percent_sample', 0.001, 2)
 summary(filtered_ls)
 filtered_count <- filtered_ls$filtered
 dim(filtered_count)
@@ -119,7 +119,7 @@ rel_abundance <- relab(asv_counts)
 ```
 
 
-## aggregateCount
+## aggregate_count
 
 Aggregates count on a given taxonomy level, providing an aggregated count table and the corresponding taxonomy table. Both data frames are returned in a list.
 
@@ -127,7 +127,7 @@ Notice that after aggregation, featureID is set to the taxonomy by which aggrega
 
 Usage:
 
-```{r aggregateCount}
+```{r aggregate_count}
 data(dss_example)
 # featureID should be row names
 feature_count <- dss_example$merged_abundance_id %>%
@@ -142,7 +142,7 @@ feature_tax <- dss_example$merged_taxonomy
 
 # set row order of count and tax tables to be the same
 feature_count <- feature_count[feature_tax$featureID,]
-aggregated_list <- aggregateCount(feature_count, feature_tax,
+aggregated_list <- aggregate_count(feature_count, feature_tax,
                                       aggregate_by = "Family")
 
 summary(aggregated_list)
@@ -150,11 +150,11 @@ knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 knitr::kable(head(aggregated_list[['tax_df']]))
 ```
 
-## reannotateTax
+## reannotate_tax
 
 Reannotates taxonomy table so that "unclassfied" assignments include higher level classifications. This helps preserve the biological meaning of an unclassfied genus (as it could be classfied at the Family level). The implications of this reannotation is illustrated using the following example:
 
-```{r reannotateTax-example1}
+```{r reannotate_tax-example1}
 ex1 <- data.frame(ASV = paste0("ASV", 1:5),
                   Order = "order1",
                   Family = c(paste0("family", c(1,1,2,3)), 'unclassified'),
@@ -168,7 +168,7 @@ Analysing the example above at the genus level would result in 3 groups: Genus1 
 
 If you modify your classification at the genus level to include information from higher taxonomic orders, you would get:
 
-```{r reannotateTax-example2}
+```{r reannotate_tax-example2}
 ex2 <- ex1[,c('ASV','Order')]
 ex2$Family <- c(paste0("family", c(1,1,2,3)), 'order1_unclassified')
 ex2$Genus <- c('family1_unclassified','genus1','family2_unclassified','genus2',
@@ -182,7 +182,7 @@ Analysing at the genus level now would result in 5 groups: Genus1 (10), Genus2 (
 
 Usage:
 
-```{r reannotateTax}
+```{r reannotate_tax}
 # showing the dummy example
 old_tax <- ex1[,2:4]
 old_tax$Kingdom <- 'kingdom1'
@@ -194,7 +194,7 @@ old_tax <- old_tax[, c('Kingdom','Phylum','Class','Order','Family','Genus','Spec
 old_tax[old_tax == 'unclassified'] <- NA
 knitr::kable(old_tax)
 
-new_tax <- reannotateTax(old_tax)
+new_tax <- reannotate_tax(old_tax)
 knitr::kable(new_tax)
 
 # try with example data
@@ -206,7 +206,7 @@ colnames(old_tax)[1] <- 'Kingdom'
 old_tax$Kingdom <- 'Bacteria'
 knitr::kable(head(old_tax))
 
-new_tax <- reannotateTax(old_tax)
+new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
@@ -258,13 +258,13 @@ met <- metfile_init(db_file, dummy = "Group")
 # Data Visualisation
 These functions produce plots.
 
-## plotPCoA
+## plot_pcoa
 
  This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
 
 Usage:
 
-```{r plotPCoA}
+```{r plot_pcoa}
 data(dss_example)
 met_df <- dss_example$metadata
 
@@ -276,19 +276,19 @@ relab <- relab(count_df)
 iter_var <- c('Genotype','Phenotype')
 plist <- list()
 for(i in iter_var) {
-  plist[[i]] <- plotPCoA(relab, met_df, colour = i)
+  plist[[i]] <- plot_pcoa(relab, met_df, colour = i)
 }
 
 plist[[1]]
 plist[[2]]
 ```
 
-## plotPCA
+##    
 
 This function helps plot PCA score plots. It returns a list of the original data, the PCA result and the ggplot. All dataframes are returned in such a way that that ggplot produced can be modified with additional geom layers.
 
 Usage:
-```{r plotPCA}
+```{r plot_pca}
 # get example data
 data(asv_example)
 
@@ -310,13 +310,13 @@ metadata <- data.frame(Timepoint = c(rep("Time 1", 59),
 metadata$ID <- rownames(metadata)
 
 pca_result <- prcomp(t(asv_transformed), scale = TRUE)
-plot_data <- plotPCA(pca_result, metadata, colourby='Timepoint')
+plot_data <- plot_pca(pca_result, metadata, colourby='Timepoint')
 
 plot_data$p
 
 # modify default plot
 add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
-col_val <- getPalette(5, "Set3")
+col_val <- get_palette(5, "Set3")
 p <- plot_data$p +
   scale_colour_manual(values = col_val) + # pick own colours
   scale_shape_manual(values=21, guide = FALSE) + # change shape and remove from legend
@@ -431,13 +431,15 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 ```
 
 ## plotSunburst
+This function has been moved to be an internal function, and the `sunburstR` has been removed as a dependency (is now a suggested package). This change has come about due to lack of use and an effort to reduce the dependency overhead of the package. The funciton is still accessible with `OCMSutility:::plotSunburst`
+
 Creates interactive sunburst plot based on taxonomy. The sunburst plot can show areas based on relative abundance or based on the number of taxa at a given taxonomic level. 
 
 You specify a palette for each Phylum, where values are the colour palette to use and name is the corresponding phylum (e.g.`c('Bacteroidetes' = 'Oranges', 'Firmicutes' = 'Greens')`). Palettes should be from [rColorBrewer](https://www.r-graph-gallery.com/38-rcolorbrewers-palettes.html). If the number of palettes specified doesn't include all phyla in the tax table, only the specified ones will be coloured and the rest will be in grey. If palettes is set to NULL, the default colours selected by `sunbrustR` will be used.
 
 Additionally the `highlight` parameter can be used to highlight a specific taxon at any taxonomic level and the ones that are not specified will be coloured as grey. e.g. `list("Family"=c("Enterococcaceae","Ruminacoccaceae")`. This is applied after palettes is used to colour by phylum if palettes argument is specified so you can use the `palettes` argument to choose your colour and all taxa not specified by `hightlight` are set to grey.
 
-Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotateTax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
+Note: NAs in the taxonomy table cause colouring to be assigned in unexpected order so it is best to use `reannotate_tax` to apply a taxonomy roll-down and remove all NAs. [sunburstR](https://github.com/timelyportfolio/sunburstR) uses hyphens (`-`) to distinguish taxonomic levels so any hyphens in the taxonomy name will be interpreted as two separate levels. Therefore, all hyphens are silently and automatically removed from taxonomy names
 
 ```{r plotSunburst}
 data("dss_example")
@@ -450,11 +452,11 @@ colnames(count_df) <- paste0('id', colnames(count_df))
 tax_df <- dss_example$merged_taxonomy
 
 # aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+agg_gen <- aggregate_count(count_df[tax_df$featureID,], tax_df, "Genus")
 count_genus <- agg_gen$count_df
 
 # reannotate taxonomy
-tax_genus <- reannotateTax(agg_gen$tax_df)
+tax_genus <- reannotate_tax(agg_gen$tax_df)
 
 relab <- relab(count_genus)
 
@@ -475,12 +477,12 @@ relab <- relab(count_genus)
 # Analysis
 These functions perform simple analyses.
 
-## truePosRate
+## true_pos_rate
 Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
 
 Usage:
 
-```{r truPosRate}
+```{r true_pos_rate}
 # this would be better exemplified with actual std data rather than the example samples
 data("dss_example")
 data(zymobiomics)
@@ -494,10 +496,10 @@ colnames(count_df) <- paste0('id', colnames(count_df))
 tax_df <- dss_example$merged_taxonomy
 
 # aggregate counts
-agg_gen <- aggregateCount(count_df[tax_df$featureID,], tax_df, "Genus")
+agg_gen <- aggregate_count(count_df[tax_df$featureID,], tax_df, "Genus")
 genus_relab <- relab(agg_gen$count_df)
 
-true_pos_result <- truePosRate(relab=genus_relab,
+true_pos_result <- true_pos_rate(relab=genus_relab,
                                     annotations=zymobiomics$anno_ncbi_16s,
                                     level='genus', cutoff=0.01)
 
@@ -707,13 +709,13 @@ met_sparse[[4]]
 # Utility
 These functions are helful for data manipulation in general.
 
-## getPalette
+## get_palette
 
 This is a convenience function for getting a set of colours for plotting purposes. Setting preview=TRUE will show you the colours. The colours can be changed by adding a palette(s) to the palette argument. 
 
 Usage:
 
-```{r getPalette}
+```{r get_palette}
 getPalette(n=10, palette="Set3", preview=TRUE)
 ```
 
@@ -725,16 +727,27 @@ Usage:
 You supply the function with the excel file and specify the sheet name (if applicable) and the cell range that contains your plate map. `convert_platemap` then converts the platemap into a long data frame. The `drop_empty` function allows your to drop unlabeled wells.
 
 ```{r convert-platemap, eval=FALSE}
-plate_map <- convert_platemap(map_file = "my96wellplate.xlsx",
+convert_platemap(plate_map = "my96wellplate.xlsx",
                               map_range = 'A1:H12') 
 ```
 
-```{r convert-platemap-demo, echo = FALSE}
-# example output of convert_platemap
-data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
+```{r convert-platemap-file, echo=FALSE}
+out <- data.frame(well_id = paste0(rep(LETTERS[1:8], each = 12), rep(1:12, 8)),
            col = rep(1:12, 8),
            row = rep(LETTERS[1:8], each = 12),
-           sample_name = paste0('sample_name', 1:96)) 
+           well_value = paste0('sample_name', 1:96)) 
+print(summary(out))
+kable(head(out))
+```
+
+```{r convert-platemap-df}
+# example output of convert_platemap
+myplate <- as.data.frame(matrix(rnorm(96, mean=0.1, sd=0.05), 
+                                nrow=8, ncol=12, 
+                                dimnames=list(LETTERS[1:8], 1:12)))
+plate_df <- convert_platemap(from_file = FALSE, plate_map = myplate) 
+print(summary(plate_df))
+kable(head(plate_df))
 ```
 
 ## sym_mat2df
