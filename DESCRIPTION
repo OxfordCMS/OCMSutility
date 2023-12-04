@@ -1,7 +1,7 @@
 Package: OCMSutility
 Type: Package
 Title: Utility functions for OCMS
-Version: 0.3.0
+Version: 0.3.1
 Authors@R: c(person("Sandi","Yen", 
              email = "sandi.yen@kennedy.ox.ac.uk", 
              role = c("aut","cre")),
@@ -25,7 +25,9 @@ Imports:
   dplyr,
   DescTools,
   foreach,
+  ggdendro,
   ggfortify,
+  ggnewscale,
   ggplot2,
   ggrepel,
   gtools,

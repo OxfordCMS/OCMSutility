@@ -60,7 +60,7 @@ rarefaction <- function(df) {
 
   rplot = ggplot(raremelt, aes(x=Depth, y=Richness, color=Sample)) +
     geom_line()+
-    guides(color = F)+
+    guides(color = 'none')+
     ggrepel::geom_label_repel(data = labels,
                               aes(x=Depth, y=Rich, label=Sample),
                               fill = alpha(c("white"),0.2))
