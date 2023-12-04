@@ -8,10 +8,10 @@ aggregateCount(count_df, tax_df = NULL, aggregate_by = NULL)
 }
 \description{
 Aggregate read counts based on taxonomic level
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`aggregateCount` was renamed to `aggregate_count` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{aggregateCount} was renamed to \code{aggregate_count} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
 data(dss_example)

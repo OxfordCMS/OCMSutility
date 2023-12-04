@@ -15,7 +15,7 @@ true_pos_rate(relab, annotations, level = "species", cutoff = 0.01)
 \code{'species','genus','family'}. default \code{'species'}}
 
 \item{cutoff}{threshold for read relative abundance in the sample. default is
-\code{0.01} (0.01 %)}
+\code{0.01} (0.01 \%)}
 }
 \value{
 dataframe ranking features as true positive or false positive in each sample.

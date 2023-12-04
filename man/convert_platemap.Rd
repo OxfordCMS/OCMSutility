@@ -14,8 +14,8 @@ convert_platemap(
 )
 }
 \arguments{
-\item{from_file}{logical. Set to `TRUE` if supplying platemap from excel file.
-Set to `FALSE` if supplying a `data.frame`. Default TRUE.}
+\item{from_file}{logical. Set to \code{TRUE} if supplying platemap from excel file.
+Set to \code{FALSE} if supplying a \code{data.frame}. Default TRUE.}
 
 \item{plate_map}{excel file containing plate map}
 
@@ -37,5 +37,5 @@ uses \code{readxl} to read in excel file so additional arguments
 are passed to \code{readxl::read_excel}
 }
 \details{
-When `from_file=FALSE`, plate rows (e.g. A, B, C etc.) are set as rownames.
+When \code{from_file=FALSE}, plate rows (e.g. A, B, C etc.) are set as rownames.
 }

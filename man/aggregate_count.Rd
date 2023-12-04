@@ -13,17 +13,17 @@ ASV in rows. feature IDs in row names.}
 \item{tax_df}{dataframe. featureID column should
 match rownames of \code{count_df}.
 Has columns \code{'Kingdom','Phylum',
-'Class','Order','Family','Genus','Species'}.
+    'Class','Order','Family','Genus','Species'}.
 Can also have \code{Taxon} column (see details).}
 
 \item{aggregate_by}{Aggregate counts by taxonomic level.
 Set to \code{NULL} to keep reads at ASV level. default \code{NULL} .
 Must be one of \code{c('Kingdom','Phylum','Class','Order','Family',
-'Genus','Species')}.}
+    'Genus','Species')}.}
 }
 \value{
 returns a list of aggregated count table
-    (\code{count_df}) and updated taxonomy table (\code{tax_df})
+(\code{count_df}) and updated taxonomy table (\code{tax_df})
 }
 \description{
 Aggregate read counts based on taxonomic level

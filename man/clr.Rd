@@ -12,19 +12,19 @@ return as \code{aldex.clr} object}
 }
 \value{
 dataframe of clr-tranfsormed counts or aldex.clr object with
-     clr-transformed Monte-Carlo Dirichlet instances of counts
+clr-transformed Monte-Carlo Dirichlet instances of counts
 }
 \description{
 use aldex2 to perform clr transform.  \code{aldex.clr} performs Monte Carlo sampling from a Dirichlet distribution for each sample. Then clr transformation each value generated. This function uses the median of these Monte-Carlo Dirichlet instances as the clr-transformed value, and returns as a dataframe be default.
 }
 \details{
 @param count_dataframe dataframe with samples in columns, ASVs in rows
- @param condition passed into \code{conds} argument of \code{aldex.clr}.
-     When set to \code{NULL} (default), each sample is assigned a different condition.
-     Alternatively, can supply a vector containing a descriptor for the
-     samples, allowing them to be grouped and compared. This setting is
-     arbitrary, unless \code{return_as_dataframe} is set to \code{FALSE} and
-     performing diversity analysis with \code{ALDEx2}.
+@param condition passed into \code{conds} argument of \code{aldex.clr}.
+When set to \code{NULL} (default), each sample is assigned a different condition.
+Alternatively, can supply a vector containing a descriptor for the
+samples, allowing them to be grouped and compared. This setting is
+arbitrary, unless \code{return_as_dataframe} is set to \code{FALSE} and
+performing diversity analysis with \code{ALDEx2}.
 }
 \examples{
 library(ALDEx2)

@@ -14,10 +14,10 @@ updated taxonomy table with "unclassified" prepended with higher level classific
 }
 \description{
 Reannotate taxonomy
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`reannotateTax` was renamed to `reannotate_tax` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{reannotateTax} was renamed to \code{reannotate_tax} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
 data(asv_example)
