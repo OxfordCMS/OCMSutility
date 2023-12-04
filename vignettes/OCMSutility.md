@@ -494,14 +494,12 @@ p <- plot_data$p +
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 p
-#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in
-#> ggplot2 3.3.4.
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
 #> i Please use "none" instead.
 #> i The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
+#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-2.png)
@@ -701,6 +699,32 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pcoa_by_var-6.png)
 
+## annotated\_dendrogram
+
+This produces an annotated dendrogram showing heirarchical clustering
+based on a distance matrix. This is helpful for visualizing how
+different metadata variables map onto sample clustering. This is
+equivalent to the annotation bars on a heatmap, but without the heatmap
+values.
+
+``` r
+set.seed(1)
+# get relative abundance data
+data(dss_example)
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- t(OCMSutility::relab(ddata))
+# distance matrix
+mydist <- vegan::vegdist(ddata, method='bray')
+
+# metdata variable
+mdata <- dss_example$metadata
+mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
+annotated_dendrogram(mydist, mdata, 'sampleID')
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/annotated-dendrogram-1.png)
+
 ## plotSunburst
 
 This function has been moved to be an internal function, and the
@@ -850,31 +874,31 @@ rep(NA, 15)), 100),
 
 nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 #>    patient_id var1 var2 var3
-#> 1           A    2    4    3
-#> 2           B    4    3    3
-#> 3           C    1    3    2
-#> 4           D    3    3    4
-#> 5           E    3    3    4
-#> 6           F    3    4    3
-#> 7           G    4    4    3
-#> 8           H    1    2    2
-#> 9           I    1    4    4
-#> 10          J    3    4    1
-#> 11          K    2    4    4
-#> 12          L    4    4    3
-#> 13          M    4    2    4
-#> 14          N    0    4    3
-#> 15          O    3    3    4
-#> 16          P    3    4    4
-#> 17          Q    3    4    4
-#> 18          R    3    4    3
-#> 19          S    2    2    3
-#> 20          T    2    3    3
-#> 21          U    4    4    4
-#> 22          V    3    3    3
-#> 23          W    4    4    3
-#> 24          X    4    3    3
-#> 25          Y    4    3    4
+#> 1           A    3    3    4
+#> 2           B    3    4    3
+#> 3           C    2    4    3
+#> 4           D    2    4    2
+#> 5           E    3    4    3
+#> 6           F    2    3    4
+#> 7           G    3    4    4
+#> 8           H    1    3    3
+#> 9           I    1    2    3
+#> 10          J    4    4    3
+#> 11          K    3    4    4
+#> 12          L    4    3    2
+#> 13          M    3    2    4
+#> 14          N    1    4    3
+#> 15          O    3    4    4
+#> 16          P    3    3    3
+#> 17          Q    3    3    3
+#> 18          R    4    4    4
+#> 19          S    4    3    4
+#> 20          T    4    3    1
+#> 21          U    4    4    3
+#> 22          V    3    2    3
+#> 23          W    2    3    4
+#> 24          X    2    4    4
+#> 25          Y    3    4    4
 ```
 
 ## compare\_cor\_ci
@@ -1122,13 +1146,6 @@ rarefaction <- rarefaction(asv_counts)
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
 
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-#> Warning: The `<scale>` argument of `guides()` cannot be `FALSE`. Use "none" instead as
-#> of ggplot2 3.3.4.
-#> i The deprecated feature was likely used in the OCMSutility package.
-#>   Please report the issue to the authors.
-#> This warning is displayed once every 8 hours.
-#> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was
-#> generated.
 
 # default plot
 p <- rarefaction$rare_p

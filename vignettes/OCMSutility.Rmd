@@ -430,6 +430,25 @@ p_list$var3
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
 
+## annotated_dendrogram
+This produces an annotated dendrogram showing heirarchical clustering based on a distance matrix. This is helpful for visualizing how different metadata variables map onto sample clustering. This is equivalent to the annotation bars on a heatmap, but without the heatmap values.
+
+```{r annotated-dendrogram}
+set.seed(1)
+# get relative abundance data
+data(dss_example)
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- t(OCMSutility::relab(ddata))
+# distance matrix
+mydist <- vegan::vegdist(ddata, method='bray')
+
+# metdata variable
+mdata <- dss_example$metadata
+mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
+annotated_dendrogram(mydist, mdata, 'sampleID')
+```
+
 ## plotSunburst
 This function has been moved to be an internal function, and the `sunburstR` has been removed as a dependency (is now a suggested package). This change has come about due to lack of use and an effort to reduce the dependency overhead of the package. The funciton is still accessible with `OCMSutility:::plotSunburst`
 
