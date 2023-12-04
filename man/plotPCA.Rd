@@ -34,10 +34,10 @@ list of ggplot pca plot and corresponding dataframe used to make the plot
 }
 \description{
 plot PCA
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`plotPCA` was renamed to `plot_pca` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{plotPCA} was renamed to \code{plot_pca} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
 pca_result <- prcomp(USArrests, scale = TRUE)

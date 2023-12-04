@@ -23,10 +23,10 @@ around colour variable. set to NULL to omit drawing ellipse}
 This is a simple PCoA function that colours all points by one
 metadata variable. It can be helpful to visualise metadata variables
 independently when assessing potential confounding metadtaa factors
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`plotPCoA` was renamed to `plotPCoA` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{plotPCoA} was renamed to \code{plotPCoA} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
 data(dss_example)

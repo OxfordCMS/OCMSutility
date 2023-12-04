@@ -12,9 +12,9 @@ metadata variables in columns}
 }
 \value{
 list. na_tally is the first item in the list. It is a tally of
-    the number of samples with a given number of missing metadata variables.
-    subsequent items in the list are the subset of samples according to
-    the number of NA metadata variables they have.
+the number of samples with a given number of missing metadata variables.
+subsequent items in the list are the subset of samples according to
+the number of NA metadata variables they have.
 }
 \description{
 Checks the number of missing values in each sample. This function can be used

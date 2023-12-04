@@ -12,15 +12,15 @@ columns and features in rows; feature IDs as rownames}
 
 \item{met}{dataframe. metadata table}
 
-\item{sample_id}{string. Sample identifier (column name in `met`)}
+\item{sample_id}{string. Sample identifier (column name in \code{met})}
 
-\item{var}{string. Metadata variable (column name in `met`) that specifies groups.
+\item{var}{string. Metadata variable (column name in \code{met}) that specifies groups.
 set to NULL to bypass between/within group assignment}
 }
 \value{
 list.
-         `bc_df` is long dataframe of samples being compared and corresponding distances.
-         `bc_dist` matrix of bray curtis distances
+\code{bc_df} is long dataframe of samples being compared and corresponding distances.
+\code{bc_dist} matrix of bray curtis distances
 }
 \description{
 Calculate Bray-Curtis Dissimilarity for samples within and between groups.

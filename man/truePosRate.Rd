@@ -15,17 +15,17 @@ truePosRate(relab, annotations, level = "species", cutoff = 0.01)
 \code{'species','genus','family'}. default \code{'species'}}
 
 \item{cutoff}{threshold for read relative abundance in the sample. default is
-\code{0.01} (0.01 %)}
+\code{0.01} (0.01 \%)}
 }
 \value{
 dataframe ranking features as true positive or false positive in each sample.
 }
 \description{
 Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`truePosRate` was renamed to `true_pos_rate` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{truePosRate} was renamed to \code{true_pos_rate} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
  # this would be better exemplified with actual std data rather than the example smaples

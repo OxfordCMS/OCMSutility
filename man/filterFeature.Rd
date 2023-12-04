@@ -14,10 +14,10 @@ filterFeature(
 }
 \description{
 filter out reads based on cutoff threshold and asv prevalence across samples
-`r lifecycle::badge("deprecated")`
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 
-`filterFeature` was renamed to `filter_feature` for more consistent
-function naming nomenclature in `OCMSutility`. Usage is still exactly the same
+\code{filterFeature} was renamed to \code{filter_feature} for more consistent
+function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same
 }
 \examples{
 data(dss_example)

@@ -10,15 +10,16 @@ get_palette(n = NULL, palette = NULL, preview = FALSE)
 \item{n}{numeric; default NULL. number of colours; cannot exceed 335. when NULL, gives all colours (in palette, if specified).}
 
 \item{palette}{character; allows you to specify a RColorBrewer palette by name
-       Diverging
-       BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral
+Diverging
+BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral
 
-       Qualitative
-       Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3
+\if{html}{\out{<div class="sourceCode">}}\preformatted{   Qualitative
+   Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3
 
-       Sequential
-       Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu,
-       PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd}
+   Sequential
+   Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu,
+   PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd
+}\if{html}{\out{</div>}}}
 
 \item{preview}{logic; default FALSE; when set, gives preview of colour}
 }

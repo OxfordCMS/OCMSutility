@@ -13,7 +13,7 @@ relab(counts)
 dataframe
 }
 \description{
-convert counts table to relative abundance (%)
+convert counts table to relative abundance (\%)
 }
 \examples{
 counts <- data.frame(matrix(rnorm(1000), ncol=20, nrow=50))

@@ -15,20 +15,20 @@ rows should match ddata. all variables can be numeric,
 characters, or factors}
 
 \item{PC}{numeric vector of length 2. specifies the PCs to plot.
-default is `c(1,2)`}
+default is \code{c(1,2)}}
 
 \item{CI}{numeric. Default 0.95. Confidence interval used to draw ellipse
 around categorical variable. set to NULL to omit drawing ellipse}
 
 \item{score_label}{string. label data ponts on score/biplot.
 should be column name in mdata.
-When set to `FALSE`, data ponts are not labelled.
-Default `FALSE`}
+When set to \code{FALSE}, data ponts are not labelled.
+Default \code{FALSE}}
 }
 \value{
 named list of plots. First plot in list is main_pca.
-         Subsequent plots in list correspond to metadata variables
-         (columns in metadata)
+Subsequent plots in list correspond to metadata variables
+(columns in metadata)
 }
 \description{
 Overlay numeric metadata variables onto a PCoA score plot.
