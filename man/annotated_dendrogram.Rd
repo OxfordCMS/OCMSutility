@@ -53,4 +53,8 @@ mydist <- vegan::vegdist(ddata, method='bray')
 mdata <- dss_example$metadata
 mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
 annotated_dendrogram(mydist, mdata, 'sampleID')
+# custom colours
+col_geno <- RColorBrewer::brewer.pal(9, "Paired")[1:2]
+col_phen <- RColorBrewer::brewer.pal(9, "Paired")[3:4]
+annotated_dendrogram(mydist, mdata, 'sampleID', pal=list(col_geno, col_phen))
 }
