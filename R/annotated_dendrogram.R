@@ -33,6 +33,10 @@
 #' mdata <- dss_example$metadata
 #' mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
 #' annotated_dendrogram(mydist, mdata, 'sampleID')
+#' # custom colours
+#' col_geno <- RColorBrewer::brewer.pal(9, "Paired")[1:2]
+#' col_phen <- RColorBrewer::brewer.pal(9, "Paired")[3:4]
+#' annotated_dendrogram(mydist, mdata, 'sampleID', pal=list(col_geno, col_phen))
 
 annotated_dendrogram <- function(dist, met, id, method='complete',
                                  coord=NULL, pal=NULL){
@@ -84,7 +88,7 @@ annotated_dendrogram <- function(dist, met, id, method='complete',
   p <- ggplot(ggdendro::segment(dend_data)) +
     geom_segment(aes(x=x, y=y, xend=xend, yend=yend)) +
     geom_text(data=text_df, aes(x=x, y=y, label=label), hjust=0, vjust=0.5, angle=90) +
-    geom_tile(data=pdata, aes(x=x, y=coord[1], fill=!!sym(met_var[i])),
+    geom_tile(data=pdata, aes(x=x, y=coord[1], fill=!!sym(met_var[1])),
               height=abs(coord[1]-coord[2])) +
     scale_fill_manual(values=pal[[1]], name=met_var[1])
 
