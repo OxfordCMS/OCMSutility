@@ -4,7 +4,14 @@
 \alias{pcoa_by_var}
 \title{pcoa_by_var}
 \usage{
-pcoa_by_var(ddata, mdata, PC = c(1, 2), CI = 0.95, score_label = FALSE)
+pcoa_by_var(
+  ddata,
+  mdata,
+  method = "bray",
+  PC = c(1, 2),
+  CI = 0.95,
+  score_label = FALSE
+)
 }
 \arguments{
 \item{ddata}{dataframe. samples in rows. sample ids in rownames.
@@ -13,6 +20,9 @@ rows should match mdata}
 \item{mdata}{dataframe. samples in rows. sample ids in rownames.
 rows should match ddata. all variables can be numeric,
 characters, or factors}
+
+\item{method}{string. distance method. Default \code('bray').
+Passed to \code(vegan::vegdist)}
 
 \item{PC}{numeric vector of length 2. specifies the PCs to plot.
 default is \code{c(1,2)}}
@@ -50,7 +60,7 @@ mdata$var1 <- rnorm(25, 0.5, 3)
 mdata$var2 <- rep(LETTERS[21:25], 5)
 mdata$var3 <- as.factor(rep(letters[1:5], each=5))
 mdata <- mdata[,c('Phenotype','var1','var2','var3')]
-p_list <- pcoa_by_var(ddata, mdata)
+p_list <- pcoa_by_var(ddata, mdata, method='bray')
 
 # pcoa
 p_list$main_pcoa

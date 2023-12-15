@@ -658,7 +658,7 @@ mdata$var1 <- rnorm(25, 0.5, 3)
 mdata$var2 <- rep(LETTERS[21:25], 5)
 mdata$var3 <- as.factor(rep(letters[1:5], each=5))
 mdata <- mdata[,c('Phenotype','var1','var2','var3')]
-p_list <- pcoa_by_var(ddata, mdata)
+p_list <- pcoa_by_var(ddata, mdata, method='bray')
 
 # pcoa
 p_list$main_pcoa

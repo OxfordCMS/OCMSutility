@@ -9,6 +9,8 @@
 #' @param mdata dataframe. samples in rows. sample ids in rownames.
 #'              rows should match ddata. all variables can be numeric,
 #'              characters, or factors
+#' @param method string. distance method. Default \code('bray').
+#'               Passed to \code(vegan::vegdist)
 #' @param PC numeric vector of length 2. specifies the PCs to plot.
 #'           default is `c(1,2)`
 #' @param CI numeric. Default 0.95. Confidence interval used to draw ellipse
@@ -46,7 +48,7 @@
 #' mdata$var2 <- rep(LETTERS[21:25], 5)
 #' mdata$var3 <- as.factor(rep(letters[1:5], each=5))
 #' mdata <- mdata[,c('Phenotype','var1','var2','var3')]
-#' p_list <- pcoa_by_var(ddata, mdata)
+#' p_list <- pcoa_by_var(ddata, mdata, method='bray')
 #'
 #' # pcoa
 #' p_list$main_pcoa
@@ -59,12 +61,12 @@
 #' # can use cowplot::plot_grid to put all plots into one
 #' cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 
-pcoa_by_var <- function(ddata, mdata, PC=c(1,2),
+pcoa_by_var <- function(ddata, mdata, method='bray', PC=c(1,2),
                         CI = 0.95, score_label=FALSE) {
 
   # check inputs----------------------------------------------------------------
   # check data is in relative abundance format
-  if(all(ddata %% 1 == 0)) {
+  if(method == 'bray' && all(ddata %% 1 == 0)) {
     stop("All values are integers. Values should be in relative abundance for Bray Curtis distance used in PCoA")
   }
   if(!is.data.frame(ddata)) {
@@ -91,11 +93,11 @@ pcoa_by_var <- function(ddata, mdata, PC=c(1,2),
 
   # make pcoa-------------------------------------------------------------------
   # calculate Bray Curtis distance
-  bc_dist <- vegan::vegdist(ddata, method = "bray")
+  ddist <- vegan::vegdist(ddata, method = method)
 
   # calculate pcoa
-  pcoa <- cmdscale(bc_dist, k = 4)
-  eig <- cmdscale(bc_dist, k=2, eig = TRUE)
+  pcoa <- cmdscale(ddist, k = 4)
+  eig <- cmdscale(ddist, k=2, eig = TRUE)
   var_explained <- round(eig$eig*100/sum(eig$eig),1)
 
   pcoa <- as.data.frame(pcoa)
