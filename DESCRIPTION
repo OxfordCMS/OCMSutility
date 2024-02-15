@@ -27,7 +27,6 @@ Imports:
   foreach,
   ggdendro,
   ggfortify,
-  ggnewscale,
   ggplot2,
   ggrepel,
   gtools,
