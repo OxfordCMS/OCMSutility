@@ -12,6 +12,15 @@ annotated_dendrogram(
   coord = NULL,
   pal = NULL
 )
+
+annotated_dendrogram(
+  dist,
+  met,
+  id,
+  method = "complete",
+  coord = NULL,
+  pal = NULL
+)
 }
 \arguments{
 \item{dist}{class \code{dist}. distance matrix}
@@ -31,15 +40,39 @@ Set to \code{NULL} to use default (RColorBrewer) colours.}
 }
 \value{
 ggplot
+
+ggplot
 }
 \description{
+Creates an annotated dendrogram from a distance matrix.
+Dendrogram annotations are based on metadata supplied
+
 Creates an annotated dendrogram from a distance matrix.
 Dendrogram annotations are based on metadata supplied
 }
 \details{
 Colour values needs to match the number variable values \code{pal}
+
+Colour values needs to match the number variable values \code{pal}
 }
 \examples{
+set.seed(1)
+# get relative abundance data
+data(dss_example)
+ddata <- dss_example$merged_abundance_id[,2:26]
+rownames(ddata) <- dss_example$merged_abundance_id[,1]
+ddata <- t(OCMSutility::relab(ddata))
+# distance matrix
+mydist <- vegan::vegdist(ddata, method='bray')
+
+# metdata variable
+mdata <- dss_example$metadata
+mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
+annotated_dendrogram(mydist, mdata, 'sampleID')
+# custom colours
+col_geno <- RColorBrewer::brewer.pal(9, "Paired")[1:2]
+col_phen <- RColorBrewer::brewer.pal(9, "Paired")[3:4]
+annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
 set.seed(1)
 # get relative abundance data
 data(dss_example)

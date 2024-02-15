@@ -716,7 +716,6 @@ rownames(ddata) <- dss_example$merged_abundance_id[,1]
 ddata <- t(OCMSutility::relab(ddata))
 # distance matrix
 mydist <- vegan::vegdist(ddata, method='bray')
-
 # metdata variable
 mdata <- dss_example$metadata
 mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
@@ -724,6 +723,15 @@ annotated_dendrogram(mydist, mdata, 'sampleID')
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/annotated-dendrogram-1.png)
+
+``` r
+# custom colours
+col_geno <- RColorBrewer::brewer.pal(9, "Paired")[1:2]
+col_phen <- RColorBrewer::brewer.pal(9, "Paired")[3:4]
+annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/annotated-dendrogram-2.png)
 
 ## plotSunburst
 
