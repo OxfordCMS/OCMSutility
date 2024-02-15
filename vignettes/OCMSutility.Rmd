@@ -448,7 +448,9 @@ mdata <- mdata[,c('sampleID','Genotype','Phenotype')]
 annotated_dendrogram(mydist, mdata, 'sampleID')
 # custom colours
 col_geno <- RColorBrewer::brewer.pal(9, "Paired")[1:2]
+names(col_geno) <- c('Genotype:WT','Genotype:KO')
 col_phen <- RColorBrewer::brewer.pal(9, "Paired")[3:4]
+names(col_phen) <- c('Phenotype:water','Phenotype:DSS')
 annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
 
 ```
