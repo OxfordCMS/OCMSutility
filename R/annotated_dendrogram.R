@@ -51,17 +51,6 @@ annotated_dendrogram <- function(dist, met, id, method='complete',
   if(!is.null(coord) && !is.numeric(coord)) {
     stop("coord should be NULL or a vector of numbers equal to the number of metadata variables")
   }
-  coord_df <- data.frame(var=met_var, coord=coord)
-
-  pdata <- ggdendro::label(dend_data) %>%
-    left_join(met, c(label = id))  %>%
-    gather('var','value', -x, -y, -label) %>%
-    left_join(coord_df, 'var') %>%
-    mutate(fill = paste(var, value, sep=":"))
-
-  if (!is.null(pal) && length(pal) != (length(unique(pdata$fill)))) {
-    stop("need a colour palette for each variable")
-  }
   # annotation locations
   if(is.null(coord)) {
     coord <- seq(from=-0.5, by=-0.8, length.out=ncol(met)-1)
@@ -74,6 +63,22 @@ annotated_dendrogram <- function(dist, met, id, method='complete',
     pal <- pal_pool[1:length(unique(pdata$fill))]
   } else {
     names(pal) <- NULL
+  }
+
+  met_var <- colnames(met)
+  met_var <- met_var[met_var != id]
+  dend <- as.dendrogram(hclust(dist, method = method))
+  dend_data <- ggdendro::dendro_data(dend, type = "rectangle")
+  coord_df <- data.frame(var=met_var, coord=coord)
+
+  pdata <- ggdendro::label(dend_data) %>%
+    left_join(met, c(label = id))  %>%
+    gather('var','value', -x, -y, -label) %>%
+    left_join(coord_df, 'var') %>%
+    mutate(fill = paste(var, value, sep=":"))
+
+  if (!is.null(pal) && length(pal) != length(unique(pdata$fill))) {
+    stop("need a colour palette for each variable value")
   }
 
   text_df <- data.frame(y=coord,
