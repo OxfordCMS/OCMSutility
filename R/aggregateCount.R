@@ -2,7 +2,7 @@
 #'
 #' @description
 #' Aggregate read counts based on taxonomic level
-#' `r lifecycle::badge("deprecated")`
+#' `r lifecycle::badge("deprecated")`r
 #'
 #' `aggregateCount` was renamed to `aggregate_count` for more consistent
 #' function naming nomenclature in `OCMSutility`. Usage is still exactly the same
@@ -30,6 +30,6 @@
 #' summary(aggregated_list)
 
 aggregateCount <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
-  lifecycle::deprecate_warn("0.3.0", "aggregateCount", "aggregate_count")
+  lifecycle::deprecate_warn("0.3.0", "aggregateCount()", "aggregate_count()")
   aggregate_count(count_df, tax_df, aggregate_by)
 }

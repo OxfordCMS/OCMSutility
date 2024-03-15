@@ -8,7 +8,7 @@ aggregateCount(count_df, tax_df = NULL, aggregate_by = NULL)
 }
 \description{
 Aggregate read counts based on taxonomic level
-\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}r
 
 \code{aggregateCount} was renamed to \code{aggregate_count} for more consistent
 function naming nomenclature in \code{OCMSutility}. Usage is still exactly the same

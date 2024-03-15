@@ -29,6 +29,6 @@
 #' @return updated taxonomy table with "unclassified" prepended with higher level classifications
 
 reannotateTax <- function(taxonomy) {
-
+  lifecycle::deprecate_warn("0.3.0", "reannotateTax()", "reannotate_tax()")
   reannotate_tax(taxonomy)
 }

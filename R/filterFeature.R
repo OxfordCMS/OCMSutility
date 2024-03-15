@@ -29,6 +29,6 @@
 filterFeature <- function(count_df, tax_df,
                            filter_method = 'abs_count',
                            asv_cutoff = 1, prev_cutoff = 2) {
-
+  lifecycle::deprecate_warn("0.3.0", "filterFeature()", "filter_feature()")
   filter_feature(count_df, tax_df, filter_method, asv_cutoff, prev_cutoff)
 }
