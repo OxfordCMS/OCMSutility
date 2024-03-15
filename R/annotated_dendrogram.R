@@ -95,7 +95,22 @@ annotated_dendrogram <- function(dist, met, id, method='complete',
     geom_segment(aes(x = x, y = y, xend = xend, yend = yend)) +
     geom_text(data = text_df,
               aes(x = x, y = y, label = label),
-              hjust = 0, vjust = 0.5, angle = 90) +
+              hjust = 0, vjust = 0.5, angle = 90)
+
+  if(length(coord) == 1) {
+
+    pos = floor(min(ggdendro::segment(dend_data)$yend))
+    p <- p +
+      geom_tile(data = pdata,
+                aes(x = x, y = -1, fill = fill),
+                height=-pos/2)
+  } else {
+    p <- p +
+      geom_tile(data = pdata,
+                aes(x = x, y = coord, fill = fill),
+                height = abs(coord[1] - coord[2]))
+  }
+  p <- p +
     geom_tile(data = pdata,
               aes(x = x, y = coord, fill = fill),
               height = abs(coord[1] - coord[2])) +
