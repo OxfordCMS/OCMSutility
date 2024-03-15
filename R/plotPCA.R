@@ -47,6 +47,6 @@ getVE <- function(pc, component="PC1"){
 plotPCA <- function(
   pc, metadata, colourby="none", shapeby="none", group="none",
   continuous=FALSE,  pcs=c("PC1", "PC2")) {
-
+  lifecycle::deprecate_warn("0.3.0", "plotPCA()", "plot_pca()")
   plot_pca(pc, metadata, colourby, shapeby, group, continuous, pcs)
 }
