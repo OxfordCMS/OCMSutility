@@ -2,7 +2,11 @@
 % Please edit documentation in R/plotPCoA.R
 \name{plotPCoA}
 \alias{plotPCoA}
-\title{plotPCoA}
+\title{plotPCoA
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+This is a simple PCoA function that colours all points by one
+metadata variable. It can be helpful to visualise metadata variables
+independently when assessing potential confounding metadtaa factors}
 \usage{
 plotPCoA(relab, met, colour = NULL, shape = NULL, CI = 0.95)
 }
@@ -20,6 +24,8 @@ and samples in columns. feature IDs in rowname.}
 around colour variable. set to NULL to omit drawing ellipse}
 }
 \description{
+plotPCoA
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 This is a simple PCoA function that colours all points by one
 metadata variable. It can be helpful to visualise metadata variables
 independently when assessing potential confounding metadtaa factors
