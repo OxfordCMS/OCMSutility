@@ -1,7 +1,7 @@
 Package: OCMSutility
 Type: Package
 Title: Utility functions for OCMS
-Version: 0.3.1
+Version: 0.4.0
 Authors@R: c(person("Sandi","Yen", 
              email = "sandi.yen@kennedy.ox.ac.uk", 
              role = c("aut","cre")),
@@ -14,7 +14,6 @@ License: MIT
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-  sunburstR,
   cowplot,
   knitr,
   rmarkdown
@@ -41,6 +40,6 @@ Imports:
   stringr,
   vegan
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Depends: 
-    R (>= 3.50)
+    R (>= 4.3)

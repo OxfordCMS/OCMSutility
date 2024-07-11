@@ -38,7 +38,7 @@
 #'
 #' @examples
 #' data(dss_example)
-#' # featureID should be row names
+# featureID should be row names
 #' feature_count <- dss_example$merged_abundance_id %>%
 #'   tibble::column_to_rownames('featureID')
 #'
@@ -118,7 +118,7 @@ aggregate_count <-  function(count_df, tax_df=NULL, aggregate_by = NULL) {
   yvar <- paste(sampleID, collapse=',')
   f <- sprintf("cbind(%s) ~ featureID", yvar)
   # perform aggregation
-  aggregated <- stats::aggregate(formula = formula(f),
+  aggregated <- stats::aggregate(formula(f),
                                  data = count_df, FUN = sum)
 
   aggregated <- aggregated %>%
