@@ -17,7 +17,7 @@
 #' @returns ggplot
 #' @export
 #' @import ggplot2
-#' @import ggnewscale
+#' import ggnewscale
 #' @import ggdendro
 #' @import dplyr
 #' @import RColorBrewer
