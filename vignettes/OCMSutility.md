@@ -465,6 +465,35 @@ These functions produce plots.
 
 <details>
 <summary>
+stacked barchart
+</summary>
+
+## stacked\_barchart
+
+A simple but common visualisation of taxonomic composition across
+samples. The function will plot the top\_n taxa based on ranking of
+average relative abundance across all samples. Returns a list with
+“data” and “plot” so you can use the data for more custom plots if you
+wish.
+
+``` r
+# family counts from before
+counts <- aggregated_list[['count_df']]
+rel_abundance <- relab(counts)
+
+# get rid of family == NA
+rel_abundance <- rel_abundance[rownames(rel_abundance) != "NA",]
+stacked <- stacked_barchart(rel_abundance, top_n = 10)
+#> Using Group.1, Taxon as id variables
+
+stacked$plot
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/stacked%20barchart-1.png)
+
+</details>
+<details>
+<summary>
 plot pcoa
 </summary>
 

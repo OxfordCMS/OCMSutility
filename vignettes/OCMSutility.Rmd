@@ -304,11 +304,33 @@ met <- metfile_init(db_file, dummy = "Group")
 These functions produce plots.
 
 <details>
+    <summary>stacked barchart</summary>
+
+## stacked_barchart
+
+A simple but common visualisation of taxonomic composition across samples. The function will plot the top_n taxa based on ranking of average relative abundance across all samples. Returns a list with "data" and "plot" so you can use the data for more custom plots if you wish.
+
+```{r stacked barchart, fig.height=7, fig.width=10}
+
+# family counts from before
+counts <- aggregated_list[['count_df']]
+rel_abundance <- relab(counts)
+
+# get rid of family == NA
+rel_abundance <- rel_abundance[rownames(rel_abundance) != "NA",]
+stacked <- stacked_barchart(rel_abundance, top_n = 10)
+
+stacked$plot
+```
+
+</details>
+
+<details>
     <summary>plot pcoa</summary>
 
 ## plot_pcoa
 
- This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
+This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
 
 Usage:
 
