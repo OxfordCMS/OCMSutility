@@ -26,8 +26,13 @@ documented below.
 # Package Data
 
 This package comes with an example 16S dataset, which is the DSS study
-(\[link needed\]). Different aspects of this example data can be
-accessed.
+[found here](https://pmc.ncbi.nlm.nih.gov/articles/PMC6120875/).
+Different aspects of this example data can be accessed.
+
+<details>
+<summary>
+asv\_example
+</summary>
 
 ## asv\_example
 
@@ -41,6 +46,12 @@ data(asv_example)
 dim(asv_example)
 #> [1]  49 296
 ```
+
+</details>
+<details>
+<summary>
+tax\_example
+</summary>
 
 ## tax\_example
 
@@ -56,6 +67,12 @@ dim(tax_example)
 colnames(tax_example)
 #> [1] "sequence" "Phylum"   "Class"    "Order"    "Family"   "Genus"    "Species"
 ```
+
+</details>
+<details>
+<summary>
+dss\_example
+</summary>
 
 ## dss\_example
 
@@ -76,7 +93,14 @@ summary(dss_example)
 #> metadata              11     data.frame list
 ```
 
+</details>
+
 # 16S Data Manipulation
+
+<details>
+<summary>
+filter\_feature
+</summary>
 
 ## filter\_feature
 
@@ -118,8 +142,8 @@ summary(filtered_ls)
 #>             Length Class      Mode     
 #> taxonomy      10   data.frame list     
 #> filtered    7575   -none-     numeric  
-#> p_agg          9   gg         list     
-#> p_exp          9   gg         list     
+#> p_agg         11   gg         list     
+#> p_exp         11   gg         list     
 #> feat_remove  431   -none-     character
 #> feat_keep    303   -none-     character
 #> msg            1   -none-     character
@@ -130,13 +154,19 @@ kable(head(filtered_count[,1:4]))
 ```
 
 |        | 2DSS\_\_10 | 2DSS\_\_11 | 2DSS\_\_13 | 2DSS\_\_14 |
-| :----- | ---------: | ---------: | ---------: | ---------: |
+|:-------|-----------:|-----------:|-----------:|-----------:|
 | ASV108 |  0.0005656 |  0.0012191 |  0.0000000 |  0.0000000 |
 | ASV128 |  0.0018854 |  0.0000000 |  0.0051209 |  0.0000000 |
 | ASV57  |  0.0066931 |  0.0000000 |  0.0000000 |  0.0000000 |
 | ASV59  |  0.0004713 |  0.0010667 |  0.0011380 |  0.0000000 |
 | ASV62  |  0.0005656 |  0.0740628 |  0.0008535 |  0.0005923 |
 | ASV37  |  0.0029223 |  0.0000000 |  0.0000000 |  0.0000000 |
+
+</details>
+<details>
+<summary>
+relab
+</summary>
 
 ## relab
 
@@ -154,6 +184,12 @@ asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example
 
 rel_abundance <- relab(asv_counts)
 ```
+
+</details>
+<details>
+<summary>
+aggregate\_count
+</summary>
 
 ## aggregate\_count
 
@@ -194,7 +230,7 @@ knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 ```
 
 |                                | id2DSS\_\_10 | id2DSS\_\_11 | id2DSS\_\_13 | id2DSS\_\_14 | id2DSS\_\_16 |
-| :----------------------------- | -----------: | -----------: | -----------: | -----------: | -----------: |
+|:-------------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
 | Acidaminococcaceae             |           10 |            4 |            0 |            0 |            0 |
 | Anaeroplasmataceae             |           60 |            0 |            7 |            0 |            0 |
 | Bacteroidaceae                 |         1118 |         2921 |          262 |          256 |         1484 |
@@ -207,13 +243,19 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 ```
 
 | featureID                      | sequence | Kingdom  | Phylum         | Class              | Order             | Family                         | Genus | Species | Taxon                                                                                                              | n\_collapse |
-| :----------------------------- | :------- | :------- | :------------- | :----------------- | :---------------- | :----------------------------- | :---- | :------ | :----------------------------------------------------------------------------------------------------------------- | ----------: |
+|:-------------------------------|:---------|:---------|:---------------|:-------------------|:------------------|:-------------------------------|:------|:--------|:-------------------------------------------------------------------------------------------------------------------|------------:|
 | Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae                      |           4 |
 | Anaeroplasmataceae             | NA       | Bacteria | Tenericutes    | Mollicutes         | Anaeroplasmatales | Anaeroplasmataceae             | NA    | NA      | k\_\_Bacteria;p\_\_Tenericutes;c\_\_Mollicutes;o\_\_Anaeroplasmatales;f\_\_Anaeroplasmataceae                      |           2 |
 | Bacteroidaceae                 | NA       | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales     | Bacteroidaceae                 | NA    | NA      | k\_\_Bacteria;p\_\_Bacteroidetes;c\_\_Bacteroidia;o\_\_Bacteroidales;f\_\_Bacteroidaceae                           |          39 |
 | Bifidobacteriaceae             | NA       | Bacteria | Actinobacteria | Actinobacteria     | Bifidobacteriales | Bifidobacteriaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Actinobacteria;c\_\_Actinobacteria;o\_\_Bifidobacteriales;f\_\_Bifidobacteriaceae               |           3 |
 | Burkholderiales incertae sedis | NA       | Bacteria | Proteobacteria | Betaproteobacteria | Burkholderiales   | Burkholderiales incertae sedis | NA    | NA      | k\_\_Bacteria;p\_\_Proteobacteria;c\_\_Betaproteobacteria;o\_\_Burkholderiales;f\_\_Burkholderiales incertae sedis |           1 |
 | Clostridiaceae 1               | NA       | Bacteria | Firmicutes     | Clostridia         | Clostridiales     | Clostridiaceae 1               | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Clostridia;o\_\_Clostridiales;f\_\_Clostridiaceae 1                             |           6 |
+
+</details>
+<details>
+<summary>
+reannotate\_tax
+</summary>
 
 ## reannotate\_tax
 
@@ -235,7 +277,7 @@ knitr::kable(ex1)
 ```
 
 | ASV  | Order  | Family       | Genus        | read\_count |
-| :--- | :----- | :----------- | :----------- | ----------: |
+|:-----|:-------|:-------------|:-------------|------------:|
 | ASV1 | order1 | family1      | unclassified |          10 |
 | ASV2 | order1 | family1      | genus1       |          10 |
 | ASV3 | order1 | family2      | unclassified |          10 |
@@ -259,7 +301,7 @@ knitr::kable(ex2)
 ```
 
 | ASV  | Order  | Family               | Genus                 | read\_count |
-| :--- | :----- | :------------------- | :-------------------- | ----------: |
+|:-----|:-------|:---------------------|:----------------------|------------:|
 | ASV1 | order1 | family1              | family1\_unclassified |          10 |
 | ASV2 | order1 | family1              | genus1                |          10 |
 | ASV3 | order1 | family2              | family2\_unclassified |          10 |
@@ -286,7 +328,7 @@ knitr::kable(old_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family  | Genus  | Species |
-| :------- | :------ | :----- | :----- | :------ | :----- | :------ |
+|:---------|:--------|:-------|:-------|:--------|:-------|:--------|
 | kingdom1 | phylum1 | class1 | order1 | family1 | NA     | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family1 | genus1 | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family2 | NA     | NA      |
@@ -294,13 +336,12 @@ knitr::kable(old_tax)
 | kingdom1 | phylum1 | class1 | order1 | NA      | NA     | NA      |
 
 ``` r
-
 new_tax <- reannotate_tax(old_tax)
 knitr::kable(new_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family               | Genus                 | Species               |
-| :------- | :------ | :----- | :----- | :------------------- | :-------------------- | :-------------------- |
+|:---------|:--------|:-------|:-------|:---------------------|:----------------------|:----------------------|
 | kingdom1 | phylum1 | class1 | order1 | family1              | family1\_unclassified | family1\_unclassified |
 | kingdom1 | phylum1 | class1 | order1 | family1              | genus1                | genus1\_unclassified  |
 | kingdom1 | phylum1 | class1 | order1 | family2              | family2\_unclassified | family2\_unclassified |
@@ -308,7 +349,6 @@ knitr::kable(new_tax)
 | kingdom1 | phylum1 | class1 | order1 | order1\_unclassified | order1\_unclassified  | order1\_unclassified  |
 
 ``` r
-
 # try with example data
 data(asv_example)
 
@@ -320,7 +360,7 @@ knitr::kable(head(old_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
+|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | NA                                   |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
@@ -329,19 +369,24 @@ knitr::kable(head(old_tax))
 | Bacteria | Firmicutes     | Clostridia         | Clostridiales   | Lachnospiraceae    | Clostridium XlVa | NA                                   |
 
 ``` r
-
 new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
+|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | Prevotella\_unclassified             |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | Prevotella\_unclassified             |
 | Bacteria | Proteobacteria | Betaproteobacteria | Burkholderiales | Sutterellaceae     | Sutterella       | Sutterella\_unclassified             |
 | Bacteria | Firmicutes     | Clostridia         | Clostridiales   | Lachnospiraceae    | Clostridium XlVa | Clostridium XlVa\_unclassified       |
+
+</details>
+<details>
+<summary>
+clr
+</summary>
 
 ## clr
 
@@ -357,6 +402,7 @@ Usage:
 asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
 
 clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+#> conditions vector supplied
 #> multicore environment is is OK -- using the BiocParallel package
 #> computing center with all features
 
@@ -373,6 +419,7 @@ instead.
 
 ``` r
 clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE)
+#> conditions vector supplied
 #> multicore environment is is OK -- using the BiocParallel package
 #> computing center with all features
 
@@ -383,13 +430,19 @@ class(clr_transformed)
 #> [1] "ALDEx2"
 ```
 
+</details>
+<details>
+<summary>
+metfile\_init
+</summary>
+
 ## metfile\_init
 
 This helper function initiates a metadata table that is compatible with
 `OCMSlooksy`.
 
-Usage: This function takes the database file returned from [`ocms_16s
-dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+Usage: This function takes the database file returned from
+[`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
 
 `db_file` is the rsqlite database file `out_dir` output directory.
 default `NULL` so no output file written. `ref_table` name of table in
@@ -404,9 +457,16 @@ db_file <- "/path/to/db/file"
 met <- metfile_init(db_file, dummy = "Group")
 ```
 
+</details>
+
 # Data Visualisation
 
 These functions produce plots.
+
+<details>
+<summary>
+plot\_pcoa
+</summary>
 
 ## plot\_pcoa
 
@@ -442,8 +502,6 @@ plist[[2]]
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pcoa-2.png)
 
-## 
-
 This function helps plot PCA score plots. It returns a list of the
 original data, the PCA result and the ggplot. All dataframes are
 returned in such a way that that ggplot produced can be modified with
@@ -459,6 +517,7 @@ data(asv_example)
 asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example$sequence)
 
 asv_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = TRUE)
+#> conditions vector supplied
 #> multicore environment is is OK -- using the BiocParallel package
 #> computing center with all features
 
@@ -483,7 +542,6 @@ plot_data$p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-1.png)
 
 ``` r
-
 # modify default plot
 add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
 col_val <- get_palette(5, "Set3")
@@ -504,6 +562,12 @@ p
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-2.png)
 
+</details>
+<details>
+<summary>
+featurebox
+</summary>
+
 ## featurebox
 
 This function takes a matrix of abudnances from RNA-seq or microbiome
@@ -522,6 +586,7 @@ asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example
 
 # for plotting purposes we would transform the data e.g. clr
 asv_clr <- clr(asv_counts)
+#> conditions vector supplied
 #> multicore environment is is OK -- using the BiocParallel package
 #> computing center with all features
 
@@ -547,8 +612,7 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 
 The default palettes used are “Set2”, “Set3” and “Set4”, and the result
 will depend on the number of colours you need. You can change the
-colours if you like by adding manual
-scale:
+colours if you like by adding manual scale:
 
 ``` r
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
@@ -563,6 +627,12 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox_colour-1.png)
+
+</details>
+<details>
+<summary>
+pca\_by\_var
+</summary>
 
 ## pca\_by\_var
 
@@ -599,7 +669,6 @@ p_list$main_pca
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-1.png)
 
 ``` r
-
 # pca with metadata variables overlayed
 p_list$Phenotype
 ```
@@ -625,12 +694,17 @@ p_list$var3
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-5.png)
 
 ``` r
-
 # can use cowplot::plot_grid to put all plots into one
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-6.png)
+
+</details>
+<details>
+<summary>
+pcoa\_by\_var
+</summary>
 
 ## pcoa\_by\_var
 
@@ -692,12 +766,17 @@ p_list$var3
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pcoa_by_var-5.png)
 
 ``` r
-
 # can use cowplot::plot_grid to put all plots into one
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pcoa_by_var-6.png)
+
+</details>
+<details>
+<summary>
+annotated\_dendrogram
+</summary>
 
 ## annotated\_dendrogram
 
@@ -734,6 +813,11 @@ annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/annotated-dendrogram-2.png)
+</details>
+<details>
+<summary>
+plotSunburst
+</summary>
 
 ## plotSunburst
 
@@ -806,15 +890,21 @@ relab <- relab(count_genus)
 #              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
 ```
 
+</details>
+
 # Analysis
 
 These functions perform simple analyses.
 
+<details>
+<summary>
+true\_pos\_rate
+</summary>
+
 ## true\_pos\_rate
 
 Calculate rate of true positives in positive control standards. Used in
-OCMS\_zymobioimcs
-report.
+OCMS\_zymobioimcs report.
 
 Usage:
 
@@ -852,6 +942,12 @@ p
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/true_pos_rate-1.png)
+
+</details>
+<details>
+<summary>
+nsamples\_by\_var
+</summary>
 
 ## nsample\_by\_var
 
@@ -911,6 +1007,12 @@ nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 #> 25          Y    3    4    4
 ```
 
+</details>
+<details>
+<summary>
+compare\_cor\_ci
+</summary>
+
 ## compare\_cor\_ci
 
 Performs pairwise correlations of features with adjusted p-values.
@@ -965,6 +1067,12 @@ compare_cor_ci(feat_mat, met_df$Phenotype)
 #> 30 ASV5 ASV6 water 12  0.36129770 0.24854130 0.8193311 -0.26821893 0.7745888
 ```
 
+</details>
+<details>
+<summary>
+dissimilarity
+</summary>
+
 ## dissimilarity
 
 This function is bested used for repeated measures data. The purpose of
@@ -1014,7 +1122,7 @@ knitr::kable(head(within_diss))
 ```
 
 | dissimilarity | method            |
-| ------------: | :---------------- |
+|--------------:|:------------------|
 |     0.7080197 | Within-individual |
 |     0.8067290 | Within-individual |
 |     0.8098117 | Within-individual |
@@ -1023,7 +1131,6 @@ knitr::kable(head(within_diss))
 |     0.9769913 | Within-individual |
 
 ``` r
-
 # between-individual dissimilarity at timpoint 1
 metadata_t1 <- metadata[metadata$Timepoint == "Time 1",]
 asv_relab_t1 <- asv_relab[,rownames(metadata_t1)]
@@ -1034,7 +1141,7 @@ knitr::kable(head(between_diss))
 ```
 
 | dissimilarity | method             |
-| ------------: | :----------------- |
+|--------------:|:-------------------|
 |     0.8130555 | Between-individual |
 |     0.8108123 | Between-individual |
 |     0.8153680 | Between-individual |
@@ -1043,7 +1150,6 @@ knitr::kable(head(between_diss))
 |     0.8061727 | Between-individual |
 
 ``` r
-
 # we can then combine and plot them
 diss <- bind_rows(within_diss, between_diss)
 ggplot(diss, aes(x=method, y=dissimilarity)) +
@@ -1054,6 +1160,12 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/dissimilarity-1.png)
+
+</details>
+<details>
+<summary>
+bc\_dissimilarity
+</summary>
 
 ## bcdissimilarity
 
@@ -1069,11 +1181,9 @@ If within/between group assignments are not necessary, set `var=NULL`
 
 This function returns a list:
 
-  - `bc_df` long dataframe of dissimilarity scores respective metadata
+-   `bc_df` long dataframe of dissimilarity scores respective metadata
     of the comparison
-  - `bc_dist` symmetrical matrix of Bray-Curtis distances
-
-<!-- end list -->
+-   `bc_dist` symmetrical matrix of Bray-Curtis distances
 
 ``` r
 data(dss_example)
@@ -1096,7 +1206,6 @@ p_phen
 ![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-1.png)
 
 ``` r
-
 # for multiple metadata variables
 bc_data <- c()
 for(var in c('Phenotype','Genotype')) {
@@ -1115,6 +1224,12 @@ p_bc
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-2.png)
 
+</details>
+<details>
+<summary>
+rarefaction
+</summary>
+
 ## rarefaction
 
 Useful for calculating and plotting rarefaction curve to check if read
@@ -1130,50 +1245,42 @@ asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example
 rarefaction <- rarefaction(asv_counts)
 #> Warning: executing %dopar% sequentially: no parallel backend registered
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
-
 #> Warning in max(x, na.rm = T): no non-missing arguments to max; returning -Inf
 
 # default plot
 p <- rarefaction$rare_p
 p
-#> Warning: ggrepel: 271 unlabeled data points (too many overlaps). Consider
+#> Warning: ggrepel: 258 unlabeled data points (too many overlaps). Consider
 #> increasing max.overlaps
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/rarefaction-1.png)
 
 ``` r
-
 # modify default plot -- remove geom_label_repel layer
 p$layers[[2]] <- NULL
 p
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/rarefaction-2.png)
+
+</details>
+<details>
+<summary>
+metadata\_sparsity
+</summary>
 
 ## metadata\_sparsity
 
@@ -1229,16 +1336,22 @@ met_sparse[[4]]
 #> 7        G     3  NA <NA>         1         NA
 ```
 
+</details>
+
 # Utility
 
 These functions are helful for data manipulation in general.
+
+<details>
+<summary>
+get\_palette
+</summary>
 
 ## get\_palette
 
 This is a convenience function for getting a set of colours for plotting
 purposes. Setting preview=TRUE will show you the colours. The colours
-can be changed by adding a palette(s) to the palette
-    argument.
+can be changed by adding a palette(s) to the palette argument.
 
 Usage:
 
@@ -1250,6 +1363,12 @@ getPalette(n=10, palette="Set3", preview=TRUE)
 
     #>  [1] "#8DD3C7" "#FFFFB3" "#BEBADA" "#FB8072" "#80B1D3" "#FDB462" "#B3DE69"
     #>  [8] "#FCCDE5" "#D9D9D9" "#BC80BD"
+
+</details>
+<details>
+<summary>
+convert\_platemap
+</summary>
 
 ## convert\_platemap
 
@@ -1276,7 +1395,7 @@ convert_platemap(plate_map = "my96wellplate.xlsx",
     #>                     Max.   :12.00
 
 | well\_id | col | row | well\_value   |
-| :------- | --: | :-- | :------------ |
+|:---------|----:|:----|:--------------|
 | A1       |   1 | A   | sample\_name1 |
 | A2       |   2 | A   | sample\_name2 |
 | A3       |   3 | A   | sample\_name3 |
@@ -1302,13 +1421,19 @@ kable(head(plate_df))
 ```
 
 | row | col | well\_value | well\_id |
-| :-- | :-- | ----------: | :------- |
+|:----|:----|------------:|:---------|
 | A   | 1   |   0.0991905 | A1       |
 | B   | 1   |   0.1471918 | B1       |
 | C   | 1   |   0.1410611 | C1       |
 | D   | 1   |   0.1296951 | D1       |
 | E   | 1   |   0.1459489 | E1       |
 | F   | 1   |   0.1391068 | F1       |
+
+</details>
+<details>
+<summary>
+sym\_mat2df
+</summary>
 
 ## sym\_mat2df
 
@@ -1346,6 +1471,12 @@ sym_mat2df(corr_result)
 #> 14 ASV4 ASV6  0.121482740
 #> 15 ASV5 ASV6  0.749430510
 ```
+
+</details>
+<details>
+<summary>
+adjust\_mat\_pval
+</summary>
 
 ## adjust\_mat\_pval
 
@@ -1393,10 +1524,15 @@ adjust_mat_pval(corr_result$p, out_type='dataframe')
 #> 15 ASV5 ASV6 1.053959e-03
 ```
 
+</details>
+<details>
+<summary>
+remove\_geom
+</summary>
+
 ## remove\_geom
 
-Remove a specific geom layer from a
-ggplot.
+Remove a specific geom layer from a ggplot.
 
 Usage:
 

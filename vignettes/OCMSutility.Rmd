@@ -39,7 +39,10 @@ library(tibble)
 This package was created by members of the Oxford Centre for Microbiome Studies (OCMS). It is a collection of functions that we have found useful and hope that they are useful to others. The functions span data manipulation, statistical analysis and data visualisation, predominantly for microbiome data. Functions in this package and use cases are documented below.
 
 # Package Data
-This package comes with an example 16S dataset, which is the DSS study ([link needed]). Different aspects of this example data can be accessed.
+This package comes with an example 16S dataset, which is the DSS study [found here](https://pmc.ncbi.nlm.nih.gov/articles/PMC6120875/). Different aspects of this example data can be accessed.
+
+<details>
+    <summary>asv_example</summary>
 
 ## asv_example
 
@@ -52,6 +55,11 @@ data(asv_example)
 dim(asv_example)
 ```
 
+</details>
+
+<details>
+    <summary>tax_example</summary>
+
 ## tax_example
 A dataframe of taxonomic classification of ASVs in `asv_example`
 ```{r tax_example}
@@ -62,6 +70,11 @@ dim(tax_example)
 colnames(tax_example)
 ```
 
+</details>
+
+<details>
+    <summary>dss_example</summary>
+
 ## dss_example
 A list of dataframes. Contains ASV count, ASV taxonomy, and metadata for the DSS experiment. Dataframes are structured to be compatible with `OCMSlooksy`
 
@@ -71,7 +84,13 @@ data(dss_example)
 summary(dss_example)
 ```
 
+</details>
+
 # 16S Data Manipulation
+
+<details>
+    <summary>filter_feature</summary>
+
 ## filter_feature
 
 Filters count table based on sequence abundance and prevalence. This function returns several outputs that detail which features were filtered out to help with quality control.
@@ -102,6 +121,11 @@ dim(filtered_count)
 kable(head(filtered_count[,1:4]))
 ```
 
+</details>
+
+<details>
+    <summary>relab</summary>
+
 ## relab
 
 This is a convenience function for converting counts into relative abundance (expressed as a % of reads).
@@ -118,6 +142,10 @@ asv_counts <- data.frame(asv_example[2:ncol(asv_example)], row.names=asv_example
 rel_abundance <- relab(asv_counts)
 ```
 
+</details>
+
+<details>
+    <summary>aggregate_count</summary>
 
 ## aggregate_count
 
@@ -149,6 +177,11 @@ summary(aggregated_list)
 knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 knitr::kable(head(aggregated_list[['tax_df']]))
 ```
+
+</details>
+
+<details>
+    <summary>reannotate_tax</summary>
 
 ## reannotate_tax
 
@@ -210,6 +243,11 @@ new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
+</details>
+
+<details>
+    <summary>clr</summary>
+
 ## clr
 
 clr uses the [ALDEx2](https://www.bioconductor.org/packages/release/bioc/html/ALDEx2.html) package to perform centred log-ratio transformation on a count matrix from for example 16S rRNA profiling.  
@@ -236,6 +274,11 @@ clr_transformed <- clr(count_dataframe = asv_counts, return_as_dataframe = FALSE
 class(clr_transformed)
 ```
 
+</details>
+
+<details>
+    <summary>metfile_init</summary>
+
 ## metfile_init
 
 This helper function initiates a metadata table that is compatible with `OCMSlooksy`.
@@ -255,8 +298,13 @@ met <- metfile_init(db_file, dummy = "Group")
 
 ```
 
+</details>
+
 # Data Visualisation
 These functions produce plots.
+
+<details>
+    <summary>plot_pcoa</summary>
 
 ## plot_pcoa
 
@@ -282,8 +330,6 @@ for(i in iter_var) {
 plist[[1]]
 plist[[2]]
 ```
-
-##    
 
 This function helps plot PCA score plots. It returns a list of the original data, the PCA result and the ggplot. All dataframes are returned in such a way that that ggplot produced can be modified with additional geom layers.
 
@@ -324,6 +370,11 @@ p <- plot_data$p +
 p
 ```
 
+</details>
+
+<details>
+    <summary>featurebox</summary>
+    
 ## featurebox
 
 This function takes a matrix of abudnances from RNA-seq or microbiome data along with a metadata dataframe and produces a boxplot for a feature(s) of interest. The main use for this function is to plot abundance estimates grouping by variable of interest. 
@@ -361,6 +412,11 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 
 ```
 
+</details>
+
+<details>
+    <summary>pca_by_var</summary>
+
 ## pca_by_var
 
 This function overlays numeric metadata variables onto a PCA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCA plot. This function produces a named list of plots, where the first plot is the score/biplot and subsequent plots are the same PCA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors.
@@ -397,6 +453,11 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 
 ```
 
+</details>
+
+<details>
+    <summary>pcoa_by_var</summary>
+
 ## pcoa_by_var
 
 This function overlays numeric metadata variables onto a PCoA score plot, which can be useful during exploratory analysis where you want to see how different metadata variables map onto a PCoA plot. This function produces a named list of plots, where the first plot is the plain PCoA and subsequent plots are the same PCoA plot but colour coded by a given metadata variable. Metadata variables can be numeric, character, or factors, but confidence interval ellipses will only be drawn for categorical variables.
@@ -430,6 +491,11 @@ p_list$var3
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
 
+</details>
+
+<details>
+    <summary>annotated_dendrogram</summary>
+
 ## annotated_dendrogram
 This produces an annotated dendrogram showing heirarchical clustering based on a distance matrix. This is helpful for visualizing how different metadata variables map onto sample clustering. This is equivalent to the annotation bars on a heatmap, but without the heatmap values.
 
@@ -454,6 +520,10 @@ names(col_phen) <- c('Phenotype:water','Phenotype:DSS')
 annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
 
 ```
+</details>
+
+<details>
+    <summary>plotSunburst</summary>
 
 ## plotSunburst
 This function has been moved to be an internal function, and the `sunburstR` has been removed as a dependency (is now a suggested package). This change has come about due to lack of use and an effort to reduce the dependency overhead of the package. The funciton is still accessible with `OCMSutility:::plotSunburst`
@@ -498,9 +568,14 @@ relab <- relab(count_genus)
 #              palettes = c("Bacteroidetes" = "Greens",'Firmicutes'='Blues'), 
 #              highlight = list("Genus" = c("Bacteroides",'Clostridium XlVa')))
 ```
+</details>
+
 
 # Analysis
 These functions perform simple analyses.
+
+<details>
+    <summary>true_pos_rate</summary>
 
 ## true_pos_rate
 Calculate rate of true positives in positive control standards. Used in OCMS_zymobioimcs report.
@@ -540,6 +615,11 @@ p <- ggplot(true_pos_result,
 p
 ```
 
+</details>
+
+<details>
+    <summary>nsamples_by_var</summary>
+
 ## nsample_by_var
 This function counts the number of samples for each individual for a given metadata variable. This is useful in time course data when you want to check how complete the metadata variables are. This is complementary to `metadata_sparsity`, which tells you which gives information on missing values, while `nsample_by_var` gives information on the available metadata.
 
@@ -562,6 +642,11 @@ rep(NA, 15)), 100),
 nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 ```
 
+</details>
+
+<details>
+    <summary>compare_cor_ci</summary>
+
 ## compare_cor_ci
 
 Performs pairwise correlations of features with adjusted p-values. Correlations and confidence intervals calculated for each sample group.
@@ -581,6 +666,11 @@ met_df <- dss_example$metadata
 met_df <- met_df[match(rownames(feat_mat), met_df$sampleID),]
 compare_cor_ci(feat_mat, met_df$Phenotype)
 ```
+
+</details>
+
+<details>
+    <summary>dissimilarity</summary>
 
 ## dissimilarity
 
@@ -638,6 +728,11 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 
 ```
 
+</details>
+
+<details>
+    <summary>bc_dissimilarity</summary>
+
 ## bcdissimilarity
 
 Useful for measuring sample dissimilarity using Bray-Curtis distances. You can supply a metadata variable to assign comparisons as either within-group or between group. This is useful when assessing the within group dissimilarity (either as a whole, or for each individual group) compared to between group dissimilarity. This function differs from `dissimilarity` in that this can be applied to non-repeated measures data.
@@ -682,6 +777,11 @@ p_bc <- ggplot(bc_data, aes(x=comparison, y=dist)) +
 p_bc
 ```
 
+</details>
+
+<details>
+    <summary>rarefaction</summary>
+
 ## rarefaction
 
 Useful for calculating and plotting rarefaction curve to check if read depth captures as much diversity as possible.
@@ -703,6 +803,11 @@ p
 p$layers[[2]] <- NULL
 p
 ```
+
+</details>
+
+<details>
+    <summary>metadata_sparsity</summary>
 
 ## metadata_sparsity
 
@@ -731,8 +836,14 @@ met_sparse[[3]]
 met_sparse[[4]]
 ```
 
+</details>
+
+
 # Utility
 These functions are helful for data manipulation in general.
+
+<details>
+    <summary>get_palette</summary>
 
 ## get_palette
 
@@ -743,6 +854,11 @@ Usage:
 ```{r get_palette}
 getPalette(n=10, palette="Set3", preview=TRUE)
 ```
+
+</details>
+
+<details>
+    <summary>convert_platemap</summary>
 
 ## convert_platemap
 
@@ -775,6 +891,11 @@ print(summary(plate_df))
 kable(head(plate_df))
 ```
 
+</details>
+
+<details>
+    <summary>sym_mat2df</summary>
+
 ## sym_mat2df
 
 Converts symmetrical matrix to long dataframe, with columns `x`, `y`, `value`. Helpful for correlation or distance matrices
@@ -793,6 +914,11 @@ feat_mat <- t(feat_mat)
 corr_result <- cor(feat_mat)
 sym_mat2df(corr_result)
 ```
+
+</details>
+
+<details>
+    <summary>adjust_mat_pval</summary>
 
 ## adjust_mat_pval
 
@@ -813,6 +939,11 @@ corr_result <- psych::corr.test(feat_mat)
 adjust_mat_pval(corr_result$p)
 adjust_mat_pval(corr_result$p, out_type='dataframe')
 ```
+
+</details>
+
+<details>
+    <summary>remove_geom</summary>
 
 ## remove_geom
 
