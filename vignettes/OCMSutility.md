@@ -31,7 +31,7 @@ Different aspects of this example data can be accessed.
 
 <details>
 <summary>
-asv\_example
+asv example
 </summary>
 
 ## asv\_example
@@ -50,7 +50,7 @@ dim(asv_example)
 </details>
 <details>
 <summary>
-tax\_example
+tax example
 </summary>
 
 ## tax\_example
@@ -71,7 +71,7 @@ colnames(tax_example)
 </details>
 <details>
 <summary>
-dss\_example
+dss example
 </summary>
 
 ## dss\_example
@@ -99,7 +99,7 @@ summary(dss_example)
 
 <details>
 <summary>
-filter\_feature
+filter feature
 </summary>
 
 ## filter\_feature
@@ -188,7 +188,7 @@ rel_abundance <- relab(asv_counts)
 </details>
 <details>
 <summary>
-aggregate\_count
+aggregate count
 </summary>
 
 ## aggregate\_count
@@ -254,7 +254,7 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 </details>
 <details>
 <summary>
-reannotate\_tax
+reannotate tax
 </summary>
 
 ## reannotate\_tax
@@ -433,7 +433,7 @@ class(clr_transformed)
 </details>
 <details>
 <summary>
-metfile\_init
+metfile init
 </summary>
 
 ## metfile\_init
@@ -465,7 +465,7 @@ These functions produce plots.
 
 <details>
 <summary>
-plot\_pcoa
+plot pcoa
 </summary>
 
 ## plot\_pcoa
@@ -631,7 +631,7 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 </details>
 <details>
 <summary>
-pca\_by\_var
+pca by var
 </summary>
 
 ## pca\_by\_var
@@ -703,7 +703,7 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 </details>
 <details>
 <summary>
-pcoa\_by\_var
+pcoa by var
 </summary>
 
 ## pcoa\_by\_var
@@ -775,7 +775,7 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 </details>
 <details>
 <summary>
-annotated\_dendrogram
+annotated dendrogram
 </summary>
 
 ## annotated\_dendrogram
@@ -898,7 +898,7 @@ These functions perform simple analyses.
 
 <details>
 <summary>
-true\_pos\_rate
+true pos rate
 </summary>
 
 ## true\_pos\_rate
@@ -946,7 +946,7 @@ p
 </details>
 <details>
 <summary>
-nsamples\_by\_var
+nsamples by var
 </summary>
 
 ## nsample\_by\_var
@@ -1010,7 +1010,7 @@ nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 </details>
 <details>
 <summary>
-compare\_cor\_ci
+compare cor ci
 </summary>
 
 ## compare\_cor\_ci
@@ -1164,7 +1164,7 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 </details>
 <details>
 <summary>
-bc\_dissimilarity
+bc dissimilarity
 </summary>
 
 ## bcdissimilarity
@@ -1279,7 +1279,7 @@ p
 </details>
 <details>
 <summary>
-metadata\_sparsity
+metadata sparsity
 </summary>
 
 ## metadata\_sparsity
@@ -1344,7 +1344,7 @@ These functions are helful for data manipulation in general.
 
 <details>
 <summary>
-get\_palette
+get palette
 </summary>
 
 ## get\_palette
@@ -1432,7 +1432,7 @@ kable(head(plate_df))
 </details>
 <details>
 <summary>
-sym\_mat2df
+sym mat2df
 </summary>
 
 ## sym\_mat2df
@@ -1475,7 +1475,7 @@ sym_mat2df(corr_result)
 </details>
 <details>
 <summary>
-adjust\_mat\_pval
+adjust mat pval
 </summary>
 
 ## adjust\_mat\_pval
@@ -1527,7 +1527,7 @@ adjust_mat_pval(corr_result$p, out_type='dataframe')
 </details>
 <details>
 <summary>
-remove\_geom
+remove geom
 </summary>
 
 ## remove\_geom
