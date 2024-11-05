@@ -1449,7 +1449,7 @@ getPalette(n=10, palette="Set3", preview=TRUE)
 </details>
 <details>
 <summary>
-convert\_platemap
+convert platemap
 </summary>
 
 ## convert\_platemap
