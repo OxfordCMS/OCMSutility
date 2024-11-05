@@ -494,6 +494,37 @@ stacked$plot
 </details>
 <details>
 <summary>
+prevalence abundance
+</summary>
+
+## prevalence\_abundance
+
+It is useful to get an idea of how prevalent each taxon is and where it
+falls in terms of relative abundance across samples. This can help with
+determining filtering parameters for example. This function takes a
+relative abundance matrix and calculates the prevalence of each taxon
+and the mean realtive abundance across all samples. It returns a list of
+two objects, “data” and “plot”.
+
+Usage:
+
+``` r
+# use the rel_abundance table as in stacked_barchart
+prev_abund <- prevalence_abundance(rel_abundance)
+
+# the data
+knitr::kable(head(prev_abund$data))
+```
+
+``` r
+# the plot
+prev_abund$plot
+#> NULL
+```
+
+</details>
+<details>
+<summary>
 plot pcoa
 </summary>
 
@@ -1373,6 +1404,28 @@ These functions are helful for data manipulation in general.
 
 <details>
 <summary>
+get shortnames
+</summary>
+
+## get\_shortnames
+
+For visualisation purposes i.e. to not have the whole taxonomic label
+for a taxon you can just get the lowest rank
+
+Usage:
+
+``` r
+longname <- dss_example$merged_taxonomy$Taxon[4]
+cat(longname)
+#> k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Faecalibacterium;s__Faecalibacterium_prausnitzii(AJ413954)
+
+get_shortnames(longname)
+#> [1] "Faecalibacterium_prausnitzii(AJ413954)"
+```
+
+</details>
+<details>
+<summary>
 get palette
 </summary>
 
@@ -1396,7 +1449,7 @@ getPalette(n=10, palette="Set3", preview=TRUE)
 </details>
 <details>
 <summary>
-convert\_platemap
+convert platemap
 </summary>
 
 ## convert\_platemap
