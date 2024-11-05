@@ -512,15 +512,11 @@ Usage:
 # use the rel_abundance table as in stacked_barchart
 prev_abund <- prevalence_abundance(rel_abundance)
 
-# the data
-knitr::kable(head(prev_abund$data))
-```
-
-``` r
 # the plot
 prev_abund$plot
-#> NULL
 ```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/prevalence_abundance-1.png)
 
 </details>
 <details>
