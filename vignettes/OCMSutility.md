@@ -95,7 +95,11 @@ summary(dss_example)
 
 </details>
 
-# 16S Data Manipulation
+# Data Manipulation
+
+The functions are used for manipulating microbiome data (usually counts
+tables from either 16S or metagenomic sequencing). The examples are from
+16S but some functions can easily be applied to shotgun data.
 
 <details>
 <summary>
