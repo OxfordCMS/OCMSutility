@@ -41,7 +41,6 @@ which is the number of ASVs that were aggregated.
 }
 \examples{
 data(dss_example)
-# featureID should be row names
 feature_count <- dss_example$merged_abundance_id \%>\%
   tibble::column_to_rownames('featureID')
 
