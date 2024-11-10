@@ -5,7 +5,9 @@
 #' @export
 #' @return vector
 #' @examples
-#' get_shortnames(rownames(abundance_matrix))
+#' longnames <- c("k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Ruminococcus",
+#'                "k__Bacteria;p__Bacteroidetes;c__Bacteroidia;o__Bacteroidales;f__Bacteroidaceae;g__Bacteroides")
+#' get_shortnames(longnames)
 
 get_shortnames <- function(longnames){
   return(trimws(longnames, whitespace = ".*__"))

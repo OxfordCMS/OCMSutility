@@ -3,7 +3,7 @@
 \name{stacked_barchart}
 \alias{stacked_barchart}
 \title{stacked_barchart
-stacked barchart of the top_n features in a relative abundance table}
+stacked barchart of the top_n features in a relative abundance table.}
 \usage{
 stacked_barchart(abundance_matrix, top_n = 10)
 }
@@ -13,12 +13,24 @@ stacked_barchart(abundance_matrix, top_n = 10)
 \item{top_n}{integer; number of taxa to plot in the stacked barchart. Default is 10.}
 }
 \value{
-grob
+list
 }
 \description{
 stacked_barchart
-stacked barchart of the top_n features in a relative abundance table
+stacked barchart of the top_n features in a relative abundance table.
 }
 \examples{
-stacked_barchart()
+feature_count <- dss_example$merged_abundance_id \%>\%
+tibble::column_to_rownames('featureID')
+
+colnames(feature_count) <- paste0('id', colnames(feature_count))
+feature_tax <- dss_example$merged_taxonomy
+feature_count <- feature_count[feature_tax$featureID,]
+aggregated_list <- aggregate_count(feature_count, feature_tax,
+                                   aggregate_by = "Genus")
+
+abundance_matrix <- relab(aggregated_list[['count_df']])
+st <- stacked_barchart(abundance_matrix)
+st$data
+st$plot
 }

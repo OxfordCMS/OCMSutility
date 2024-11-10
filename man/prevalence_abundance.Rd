@@ -3,8 +3,8 @@
 \name{prevalence_abundance}
 \alias{prevalence_abundance}
 \title{prevalence_abundance
-return a dataframe that gives the prevalence and abundance (mean across samples)
-of each taxon (from relative abundance matrix)}
+return a list that contains a dataframe of the prevalence and abundance (mean across samples)
+of each taxon (from relative abundance matrix) and a plot.}
 \usage{
 prevalence_abundance(abundance_matrix)
 }
@@ -12,13 +12,25 @@ prevalence_abundance(abundance_matrix)
 \item{abundance_matrix}{dataframe; samples are columns and features are rows (relative abundance)}
 }
 \value{
-dataframe
+list
 }
 \description{
 prevalence_abundance
-return a dataframe that gives the prevalence and abundance (mean across samples)
-of each taxon (from relative abundance matrix)
+return a list that contains a dataframe of the prevalence and abundance (mean across samples)
+of each taxon (from relative abundance matrix) and a plot.
 }
 \examples{
-prevalence_abundance(abundance_matrix)
+feature_count <- dss_example$merged_abundance_id \%>\%
+tibble::column_to_rownames('featureID')
+
+colnames(feature_count) <- paste0('id', colnames(feature_count))
+feature_tax <- dss_example$merged_taxonomy
+feature_count <- feature_count[feature_tax$featureID,]
+aggregated_list <- aggregate_count(feature_count, feature_tax,
+                                   aggregate_by = "Genus")
+
+abundance_matrix <- relab(aggregated_list[['count_df']])
+pa <- prevalence_abundance(abundance_matrix)
+pa$data
+pa$plot
 }
