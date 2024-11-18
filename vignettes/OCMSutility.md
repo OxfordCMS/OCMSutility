@@ -95,7 +95,11 @@ summary(dss_example)
 
 </details>
 
-# 16S Data Manipulation
+# Data Manipulation
+
+The functions are used for manipulating microbiome data (usually counts
+tables from either 16S or metagenomic sequencing). The examples are from
+16S but some functions can easily be applied to shotgun data.
 
 <details>
 <summary>
@@ -463,6 +467,62 @@ met <- metfile_init(db_file, dummy = "Group")
 
 These functions produce plots.
 
+<details>
+<summary>
+stacked barchart
+</summary>
+
+## stacked\_barchart
+
+A simple but common visualisation of taxonomic composition across
+samples. The function will plot the top\_n taxa based on ranking of
+average relative abundance across all samples. Returns a list with
+“data” and “plot” so you can use the data for more custom plots if you
+wish.
+
+``` r
+# family counts from before
+counts <- aggregated_list[['count_df']]
+rel_abundance <- relab(counts)
+
+# get rid of family == NA
+rel_abundance <- rel_abundance[rownames(rel_abundance) != "NA",]
+stacked <- stacked_barchart(rel_abundance, top_n = 10)
+#> Using Group.1, Taxon as id variables
+
+stacked$plot
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/stacked%20barchart-1.png)
+
+</details>
+<details>
+<summary>
+prevalence abundance
+</summary>
+
+## prevalence\_abundance
+
+It is useful to get an idea of how prevalent each taxon is and where it
+falls in terms of relative abundance across samples. This can help with
+determining filtering parameters for example. This function takes a
+relative abundance matrix and calculates the prevalence of each taxon
+and the mean realtive abundance across all samples. It returns a list of
+two objects, “data” and “plot”.
+
+Usage:
+
+``` r
+# use the rel_abundance table as in stacked_barchart
+prev_abund <- prevalence_abundance(rel_abundance)
+
+# the plot
+prev_abund$plot
+```
+
+![](vignettes/OCMSutility_files/figure-markdown_strict/prevalence_abundance-1.png)
+
+</details>
 <details>
 <summary>
 plot pcoa
@@ -1344,6 +1404,28 @@ These functions are helful for data manipulation in general.
 
 <details>
 <summary>
+get shortnames
+</summary>
+
+## get\_shortnames
+
+For visualisation purposes i.e. to not have the whole taxonomic label
+for a taxon you can just get the lowest rank
+
+Usage:
+
+``` r
+longname <- dss_example$merged_taxonomy$Taxon[4]
+cat(longname)
+#> k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Faecalibacterium;s__Faecalibacterium_prausnitzii(AJ413954)
+
+get_shortnames(longname)
+#> [1] "Faecalibacterium_prausnitzii(AJ413954)"
+```
+
+</details>
+<details>
+<summary>
 get palette
 </summary>
 
@@ -1367,7 +1449,7 @@ getPalette(n=10, palette="Set3", preview=TRUE)
 </details>
 <details>
 <summary>
-convert\_platemap
+convert platemap
 </summary>
 
 ## convert\_platemap

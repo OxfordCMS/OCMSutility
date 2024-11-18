@@ -86,7 +86,9 @@ summary(dss_example)
 
 </details>
 
-# 16S Data Manipulation
+# Data Manipulation
+
+The functions are used for manipulating microbiome data (usually counts tables from either 16S or metagenomic sequencing). The examples are from 16S but some functions can easily be applied to shotgun data.
 
 <details>
     <summary>filter feature</summary>
@@ -304,11 +306,54 @@ met <- metfile_init(db_file, dummy = "Group")
 These functions produce plots.
 
 <details>
+    <summary>stacked barchart</summary>
+
+## stacked_barchart
+
+A simple but common visualisation of taxonomic composition across samples. The function will plot the top_n taxa based on ranking of average relative abundance across all samples. Returns a list with "data" and "plot" so you can use the data for more custom plots if you wish.
+
+```{r stacked barchart, fig.height=7, fig.width=10}
+
+# family counts from before
+counts <- aggregated_list[['count_df']]
+rel_abundance <- relab(counts)
+
+# get rid of family == NA
+rel_abundance <- rel_abundance[rownames(rel_abundance) != "NA",]
+stacked <- stacked_barchart(rel_abundance, top_n = 10)
+
+stacked$plot
+```
+
+</details>
+
+<details>
+    <summary>prevalence abundance</summary>
+
+## prevalence_abundance
+
+It is useful to get an idea of how prevalent each taxon is and where it falls in terms of relative abundance across samples. This can help with determining filtering parameters for example. This function takes a relative abundance matrix and calculates the prevalence of each taxon and the mean realtive abundance across all samples. It returns a list of two objects, "data" and "plot".
+
+Usage:
+
+```{r prevalence_abundance}
+
+# use the rel_abundance table as in stacked_barchart
+prev_abund <- prevalence_abundance(rel_abundance)
+
+# the plot
+prev_abund$plot
+
+```
+
+</details>
+
+<details>
     <summary>plot pcoa</summary>
 
 ## plot_pcoa
 
- This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
+This is a simple PCoA function that colours all points by one metadata variable. It can be helpful to visualise metadata variables independently when assessing potential confounding metadtaa factors.
 
 Usage:
 
@@ -843,6 +888,27 @@ met_sparse[[4]]
 These functions are helful for data manipulation in general.
 
 <details>
+    <summary>get shortnames</summary>
+
+## get_shortnames
+
+For visualisation purposes i.e. to not have the whole taxonomic label for a taxon you can just get the lowest rank
+
+Usage:
+
+```{r get shortnames}
+
+longname <- dss_example$merged_taxonomy$Taxon[4]
+cat(longname)
+
+get_shortnames(longname)
+
+```
+
+</details>
+
+
+<details>
     <summary>get palette</summary>
 
 ## get_palette
@@ -858,7 +924,7 @@ getPalette(n=10, palette="Set3", preview=TRUE)
 </details>
 
 <details>
-    <summary>convert_platemap</summary>
+    <summary>convert platemap</summary>
 
 ## convert_platemap
 
