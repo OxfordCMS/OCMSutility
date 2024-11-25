@@ -887,10 +887,10 @@ met_sparse[[4]]
     <summary>metadata sparsity</summary>
     
 ## top_taxa
-This returns the top most represented taxa, based on cumulative relative abundance. For example, giving the taxa that are in the top 80% abundance in any of the samples.
+This returns the top most represented taxa, based on cumulative relative abundance. Cumulative sums are calculated on a per-sample basis, so taxa that passes the cumulative sum threshold in any sample are retained. For example, giving the taxa that are in the top 80% abundance in any of the samples.
 
 Usage:
-Takes in dataframe or matrix of relative abundance, with samples in columns, taxa in wors. Function returns of vector of taxa, listed from most abundance to least abundant. Only includes taxa in the cumulative sum cutoff.
+Takes in dataframe or matrix of relative abundance, with samples in columns, taxa in rows. Function returns dataframe of taxa, sample_id, relative abundance, and cumulative sum of relative abundance.
 
 ```{r top-taxa}
 # put asv relative abundance features in same order as taxonomy table
@@ -907,7 +907,8 @@ colnames(relab_data) <- sprintf("X%s", colnames(relab_data))
 genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$count_df
 
 # get top taxa
-top_taxa(genus_df, cutoff=0.8)
+top80 <- top_taxa(genus_df, cutoff=0.8)
+print(top80[top80$sample_id == unique(top80$sample_id)[1],])
 ```
 
 </details>

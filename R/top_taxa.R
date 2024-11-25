@@ -23,9 +23,11 @@
 #' genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$count_df
 #'
 #' # get top taxa
-#' top_taxa(genus_df, cutoff=0.8)
+#' top80 <- top_taxa(genus_df, cutoff=0.8)
+#' print(top80 %>% filter(sample_id == unique(top80$sample_id)[1]))
 #'
-#' @return vector of taxa in descending order
+#' @return dataframe of taxa, sample_id, relative abundance, and
+#' cumulative sum of relative abundance.
 #' @export
 
 top_taxa <- function(relab_df, cutoff) {
@@ -55,8 +57,7 @@ top_taxa <- function(relab_df, cutoff) {
   out <- top %>%
     filter(keep1 == 1 | keep2 == 1) %>%
     arrange(desc(relab)) %>%
-    pull(taxa) %>%
-    unique()
+    select(taxa, sample_id, relab, csum)
 
   return(out)
 }
