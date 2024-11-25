@@ -1419,13 +1419,15 @@ met_sparse[[4]]
 ## top\_taxa
 
 This returns the top most represented taxa, based on cumulative relative
-abundance. For example, giving the taxa that are in the top 80%
-abundance in any of the samples.
+abundance. Cumulative sums are calculated on a per-sample basis, so taxa
+that passes the cumulative sum threshold in any sample are retained. For
+example, giving the taxa that are in the top 80% abundance in any of the
+samples.
 
 Usage: Takes in dataframe or matrix of relative abundance, with samples
-in columns, taxa in wors. Function returns of vector of taxa, listed
-from most abundance to least abundant. Only includes taxa in the
-cumulative sum cutoff.
+in columns, taxa in rows. Function returns dataframe of taxa,
+sample\_id, relative abundance, and cumulative sum of relative
+abundance.
 
 ``` r
 # put asv relative abundance features in same order as taxonomy table
@@ -1442,29 +1444,22 @@ colnames(relab_data) <- sprintf("X%s", colnames(relab_data))
 genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$count_df
 
 # get top taxa
-top_taxa(genus_df, cutoff=0.8)
-#>  [1] "Bacteroides"                   "Clostridium XlVa"             
-#>  [3] "Escherichia/Shigella"          "NA"                           
-#>  [5] "Akkermansia"                   "Barnesiella"                  
-#>  [7] "Alistipes"                     "Alloprevotella"               
-#>  [9] "Clostridium sensu stricto"     "Helicobacter"                 
-#> [11] "Lactobacillus"                 "Odoribacter"                  
-#> [13] "Turicibacter"                  "Prevotella"                   
-#> [15] "Faecalitalea"                  "Clostridium XI"               
-#> [17] "Intestinimonas"                "Romboutsia"                   
-#> [19] "Hespellia"                     "Oscillibacter"                
-#> [21] "Parabacteroides"               "Blautia"                      
-#> [23] "Desulfovibrio"                 "Lachnospiracea incertae sedis"
-#> [25] "Enterococcus"                  "Clostridium XlVb"             
-#> [27] "Flavonifractor"                "Butyrivibrio"                 
-#> [29] "Clostridium IV"                "Clostridium XVIII"            
-#> [31] "Salmonella"                    "Anaerostipes"                 
-#> [33] "Acinetobacter"                 "Acetatifactor"                
-#> [35] "Sporobacter"                   "Anaeroplasma"                 
-#> [37] "Dorea"                         "Faecalibacterium"             
-#> [39] "Mucispirillum"                 "Parasutterella"               
-#> [41] "Coprobacter"                   "Roseburia"                    
-#> [43] "Pseudomonas"
+top80 <- top_taxa(genus_df, cutoff=0.8)
+print(top80[top80$sample_id == unique(top80$sample_id)[1],])
+#> # A tibble: 10 x 4
+#> # Groups:   sample_id [1]
+#>    taxa                 sample_id  relab  csum
+#>    <chr>                <chr>      <dbl> <dbl>
+#>  1 Bacteroides          X4DSS__24 73.1    73.1
+#>  2 NA                   X4DSS__24  5.09   78.2
+#>  3 Lactobacillus        X4DSS__24  3.93   82.1
+#>  4 Akkermansia          X4DSS__24  3.90   86.0
+#>  5 Escherichia/Shigella X4DSS__24  2.16   88.2
+#>  6 Helicobacter         X4DSS__24  1.94   90.1
+#>  7 Faecalitalea         X4DSS__24  1.41   91.5
+#>  8 Clostridium XlVa     X4DSS__24  1.11   92.6
+#>  9 Parabacteroides      X4DSS__24  1.03   93.7
+#> 10 Alistipes            X4DSS__24  0.853  94.5
 ```
 
 </details>
