@@ -30,9 +30,8 @@ This package comes with an example 16S dataset, which is the DSS study
 Different aspects of this example data can be accessed.
 
 <details>
-<summary>
-asv example
-</summary>
+
+<summary>asv example</summary>
 
 ## asv\_example
 
@@ -48,10 +47,10 @@ dim(asv_example)
 ```
 
 </details>
+
 <details>
-<summary>
-tax example
-</summary>
+
+<summary>tax example</summary>
 
 ## tax\_example
 
@@ -69,10 +68,10 @@ colnames(tax_example)
 ```
 
 </details>
+
 <details>
-<summary>
-dss example
-</summary>
+
+<summary>dss example</summary>
 
 ## dss\_example
 
@@ -102,9 +101,8 @@ tables from either 16S or metagenomic sequencing). The examples are from
 16S but some functions can easily be applied to shotgun data.
 
 <details>
-<summary>
-filter feature
-</summary>
+
+<summary>filter feature</summary>
 
 ## filter\_feature
 
@@ -158,7 +156,7 @@ kable(head(filtered_count[,1:4]))
 ```
 
 |        | 2DSS\_\_10 | 2DSS\_\_11 | 2DSS\_\_13 | 2DSS\_\_14 |
-|:-------|-----------:|-----------:|-----------:|-----------:|
+| :----- | ---------: | ---------: | ---------: | ---------: |
 | ASV108 |  0.0005656 |  0.0012191 |  0.0000000 |  0.0000000 |
 | ASV128 |  0.0018854 |  0.0000000 |  0.0051209 |  0.0000000 |
 | ASV57  |  0.0066931 |  0.0000000 |  0.0000000 |  0.0000000 |
@@ -167,10 +165,10 @@ kable(head(filtered_count[,1:4]))
 | ASV37  |  0.0029223 |  0.0000000 |  0.0000000 |  0.0000000 |
 
 </details>
+
 <details>
-<summary>
-relab
-</summary>
+
+<summary>relab</summary>
 
 ## relab
 
@@ -190,10 +188,10 @@ rel_abundance <- relab(asv_counts)
 ```
 
 </details>
+
 <details>
-<summary>
-aggregate count
-</summary>
+
+<summary>aggregate count</summary>
 
 ## aggregate\_count
 
@@ -234,7 +232,7 @@ knitr::kable(head(aggregated_list[['count_df']][,1:5]))
 ```
 
 |                                | id2DSS\_\_10 | id2DSS\_\_11 | id2DSS\_\_13 | id2DSS\_\_14 | id2DSS\_\_16 |
-|:-------------------------------|-------------:|-------------:|-------------:|-------------:|-------------:|
+| :----------------------------- | -----------: | -----------: | -----------: | -----------: | -----------: |
 | Acidaminococcaceae             |           10 |            4 |            0 |            0 |            0 |
 | Anaeroplasmataceae             |           60 |            0 |            7 |            0 |            0 |
 | Bacteroidaceae                 |         1118 |         2921 |          262 |          256 |         1484 |
@@ -247,7 +245,7 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 ```
 
 | featureID                      | sequence | Kingdom  | Phylum         | Class              | Order             | Family                         | Genus | Species | Taxon                                                                                                              | n\_collapse |
-|:-------------------------------|:---------|:---------|:---------------|:-------------------|:------------------|:-------------------------------|:------|:--------|:-------------------------------------------------------------------------------------------------------------------|------------:|
+| :----------------------------- | :------- | :------- | :------------- | :----------------- | :---------------- | :----------------------------- | :---- | :------ | :----------------------------------------------------------------------------------------------------------------- | ----------: |
 | Acidaminococcaceae             | NA       | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales   | Acidaminococcaceae             | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Negativicutes;o\_\_Selenomonadales;f\_\_Acidaminococcaceae                      |           4 |
 | Anaeroplasmataceae             | NA       | Bacteria | Tenericutes    | Mollicutes         | Anaeroplasmatales | Anaeroplasmataceae             | NA    | NA      | k\_\_Bacteria;p\_\_Tenericutes;c\_\_Mollicutes;o\_\_Anaeroplasmatales;f\_\_Anaeroplasmataceae                      |           2 |
 | Bacteroidaceae                 | NA       | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales     | Bacteroidaceae                 | NA    | NA      | k\_\_Bacteria;p\_\_Bacteroidetes;c\_\_Bacteroidia;o\_\_Bacteroidales;f\_\_Bacteroidaceae                           |          39 |
@@ -256,10 +254,10 @@ knitr::kable(head(aggregated_list[['tax_df']]))
 | Clostridiaceae 1               | NA       | Bacteria | Firmicutes     | Clostridia         | Clostridiales     | Clostridiaceae 1               | NA    | NA      | k\_\_Bacteria;p\_\_Firmicutes;c\_\_Clostridia;o\_\_Clostridiales;f\_\_Clostridiaceae 1                             |           6 |
 
 </details>
+
 <details>
-<summary>
-reannotate tax
-</summary>
+
+<summary>reannotate tax</summary>
 
 ## reannotate\_tax
 
@@ -281,7 +279,7 @@ knitr::kable(ex1)
 ```
 
 | ASV  | Order  | Family       | Genus        | read\_count |
-|:-----|:-------|:-------------|:-------------|------------:|
+| :--- | :----- | :----------- | :----------- | ----------: |
 | ASV1 | order1 | family1      | unclassified |          10 |
 | ASV2 | order1 | family1      | genus1       |          10 |
 | ASV3 | order1 | family2      | unclassified |          10 |
@@ -305,7 +303,7 @@ knitr::kable(ex2)
 ```
 
 | ASV  | Order  | Family               | Genus                 | read\_count |
-|:-----|:-------|:---------------------|:----------------------|------------:|
+| :--- | :----- | :------------------- | :-------------------- | ----------: |
 | ASV1 | order1 | family1              | family1\_unclassified |          10 |
 | ASV2 | order1 | family1              | genus1                |          10 |
 | ASV3 | order1 | family2              | family2\_unclassified |          10 |
@@ -332,7 +330,7 @@ knitr::kable(old_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family  | Genus  | Species |
-|:---------|:--------|:-------|:-------|:--------|:-------|:--------|
+| :------- | :------ | :----- | :----- | :------ | :----- | :------ |
 | kingdom1 | phylum1 | class1 | order1 | family1 | NA     | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family1 | genus1 | NA      |
 | kingdom1 | phylum1 | class1 | order1 | family2 | NA     | NA      |
@@ -340,12 +338,13 @@ knitr::kable(old_tax)
 | kingdom1 | phylum1 | class1 | order1 | NA      | NA     | NA      |
 
 ``` r
+
 new_tax <- reannotate_tax(old_tax)
 knitr::kable(new_tax)
 ```
 
 | Kingdom  | Phylum  | Class  | Order  | Family               | Genus                 | Species               |
-|:---------|:--------|:-------|:-------|:---------------------|:----------------------|:----------------------|
+| :------- | :------ | :----- | :----- | :------------------- | :-------------------- | :-------------------- |
 | kingdom1 | phylum1 | class1 | order1 | family1              | family1\_unclassified | family1\_unclassified |
 | kingdom1 | phylum1 | class1 | order1 | family1              | genus1                | genus1\_unclassified  |
 | kingdom1 | phylum1 | class1 | order1 | family2              | family2\_unclassified | family2\_unclassified |
@@ -353,6 +352,7 @@ knitr::kable(new_tax)
 | kingdom1 | phylum1 | class1 | order1 | order1\_unclassified | order1\_unclassified  | order1\_unclassified  |
 
 ``` r
+
 # try with example data
 data(asv_example)
 
@@ -364,7 +364,7 @@ knitr::kable(head(old_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
+| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | NA                                   |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
@@ -373,12 +373,13 @@ knitr::kable(head(old_tax))
 | Bacteria | Firmicutes     | Clostridia         | Clostridiales   | Lachnospiraceae    | Clostridium XlVa | NA                                   |
 
 ``` r
+
 new_tax <- reannotate_tax(old_tax)
 knitr::kable(head(new_tax))
 ```
 
 | Kingdom  | Phylum         | Class              | Order           | Family             | Genus            | Species                              |
-|:---------|:---------------|:-------------------|:----------------|:-------------------|:-----------------|:-------------------------------------|
+| :------- | :------------- | :----------------- | :-------------- | :----------------- | :--------------- | :----------------------------------- |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Acidaminococcaceae | Acidaminococcus  | Acidaminococcus\_intestini(AF473835) |
 | Bacteria | Bacteroidetes  | Bacteroidia        | Bacteroidales   | Prevotellaceae     | Prevotella       | Prevotella\_unclassified             |
 | Bacteria | Firmicutes     | Negativicutes      | Selenomonadales | Veillonellaceae    | Dialister        | Dialister\_invisus(AY162469)         |
@@ -387,10 +388,10 @@ knitr::kable(head(new_tax))
 | Bacteria | Firmicutes     | Clostridia         | Clostridiales   | Lachnospiraceae    | Clostridium XlVa | Clostridium XlVa\_unclassified       |
 
 </details>
+
 <details>
-<summary>
-clr
-</summary>
+
+<summary>clr</summary>
 
 ## clr
 
@@ -435,18 +436,18 @@ class(clr_transformed)
 ```
 
 </details>
+
 <details>
-<summary>
-metfile init
-</summary>
+
+<summary>metfile init</summary>
 
 ## metfile\_init
 
 This helper function initiates a metadata table that is compatible with
 `OCMSlooksy`.
 
-Usage: This function takes the database file returned from
-[`ocms_16s dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
+Usage: This function takes the database file returned from [`ocms_16s
+dada2_pipeline build_db`](https://ocms-16s.readthedocs.io/en/latest/).
 
 `db_file` is the rsqlite database file `out_dir` output directory.
 default `NULL` so no output file written. `ref_table` name of table in
@@ -468,19 +469,19 @@ met <- metfile_init(db_file, dummy = "Group")
 These functions produce plots.
 
 <details>
-<summary>
-stacked barchart
-</summary>
+
+<summary>stacked barchart</summary>
 
 ## stacked\_barchart
 
 A simple but common visualisation of taxonomic composition across
 samples. The function will plot the top\_n taxa based on ranking of
 average relative abundance across all samples. Returns a list with
-“data” and “plot” so you can use the data for more custom plots if you
-wish.
+“data” and “plot” so you can use the data for more custom plots if
+you wish.
 
 ``` r
+
 # family counts from before
 counts <- aggregated_list[['count_df']]
 rel_abundance <- relab(counts)
@@ -496,10 +497,10 @@ stacked$plot
 ![](vignettes/OCMSutility_files/figure-markdown_strict/stacked%20barchart-1.png)
 
 </details>
+
 <details>
-<summary>
-prevalence abundance
-</summary>
+
+<summary>prevalence abundance</summary>
 
 ## prevalence\_abundance
 
@@ -513,6 +514,7 @@ two objects, “data” and “plot”.
 Usage:
 
 ``` r
+
 # use the rel_abundance table as in stacked_barchart
 prev_abund <- prevalence_abundance(rel_abundance)
 
@@ -523,10 +525,10 @@ prev_abund$plot
 ![](vignettes/OCMSutility_files/figure-markdown_strict/prevalence_abundance-1.png)
 
 </details>
+
 <details>
-<summary>
-plot pcoa
-</summary>
+
+<summary>plot pcoa</summary>
 
 ## plot\_pcoa
 
@@ -602,6 +604,7 @@ plot_data$p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-1.png)
 
 ``` r
+
 # modify default plot
 add_meta <- merge(plot_data$pdata, metadata, by = 'row.names' )
 col_val <- get_palette(5, "Set3")
@@ -623,10 +626,10 @@ p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/plot_pca-2.png)
 
 </details>
+
 <details>
-<summary>
-featurebox
-</summary>
+
+<summary>featurebox</summary>
 
 ## featurebox
 
@@ -672,7 +675,8 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 
 The default palettes used are “Set2”, “Set3” and “Set4”, and the result
 will depend on the number of colours you need. You can change the
-colours if you like by adding manual scale:
+colours if you like by adding manual
+scale:
 
 ``` r
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group") +
@@ -689,10 +693,10 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox_colour-1.png)
 
 </details>
+
 <details>
-<summary>
-pca by var
-</summary>
+
+<summary>pca by var</summary>
 
 ## pca\_by\_var
 
@@ -729,6 +733,7 @@ p_list$main_pca
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-1.png)
 
 ``` r
+
 # pca with metadata variables overlayed
 p_list$Phenotype
 ```
@@ -754,6 +759,7 @@ p_list$var3
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-5.png)
 
 ``` r
+
 # can use cowplot::plot_grid to put all plots into one
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
@@ -761,10 +767,10 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pca_by_var-6.png)
 
 </details>
+
 <details>
-<summary>
-pcoa by var
-</summary>
+
+<summary>pcoa by var</summary>
 
 ## pcoa\_by\_var
 
@@ -826,6 +832,7 @@ p_list$var3
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pcoa_by_var-5.png)
 
 ``` r
+
 # can use cowplot::plot_grid to put all plots into one
 cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_list$var3))
 ```
@@ -833,10 +840,10 @@ cowplot::plot_grid(plotlist=list(p_list$Phenotype, p_list$var1, p_list$var2, p_l
 ![](vignettes/OCMSutility_files/figure-markdown_strict/pcoa_by_var-6.png)
 
 </details>
+
 <details>
-<summary>
-annotated dendrogram
-</summary>
+
+<summary>annotated dendrogram</summary>
 
 ## annotated\_dendrogram
 
@@ -873,11 +880,12 @@ annotated_dendrogram(mydist, mdata, 'sampleID', pal=c(col_geno, col_phen))
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/annotated-dendrogram-2.png)
+
 </details>
+
 <details>
-<summary>
-plotSunburst
-</summary>
+
+<summary>plotSunburst</summary>
 
 ## plotSunburst
 
@@ -957,14 +965,14 @@ relab <- relab(count_genus)
 These functions perform simple analyses.
 
 <details>
-<summary>
-true pos rate
-</summary>
+
+<summary>true pos rate</summary>
 
 ## true\_pos\_rate
 
 Calculate rate of true positives in positive control standards. Used in
-OCMS\_zymobioimcs report.
+OCMS\_zymobioimcs
+report.
 
 Usage:
 
@@ -1004,10 +1012,10 @@ p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/true_pos_rate-1.png)
 
 </details>
+
 <details>
-<summary>
-nsamples by var
-</summary>
+
+<summary>nsamples by var</summary>
 
 ## nsample\_by\_var
 
@@ -1068,10 +1076,10 @@ nsample_by_var(df, 'patient_id', c('var1','var2','var3'))
 ```
 
 </details>
+
 <details>
-<summary>
-compare cor ci
-</summary>
+
+<summary>compare cor ci</summary>
 
 ## compare\_cor\_ci
 
@@ -1128,10 +1136,10 @@ compare_cor_ci(feat_mat, met_df$Phenotype)
 ```
 
 </details>
+
 <details>
-<summary>
-dissimilarity
-</summary>
+
+<summary>dissimilarity</summary>
 
 ## dissimilarity
 
@@ -1182,7 +1190,7 @@ knitr::kable(head(within_diss))
 ```
 
 | dissimilarity | method            |
-|--------------:|:------------------|
+| ------------: | :---------------- |
 |     0.7080197 | Within-individual |
 |     0.8067290 | Within-individual |
 |     0.8098117 | Within-individual |
@@ -1191,6 +1199,7 @@ knitr::kable(head(within_diss))
 |     0.9769913 | Within-individual |
 
 ``` r
+
 # between-individual dissimilarity at timpoint 1
 metadata_t1 <- metadata[metadata$Timepoint == "Time 1",]
 asv_relab_t1 <- asv_relab[,rownames(metadata_t1)]
@@ -1201,7 +1210,7 @@ knitr::kable(head(between_diss))
 ```
 
 | dissimilarity | method             |
-|--------------:|:-------------------|
+| ------------: | :----------------- |
 |     0.8130555 | Between-individual |
 |     0.8108123 | Between-individual |
 |     0.8153680 | Between-individual |
@@ -1210,6 +1219,7 @@ knitr::kable(head(between_diss))
 |     0.8061727 | Between-individual |
 
 ``` r
+
 # we can then combine and plot them
 diss <- bind_rows(within_diss, between_diss)
 ggplot(diss, aes(x=method, y=dissimilarity)) +
@@ -1222,10 +1232,10 @@ ggplot(diss, aes(x=method, y=dissimilarity)) +
 ![](vignettes/OCMSutility_files/figure-markdown_strict/dissimilarity-1.png)
 
 </details>
+
 <details>
-<summary>
-bc dissimilarity
-</summary>
+
+<summary>bc dissimilarity</summary>
 
 ## bcdissimilarity
 
@@ -1241,9 +1251,11 @@ If within/between group assignments are not necessary, set `var=NULL`
 
 This function returns a list:
 
--   `bc_df` long dataframe of dissimilarity scores respective metadata
+  - `bc_df` long dataframe of dissimilarity scores respective metadata
     of the comparison
--   `bc_dist` symmetrical matrix of Bray-Curtis distances
+  - `bc_dist` symmetrical matrix of Bray-Curtis distances
+
+<!-- end list -->
 
 ``` r
 data(dss_example)
@@ -1266,6 +1278,7 @@ p_phen
 ![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-1.png)
 
 ``` r
+
 # for multiple metadata variables
 bc_data <- c()
 for(var in c('Phenotype','Genotype')) {
@@ -1285,10 +1298,10 @@ p_bc
 ![](vignettes/OCMSutility_files/figure-markdown_strict/bcdissimilarity-2.png)
 
 </details>
+
 <details>
-<summary>
-rarefaction
-</summary>
+
+<summary>rarefaction</summary>
 
 ## rarefaction
 
@@ -1322,13 +1335,14 @@ rarefaction <- rarefaction(asv_counts)
 # default plot
 p <- rarefaction$rare_p
 p
-#> Warning: ggrepel: 258 unlabeled data points (too many overlaps). Consider
+#> Warning: ggrepel: 272 unlabeled data points (too many overlaps). Consider
 #> increasing max.overlaps
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/rarefaction-1.png)
 
 ``` r
+
 # modify default plot -- remove geom_label_repel layer
 p$layers[[2]] <- NULL
 p
@@ -1337,10 +1351,10 @@ p
 ![](vignettes/OCMSutility_files/figure-markdown_strict/rarefaction-2.png)
 
 </details>
+
 <details>
-<summary>
-metadata sparsity
-</summary>
+
+<summary>metadata sparsity</summary>
 
 ## metadata\_sparsity
 
@@ -1398,14 +1412,65 @@ met_sparse[[4]]
 
 </details>
 
+<details>
+
+<summary>metadata sparsity</summary>
+
+## top\_taxa
+
+This returns the top most represented taxa, based on cumulative relative
+abundance. Cumulative sums are calculated on a per-sample basis, so taxa
+that passes the cumulative sum threshold in any sample are retained. For
+example, giving the taxa that are in the top 80% abundance in any of the
+samples.
+
+Usage: Takes in dataframe or matrix of relative abundance, with samples
+in columns, taxa in rows. Function returns dataframe of taxa,
+sample\_id, relative abundance, and cumulative sum of relative
+abundance.
+
+``` r
+# put asv relative abundance features in same order as taxonomy table
+# get relative abundance data
+asv_mat <- dss_example$merged_abundance_id[,2:ncol(dss_example$merged_abundance_id)]
+rownames(asv_mat) <- dss_example$merged_abundance_id$featureID
+relab_data <- relab(asv_mat)
+# match row order of relative abundance and taxonomy data
+relab_data <- relab_data[match(dss_example$merged_taxonomy$featureID,
+                               rownames(relab_data)),] 
+# prepend X to column names
+colnames(relab_data) <- sprintf("X%s", colnames(relab_data))
+# get genus-level relative abundance
+genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$count_df
+
+# get top taxa
+top80 <- top_taxa(genus_df, cutoff=0.8)
+print(top80[top80$sample_id == unique(top80$sample_id)[1],])
+#> # A tibble: 10 x 4
+#> # Groups:   sample_id [1]
+#>    taxa                 sample_id  relab  csum
+#>    <chr>                <chr>      <dbl> <dbl>
+#>  1 Bacteroides          X4DSS__24 73.1    73.1
+#>  2 NA                   X4DSS__24  5.09   78.2
+#>  3 Lactobacillus        X4DSS__24  3.93   82.1
+#>  4 Akkermansia          X4DSS__24  3.90   86.0
+#>  5 Escherichia/Shigella X4DSS__24  2.16   88.2
+#>  6 Helicobacter         X4DSS__24  1.94   90.1
+#>  7 Faecalitalea         X4DSS__24  1.41   91.5
+#>  8 Clostridium XlVa     X4DSS__24  1.11   92.6
+#>  9 Parabacteroides      X4DSS__24  1.03   93.7
+#> 10 Alistipes            X4DSS__24  0.853  94.5
+```
+
+</details>
+
 # Utility
 
 These functions are helful for data manipulation in general.
 
 <details>
-<summary>
-get shortnames
-</summary>
+
+<summary>get shortnames</summary>
 
 ## get\_shortnames
 
@@ -1415,6 +1480,7 @@ for a taxon you can just get the lowest rank
 Usage:
 
 ``` r
+
 longname <- dss_example$merged_taxonomy$Taxon[4]
 cat(longname)
 #> k__Bacteria;p__Firmicutes;c__Clostridia;o__Clostridiales;f__Ruminococcaceae;g__Faecalibacterium;s__Faecalibacterium_prausnitzii(AJ413954)
@@ -1424,16 +1490,17 @@ get_shortnames(longname)
 ```
 
 </details>
+
 <details>
-<summary>
-get palette
-</summary>
+
+<summary>get palette</summary>
 
 ## get\_palette
 
 This is a convenience function for getting a set of colours for plotting
 purposes. Setting preview=TRUE will show you the colours. The colours
-can be changed by adding a palette(s) to the palette argument.
+can be changed by adding a palette(s) to the palette
+    argument.
 
 Usage:
 
@@ -1447,10 +1514,10 @@ getPalette(n=10, palette="Set3", preview=TRUE)
     #>  [8] "#FCCDE5" "#D9D9D9" "#BC80BD"
 
 </details>
+
 <details>
-<summary>
-convert platemap
-</summary>
+
+<summary>convert platemap</summary>
 
 ## convert\_platemap
 
@@ -1477,7 +1544,7 @@ convert_platemap(plate_map = "my96wellplate.xlsx",
     #>                     Max.   :12.00
 
 | well\_id | col | row | well\_value   |
-|:---------|----:|:----|:--------------|
+| :------- | --: | :-- | :------------ |
 | A1       |   1 | A   | sample\_name1 |
 | A2       |   2 | A   | sample\_name2 |
 | A3       |   3 | A   | sample\_name3 |
@@ -1503,7 +1570,7 @@ kable(head(plate_df))
 ```
 
 | row | col | well\_value | well\_id |
-|:----|:----|------------:|:---------|
+| :-- | :-- | ----------: | :------- |
 | A   | 1   |   0.0991905 | A1       |
 | B   | 1   |   0.1471918 | B1       |
 | C   | 1   |   0.1410611 | C1       |
@@ -1512,10 +1579,10 @@ kable(head(plate_df))
 | F   | 1   |   0.1391068 | F1       |
 
 </details>
+
 <details>
-<summary>
-sym mat2df
-</summary>
+
+<summary>sym mat2df</summary>
 
 ## sym\_mat2df
 
@@ -1555,10 +1622,10 @@ sym_mat2df(corr_result)
 ```
 
 </details>
+
 <details>
-<summary>
-adjust mat pval
-</summary>
+
+<summary>adjust mat pval</summary>
 
 ## adjust\_mat\_pval
 
@@ -1607,14 +1674,15 @@ adjust_mat_pval(corr_result$p, out_type='dataframe')
 ```
 
 </details>
+
 <details>
-<summary>
-remove geom
-</summary>
+
+<summary>remove geom</summary>
 
 ## remove\_geom
 
-Remove a specific geom layer from a ggplot.
+Remove a specific geom layer from a
+ggplot.
 
 Usage:
 
