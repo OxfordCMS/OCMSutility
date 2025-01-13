@@ -1,20 +1,32 @@
 #' rarefaction
 #'
-#' produce rarefaction plot.
-#' adapted from MetaSequencingSnake enumeration_report.Rmd
+#' Produces a rarefaction plot to visualize the relationship between sequencing depth and species richness.
+#' Adapted from MetaSequencingSnake enumeration_report.Rmd.
 #'
-#' @param df dataframe with samples in columns, features in rows
-#' @return list of ggplot rarefaction curve and associated dataframe
-#' @export
+#' @param df A data frame or matrix where samples are in columns and features (ASVs) are in rows. The respective column and row names should be present. 
+#' @param bin_size Integer specifying the number of bins for rarefaction depth (default is 1000).
+#'
+#' @details This function calculates the rarefaction curve for each sample, showing how species richness changes with sequencing depth. It uses the `vegan::rarefy` function to calculate rarefaction and produces a ggplot of the curve for each sample.
+#'
 #' @import foreach
 #' @import vegan
+#' @import reshape2
+#' @import ggplot2
+#' @import ggrepel
+#'
+#' @returns A list containing:
+#'   - 'rare_df': A data frame with rarefaction values at different depths.
+#'   - 'rare_p': A ggplot object representing the rarefaction curve.
+#'
+#' @export
+#'
 #' @examples
-#' count_data <-  cbind(matrix(rnorm(100*5,mean=50000,sd=10000), 100, 5),
-#'                      matrix(rnorm(100*5,mean=20000,sd=5000), 100, 5),
-#'                      matrix(rnorm(100*5,mean=5000,sd=1000), 100, 5))
+#' count_data <- cbind(matrix(rnorm(100*5,mean=50000,sd=10000), 100, 5),
+#'                    matrix(rnorm(100*5,mean=20000,sd=5000), 100, 5),
+#'                    matrix(rnorm(100*5,mean=5000,sd=1000), 100, 5))
 #' rarefaction(as.data.frame(count_data))
-
-rarefaction <- function(df) {
+#'
+rarefaction <- function(df, bin_size = 1000) {
 
   if(!class(df) %in% c('data.frame', 'matrix')) {
     stop('input data must be a dataframe or matrix with samples in columns, ASVs in rows, with respective column and row names')
@@ -23,7 +35,7 @@ rarefaction <- function(df) {
   # getting sample read depth
   sampmax = colSums(df)
   raredepths = round(c(seq(from=1, to=max(sampmax),
-                         by=(max(sampmax)-1)/20)))
+                         by=(max(sampmax)-1)/bin_size)))
 
   # initiate rarefaction values matrix
   vals = matrix(nrow=length(raredepths), ncol=ncol(df))
@@ -53,10 +65,6 @@ rarefaction <- function(df) {
   labels = data.frame(Sample = colnames(df),
                       Depth = sampmax,
                       Rich = apply(vals, 2, function(x){max(x,na.rm = T)}))
-
-  # # only label lowest 10 samples
-  # labels$Sample = ifelse(rank(labels$Depth)<11,
-  #                        as.character(labels$Sample), NA)
 
   rplot = ggplot(raremelt, aes(x=Depth, y=Richness, color=Sample)) +
     geom_line()+
