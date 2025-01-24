@@ -883,6 +883,27 @@ met_sparse[[4]]
 
 </details>
 
+<details>
+  <summary>alpha diversity</summary>
+
+## alpha_diversity
+
+This function calculates alpha diversity metrics: Shannon's H, Shannon's D, richness, and evenness. Calculations are made using vegan and equations in [Jost et al, 2006](https://doi.org/10.1111/j.2006.0030-1299.14714.x). 
+
+Usage:
+Takes in count table, with samples in columns, and features in rows. Feature IDs are in rownames.
+
+```{r alpha-diversity}
+# get example data
+data(asv_example)
+# rownames have to be features
+asv_counts <- data.frame(asv_example[2:ncol(asv_example)],
+                         row.names=asv_example$sequence)
+alpha_div <- alpha_diversity(asv_counts)
+
+head(alpha_div)
+```
+</details>
 
 # Utility
 These functions are helful for data manipulation in general.
