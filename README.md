@@ -1415,6 +1415,7 @@ met_sparse[[4]]
 
 <details>
 
+<<<<<<< HEAD
 <summary>alpha diversity</summary>
 
 ## alpha\_diversity
@@ -1443,6 +1444,54 @@ head(alpha_div)
 #> 4     AG004 1.7809029  5.935213       15 0.6576329
 #> 5     AG005 2.2661195  9.641913       22 0.7331247
 #> 6     AG006 0.6751426  1.964313        2 0.9740249
+=======
+<summary>metadata sparsity</summary>
+
+## top\_taxa
+
+This returns the top most represented taxa, based on cumulative relative
+abundance. Cumulative sums are calculated on a per-sample basis, so taxa
+that passes the cumulative sum threshold in any sample are retained. For
+example, giving the taxa that are in the top 80% abundance in any of the
+samples.
+
+Usage: Takes in dataframe or matrix of relative abundance, with samples
+in columns, taxa in rows. Function returns dataframe of taxa,
+sample\_id, relative abundance, and cumulative sum of relative
+abundance.
+
+``` r
+# put asv relative abundance features in same order as taxonomy table
+# get relative abundance data
+asv_mat <- dss_example$merged_abundance_id[,2:ncol(dss_example$merged_abundance_id)]
+rownames(asv_mat) <- dss_example$merged_abundance_id$featureID
+relab_data <- relab(asv_mat)
+# match row order of relative abundance and taxonomy data
+relab_data <- relab_data[match(dss_example$merged_taxonomy$featureID,
+                               rownames(relab_data)),] 
+# prepend X to column names
+colnames(relab_data) <- sprintf("X%s", colnames(relab_data))
+# get genus-level relative abundance
+genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$count_df
+
+# get top taxa
+top80 <- top_taxa(genus_df, cutoff=0.8)
+print(top80[top80$sample_id == unique(top80$sample_id)[1],])
+#> # A tibble: 10 x 4
+#> # Groups:   sample_id [1]
+#>    taxa                 sample_id  relab  csum
+#>    <chr>                <chr>      <dbl> <dbl>
+#>  1 Bacteroides          X4DSS__24 73.1    73.1
+#>  2 NA                   X4DSS__24  5.09   78.2
+#>  3 Lactobacillus        X4DSS__24  3.93   82.1
+#>  4 Akkermansia          X4DSS__24  3.90   86.0
+#>  5 Escherichia/Shigella X4DSS__24  2.16   88.2
+#>  6 Helicobacter         X4DSS__24  1.94   90.1
+#>  7 Faecalitalea         X4DSS__24  1.41   91.5
+#>  8 Clostridium XlVa     X4DSS__24  1.11   92.6
+#>  9 Parabacteroides      X4DSS__24  1.03   93.7
+#> 10 Alistipes            X4DSS__24  0.853  94.5
+>>>>>>> {SY}resolve
 ```
 
 </details>
