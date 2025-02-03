@@ -615,10 +615,9 @@ p <- plot_data$p +
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 p
-#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2
-#> 3.3.4.
-#> i Please use "none" instead.
-#> i The deprecated feature was likely used in the OCMSutility package.
+#> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
+#> ℹ Please use "none" instead.
+#> ℹ The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
@@ -667,9 +666,9 @@ features <- sample(rownames(asv_clr), size=4)
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group")
 #> Using feature as id variables
 #> Warning: Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 #> Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox-1.png)
@@ -686,9 +685,9 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 #> Warning: Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 #> Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox_colour-1.png)
