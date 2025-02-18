@@ -32,7 +32,7 @@ jobs:
       - name: Install OCMSutility
         run: |
           Rscript -e 'install.packages("." repos=NULL, type="source")'
-	  
+  
       - name: Check if OCMSutility.Rmd file has changed
         id: check_changes
         run: |
