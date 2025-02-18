@@ -27,6 +27,7 @@ knitr::opts_chunk$set(
 ```
 
 ```{r setup}
+# load packages
 library(knitr)
 library(OCMSutility)
 library(ggplot2)
