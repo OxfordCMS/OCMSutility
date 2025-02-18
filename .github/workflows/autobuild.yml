@@ -36,7 +36,7 @@ jobs:
           fi
     
       - name: Update README
-        if: ${{ env.changed == 'true' }}
+      	if: ${{ env.changed == 'true' }}
 	run: |
 	  Rscript -e 'rmarkdown::render("vignettes/OCMSutility.Rmd", output_format = "md_document", output_options = list(pandoc_args = c("-t", "gfm")))'
 	  Rscript -e 'file <- gsub("\\.\\./inst", "inst", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
