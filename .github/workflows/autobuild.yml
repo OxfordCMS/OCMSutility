@@ -37,13 +37,14 @@ jobs:
     
       - name: Update README
         if: ${{ env.changed == 'true' }}
-        run: |
+	run: |
 	  Rscript -e 'rmarkdown::render("vignettes/OCMSutility.Rmd", output_format = "md_document", output_options = list(pandoc_args = c("-t", "gfm")))'
 	  Rscript -e 'file <- gsub("\\.\\./inst", "inst", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
 	  Rscript -e 'file <- gsub("OCMSutility_files", "vignettes/OCMSutility_files", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
 	  Rscript -e 'file <- gsub("\\((.*)\\.([rR]md)","(vignettes/\\1.\\2", readLines("vignettes/OCMSutility.md")); writeLines(file, "vignettes/OCMSutility.md")'
 	  Rscript -e 'file.copy("vignettes/OCMSutility.md", "README.md", overwrite = TRUE)'
 	  Rscript -e 'suppressWarnings(file.remove("vignettes/OCMSutlity.md"))'
+	  
       - name: Commit changes
         run: |
 	  git config --global user.name 'github-actions[bot]'
