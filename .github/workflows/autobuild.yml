@@ -23,18 +23,19 @@ jobs:
         with:
           packages: |
             any::rmarkdown
+
       - name: Check if OCMSutility.Rmd file has changed
-      	id: check_changes
-  	run: |
-    	  FILE_HASH=$(sha256sum vignettes/OCMSutility.Rmd | awk '{print $1}')
-   	  PREV_HASH=$(git show origin/main:vignettes/OCMSutility.Rmd | sha256sum | awk '{print $1}' || echo "")
-    	  if [ "$FILE_HASH" != "$PREV_HASH" ]; then
-      	    echo "changed=true" >> $GITHUB_ENV
-    	  else
-      	    echo "changed=false" >> $GITHUB_ENV
-    	  fi
+        id: check_changes
+        run: |
+          FILE_HASH=$(sha256sum vignettes/OCMSutility.Rmd | awk '{print $1}')
+          PREV_HASH=$(git show origin/main:vignettes/OCMSutility.Rmd 2>/dev/null | sha256sum | awk '{print $1}' || echo "")
+          if [ "$FILE_HASH" != "$PREV_HASH" ]; then
+            echo "changed=true" >> $GITHUB_ENV
+          else
+            echo "changed=false" >> $GITHUB_ENV
+          fi
     
-      - name: Update  README
+      - name: Update README
         if: ${{ env.changed == 'true' }}
         run: |
 	  Rscript -e 'rmarkdown::render("vignettes/OCMSutility.Rmd", output_format = "md_document", output_options = list(pandoc_args = c("-t", "gfm")))'
