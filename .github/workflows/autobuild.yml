@@ -31,7 +31,9 @@ jobs:
 
       - name: Install OCMSutility
         run: |
-          Rscript -e 'install.packages(".", repos=NULL, type="source", dependencies=TRUE)'
+         Rscript -e "install.packages(c(‘BiocManager’, ‘dplyr’, ‘DescTools’, ‘foreach’, ‘ggdendro’, ‘ggfortify’, ‘ggplot2’, ‘ggrepel’, ‘gtools’, ‘psych’, ‘readxl’, ‘reshape2’, ‘RColorBrewer’, ‘RSQLite’, ‘tibble’, ‘stringr’, ‘vegan’, dependencies=TRUE)"
+	 Rscript -e "BiocManager::install(c('ALDEx2', 'phyloseq'))"
+         Rscript -e 'install.packages(".", repos=NULL, type="source", dependencies=TRUE)'
   
       - name: Check if OCMSutility.Rmd file has changed
         id: check_changes
