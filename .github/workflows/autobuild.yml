@@ -32,7 +32,10 @@ jobs:
       - name: Install more dependencies
         run: |
           Rscript -e "install.packages(c('BiocManager', 'dplyr', 'DescTools', 'foreach', 'ggdendro', 'ggfortify', 'ggplot2', 'ggrepel', 'gtools', 'psych', 'readxl', 'reshape2', 'RColorBrewer', 'RSQLite', 'tibble', 'stringr', 'vegan'), dependencies=TRUE)"
-          Rscript -e "BiocManager::install(c('ALDEx2', 'phyloseq'))"
+
+      - name: Install bioconductor packages
+        run : |
+	  Rscript -e "BiocManager::install(c('ALDEx2', 'phyloseq'))"
 
       - name: Install OCMSutility
         run: |
