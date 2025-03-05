@@ -1,3 +1,9 @@
+# Installation
+
+``` r
+devtools::install_github("OxfordCMS/OCMSutility", ref='main')
+```
+
 ``` r
 library(knitr)
 library(OCMSutility)
@@ -616,8 +622,8 @@ p <- plot_data$p +
 #> Adding another scale for colour, which will replace the existing scale.
 p
 #> Warning: The `guide` argument in `scale_*()` cannot be `FALSE`. This was deprecated in ggplot2 3.3.4.
-#> i Please use "none" instead.
-#> i The deprecated feature was likely used in the OCMSutility package.
+#> ℹ Please use "none" instead.
+#> ℹ The deprecated feature was likely used in the OCMSutility package.
 #>   Please report the issue to the authors.
 #> This warning is displayed once every 8 hours.
 #> Call `lifecycle::last_lifecycle_warnings()` to see where this warning was generated.
@@ -666,9 +672,9 @@ features <- sample(rownames(asv_clr), size=4)
 featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group_by="Group")
 #> Using feature as id variables
 #> Warning: Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 #> Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox-1.png)
@@ -685,9 +691,9 @@ featurebox(abundance_matrix=asv_clr, metadata=metadata, features=features, group
 #> Scale for colour is already present.
 #> Adding another scale for colour, which will replace the existing scale.
 #> Warning: Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 #> Use of `mat.m$covariate` is discouraged.
-#> i Use `covariate` instead.
+#> ℹ Use `covariate` instead.
 ```
 
 ![](vignettes/OCMSutility_files/figure-markdown_strict/featurebox_colour-1.png)
@@ -1446,7 +1452,7 @@ genus_df <- aggregate_count(relab_data, dss_example$merged_taxonomy, 'Genus')$co
 # get top taxa
 top80 <- top_taxa(genus_df, cutoff=0.8)
 print(top80[top80$sample_id == unique(top80$sample_id)[1],])
-#> # A tibble: 10 x 4
+#> # A tibble: 10 × 4
 #> # Groups:   sample_id [1]
 #>    taxa                 sample_id  relab  csum
 #>    <chr>                <chr>      <dbl> <dbl>

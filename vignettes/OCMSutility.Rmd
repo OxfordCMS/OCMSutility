@@ -26,6 +26,11 @@ knitr::opts_chunk$set(
 )
 ```
 
+# Installation
+```{r, eval=FALSE}
+devtools::install_github("OxfordCMS/OCMSutility", ref='main')
+```
+
 ```{r setup}
 library(knitr)
 library(OCMSutility)
