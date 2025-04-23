@@ -29,7 +29,7 @@ clr <- function(count_dataframe, condition = NULL, return_as_dataframe = TRUE) {
   if(!is.logical(return_as_dataframe)) {
     stop("return_as_dataframe must be logical value")
   }
-  if(!class(count_dataframe) %in% c('data.frame', 'matrix')) {
+  if(any(!class(count_dataframe) %in% c('data.frame', 'matrix'))) {
     stop("count_dataframe must be of class dataframe or matrix")
   }
 
