@@ -1,3 +1,9 @@
+# Installation
+
+``` r
+devtools::install_github("OxfordCMS/OCMSutility", ref='main')
+```
+
 ``` r
 library(knitr)
 library(OCMSutility)
